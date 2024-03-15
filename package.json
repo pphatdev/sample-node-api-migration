@@ -1,0 +1,16 @@
+{
+    "name": "first-node-js",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "main": "index.js",
+    "author": "PPhatDev <info.sophat@gmail.com>",
+    "scripts": {
+        "start": "nodemon ./index.js --host=0.0.0.0 --hot --open"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "~4.16.1",
+        "ip": "^2.0.1"
+    }
+}
