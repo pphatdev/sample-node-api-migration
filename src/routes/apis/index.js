@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import { routes as users } from './users.js'
-export const routes = Router()
+const routes    = Router()
+const version   = process.env.VERSOION || "v1"
+const api       = `/api/${version}`
 
-
-const api = "/api"
+// Users
 routes.use(`${api}/users` , users)
 
 // Defualt

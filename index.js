@@ -2,6 +2,7 @@ import express from 'express'
 import routes from './src/routes/apis/index.js'
 import ip from 'ip'
 import { config } from 'dotenv'
+import { getRouteAPI } from './src/helpers/get-path.js'
 config()
 
 
@@ -34,6 +35,21 @@ app.listen(port, () => {
     console.log(`🚀 \x1b[30mLocalhost:\x1b[32m http://localhost:${port}/api/v1/\x1b[0m`)
     console.log(`🚀 \x1b[30mLocal Service:\x1b[32m http://127.0.0.1:${port}/api/v1/\x1b[0m`)
     console.log(`🚀 \x1b[30mHost Service:\x1b[32m http://${ip.address()}:${port}/api/v1/\x1b[0m`)
+
+
+    console.log(getRouteAPI());
+
+    // routesApiFiles.forEach(function (file) {
+    //     // Do whatever you want to do with the file
+    //     console.log(file);
+    // });
+
+    // routesApiFiles.map(file => {
+    //     const route = file
+    //     console.log(file);
+    // })
+
+
 })
 
 export default app

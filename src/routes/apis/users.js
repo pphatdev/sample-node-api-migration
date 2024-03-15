@@ -1,6 +1,5 @@
 import { Router } from 'express'
 export const routes = Router()
-
 import { getAllUsers } from '../../controllers/users.js'
 
 routes.get("/", (req, res) => {
