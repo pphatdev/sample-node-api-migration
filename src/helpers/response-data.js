@@ -4,11 +4,11 @@ export class Response {
         this.date   = new Date()
     }
 
-    success = (response) => {
-        const data = response || {}
+    success = (data, total = 0) => {
         return {
             status: 200,
             date: this.date,
+            total: total,
             result: data
         }
     }
