@@ -1,20 +1,12 @@
 import { Router } from 'express'
+import { អ្នកប្រើប្រាស់ទាំងអស់ } from '../../controllers/users.js'
 export const routes = Router()
-import { getAllUsers } from '../../controllers/users.js'
 
-routes.get("/", (req, res) => {
+routes.get("/", async (req, res) => {
 
-    const request   = req.query
-    const data      = getAllUsers()
-    console.log(data);
-    res.send(
-        {
-            status: 200,
-            path: "/api/user",
-            date: new Date(),
-            result: request
-        }
-    )
+    const ការស្នើបន្ថែម  = req.query
+    const ទិន្នន័យ     = await អ្នកប្រើប្រាស់ទាំងអស់(ការស្នើបន្ថែម)
+    res.send(ទិន្នន័យ)
 })
 
 export default routes

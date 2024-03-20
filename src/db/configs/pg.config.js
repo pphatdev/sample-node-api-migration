@@ -1,5 +1,5 @@
 import pg from "pg";
-import { db } from "./env";
+import { db } from "./env.js";
 const Client = pg.Client;
 
 export const client = new Client({
