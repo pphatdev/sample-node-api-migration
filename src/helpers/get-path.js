@@ -12,15 +12,6 @@ const __dirname         = path.dirname(__filename);
  */
 export const getRouteAPI = () => {
 
-    const directoryPath = path.join(__dirname, '../routes/apis');
-    fs.readdir(directoryPath, function (err, files) {
-        if (err) {
-            return console.log('Unable to scan directory: ' + err);
-        }
-        return files.forEach(function (file) {
-            return file
-        });
-    });
 }
 
 
