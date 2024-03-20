@@ -18,10 +18,9 @@ export const អ្នកប្រើប្រាស់ទាំងអស់ = a
     )
     .then(
         ចម្លើយ => {
-
             // កំណត់ហេតុ(ចម្លើយ.rows, ចម្លើយ.rowCount) ;
             const ទិន្នន័យ = ចម្លើយ.rows ;
-            return response.ជោកជ័យ(
+            return response.ជោគជ័យ(
                 ទិន្នន័យ,
                 ចម្លើយ.rowCount
             )

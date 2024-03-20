@@ -4,7 +4,7 @@ export class ការឆ្លើយតប {
         this.date   = new Date()
     }
 
-    ជោកជ័យ = (ទិន្នន័យរួម, ទិន្នន័យសរុប = 0) => {
+    ជោគជ័យ = (ទិន្នន័យរួម, ទិន្នន័យសរុប = 0) => {
         return {
             status: 200,
             date: this.date,
