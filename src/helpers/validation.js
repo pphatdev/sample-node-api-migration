@@ -29,4 +29,25 @@ export class isValidated {
         return /https?:\/\/(www\.)?[a-z0-9]+\.([a-z])/i.test(value);
     }
 
+
+    /**
+     * Check value Validation pattern
+     * @param {String} value
+     * @returns
+     */
+    empty = (value = "") => {
+        return value == null || value == "" || value == undefined;
+    }
+
+    /**
+     * Check number Validation pattern
+     * @param {String} value
+     * @returns
+     */
+    isNum = (value = "") => {
+        if (typeof value == "number") {
+            return true
+        }
+        return false
+    }
 }
