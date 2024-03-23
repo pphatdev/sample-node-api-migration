@@ -34,6 +34,30 @@ export const ទិន្នន័យអ្នកប្រើប្រាស់�
             }
         `
     ).then(
+        async ចម្លើយ => {
+            const ទិន្នន័យរួម = {
+                ទិន្នន័យ: ចម្លើយ.rows,
+                ចំនួន: ចំនួនទិន្នន័យ,
+                បង្ហាញ: ចម្លើយ.rowCount
+            }
+            await client.end()
+            return ទិន្នន័យរួម
+        }
+    ).catch(
+        មូលហេតុ => កំណត់ហេតុ(មូលហេតុ)
+    )
+};
+
+export const បញ្ចូលទិន្នន័យអ្នកប្រើប្រាស់ = async ( options ) =>
+{
+
+    const {
+        
+    } = options;
+
+    return await client.query(
+        `INSERT INTO users(column1, column2) VALUES (value1, value2)`
+    ).then(
         ចម្លើយ => {
             const ទិន្នន័យរួម = {
                 ទិន្នន័យ: ចម្លើយ.rows,
@@ -46,3 +70,6 @@ export const ទិន្នន័យអ្នកប្រើប្រាស់�
         មូលហេតុ => កំណត់ហេតុ(មូលហេតុ)
     )
 };
+
+
+await client.end()
