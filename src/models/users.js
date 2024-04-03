@@ -1,18 +1,15 @@
+import bcryptjs from "bcryptjs";
 import { client } from "../db/configs/pg.config.js";
 import { កំណត់ហេតុ } from "../helpers/debug.js";
+import { ការឆ្លើយតប } from "../helpers/response.js";
 
+const { hash, genSalt } = bcryptjs
+const response = new ការឆ្លើយតប()
 await client.connect()
 
 export const ទិន្នន័យអ្នកប្រើប្រាស់ទាំងអស់ = async ( options ) =>
 {
-    const {
-        ទំព័រ,
-        ច្រើនបំផុត,
-        ស្វែងរក,
-        តម្រៀបតាម,
-        លម្អិត
-    } = options
-
+    const { ទំព័រ, ច្រើនបំផុត, ស្វែងរក, តម្រៀបតាម, លម្អិត } = options
     const ចំនួន = await client.query(`SELECT count(id) from users`)
     const ចំនួនទិន្នន័យ = await ចំនួន.rows[0].count || 0
 
@@ -40,7 +37,6 @@ export const ទិន្នន័យអ្នកប្រើប្រាស់�
                 ចំនួន: ចំនួនទិន្នន័យ,
                 បង្ហាញ: ចម្លើយ.rowCount
             }
-            await client.end()
             return ទិន្នន័យរួម
         }
     ).catch(
@@ -48,28 +44,32 @@ export const ទិន្នន័យអ្នកប្រើប្រាស់�
     )
 };
 
-export const បញ្ចូលទិន្នន័យអ្នកប្រើប្រាស់ = async ( options ) =>
-{
 
-    const {
-        
-    } = options;
+export const បញ្ចូលទិន្នន័យអ្នកប្រើប្រាស់ = async ( ទិន្នន័យ ) =>
+{
+    const { name, email, password } = ទិន្នន័យ;
+    const passwordSalt      = await genSalt(10)
+    const passwordGenerated = await hash(password, passwordSalt);
 
     return await client.query(
-        `INSERT INTO users(column1, column2) VALUES (value1, value2)`
+        `INSERT INTO users(name, email, password, created_at, updated_at) VALUES ($1, $2, $3, now(), now())`,
+        [name, email, passwordGenerated]
     ).then(
         ចម្លើយ => {
-            const ទិន្នន័យរួម = {
-                ទិន្នន័យ: ចម្លើយ.rows,
-                ចំនួន: ចំនួនទិន្នន័យ,
-                បង្ហាញ: ចម្លើយ.rowCount
-            }
-            return ទិន្នន័យរួម
+
+            if (ចម្លើយ.rowCount < 0)
+                return ចម្លើយ
+
+            return response.បញ្ចូលជោគជ័យ({ message: "Insert Success." })
         }
     ).catch(
-        មូលហេតុ => កំណត់ហេតុ(មូលហេតុ)
+        មូលហេតុ => {
+
+            if (មូលហេតុ.code == "23505")
+                return response.បញ្ចូលបរាជ័យ({ message: មូលហេតុ.detail });
+
+            កំណត់ហេតុ(មូលហេតុ)
+            return មូលហេតុ
+        }
     )
 };
-
-
-await client.end()

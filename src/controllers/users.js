@@ -1,8 +1,16 @@
+import Joi from "joi";
 import { ការឆ្លើយតប } from "../helpers/response.js";
-import { ទិន្នន័យអ្នកប្រើប្រាស់ទាំងអស់ } from "../models/users.js";
+import { isValidated } from "../helpers/validation.js";
+import { ទិន្នន័យអ្នកប្រើប្រាស់ទាំងអស់, បញ្ចូលទិន្នន័យអ្នកប្រើប្រាស់ } from "../models/users.js";
 
 const response = new ការឆ្លើយតប()
+const validating = new isValidated()
 
+/**
+ * បង្ហាញទិន្នន័យជាទិន្នន័យរួម (List) និង ទិន្នន័យលំហាត់ (Detail)
+ * @param {Object} ការស្នើបន្ថែម
+ * @returns
+ */
 export const អ្នកប្រើប្រាស់ទាំងអស់ = async (ការស្នើបន្ថែម) =>
 {
     let ច្រើនបំផុត = ការស្នើបន្ថែម.limit || ការស្នើបន្ថែម.ច្រើនបំផុត || 20;
@@ -48,4 +56,47 @@ export const អ្នកប្រើប្រាស់ទាំងអស់ = a
         ទិន្នន័យ.ទិន្នន័យ,
         { id: លម្អិត }
     );
+};
+
+
+/**
+ * បង្កើតអ្នកប្រើប្រាស់ថ្មី
+ * @param {Object} ការស្នើបន្ថែម
+ * @returns
+ */
+export const បង្កើតអ្នកប្រើប្រាស់ថ្មី = async (ការស្នើបន្ថែម) =>
+{
+    /**
+     * កំណត់តម្រូវការទិន្នន័យរបស់អ្នកប្រើប្រាស់ថ្មី
+     * @package Joi
+     * @param {Required|String} name
+     * @param {Required|String} email
+     * @param {Required|String} password
+     */
+    const លក្ខណ = validating.required(
+        /**
+         * កំណត់លក្ខខណ្ឌចាំបាច់
+         */
+        Joi.object({
+            name: Joi.string().required(),
+            email: Joi.string().email().required(),
+            password: Joi.string().pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/).required()
+        }),
+
+        /**
+         * ទិន្នន័យដែលបានបោះតាមរយៈ Route
+         */
+        ការស្នើបន្ថែម
+    )
+
+    if (លក្ខណ)
+        /**
+         * ករណីមានមិនទិន្នន័យមិនគ្រប់ បង្ហាញព័ត៌មានបរាជ័យ
+         */
+        return response.បញ្ចូលបរាជ័យ({ message : លក្ខណ.message })
+    else
+        /**
+         * បង្ហាញព័ត៌មានដែលជោគជ័យ
+         */
+        return await បញ្ចូលទិន្នន័យអ្នកប្រើប្រាស់(ការស្នើបន្ថែម);
 };

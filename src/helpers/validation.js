@@ -1,3 +1,5 @@
+import Joi from "joi";
+
 export class isValidated {
 
     /**
@@ -49,5 +51,18 @@ export class isValidated {
             return true
         }
         return false
+    }
+
+    /**
+     * Return required message
+     * @param {Object} schema
+     * @param {Object} fields
+     * @returns
+     */
+    required = (schema, fields = {}) => {
+        let result;
+        const valid = schema.validate(fields).error?.details || []
+        Array.from(valid).map( m => { result = m })
+        return result
     }
 }

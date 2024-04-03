@@ -23,4 +23,20 @@ export class ការឆ្លើយតប {
             result: ទិន្នន័យរួម
         }
     }
+
+    បញ្ចូលជោគជ័យ = (...ជម្រើស) => {
+        return {
+            status: 200,
+            date: this.date,
+            result: ជម្រើស
+        }
+    }
+
+    បញ្ចូលបរាជ័យ = (...ជម្រើស) => {
+        return {
+            status: 400,
+            date: this.date,
+            result: ជម្រើស
+        }
+    }
 }
