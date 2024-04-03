@@ -1,42 +1,78 @@
-export class ការឆ្លើយតប {
+export class Response {
 
     constructor() {
         this.date   = new Date()
     }
 
-    ជោគជ័យ = (ទិន្នន័យរួម, ទិន្នន័យសរុប = 0, បង្ហាញ = 0,  ...ជម្រើស) => {
+    ជោគជ័យ = (ទិន្នន័យរួម, ទិន្នន័យសរុប = 0, បង្ហាញ = 0,  ...options) => {
         return {
             status: 200,
             date: this.date,
-            query: ជម្រើស || {},
+            query: options || {},
             total: ទិន្នន័យសរុប,
             show: បង្ហាញ,
             result: ទិន្នន័យរួម
         }
     }
 
-    ជោគជ័យលម្អិត = (ទិន្នន័យរួម,...ជម្រើស) => {
+    list = (data, total = 0, show = 0,  ...options) => {
         return {
             status: 200,
             date: this.date,
-            query: ជម្រើស || {},
+            query: options || {},
+            total: total,
+            show: show,
+            result: data
+        }
+    }
+
+    show = (data,...options) => {
+        return {
+            status: 200,
+            date: this.date,
+            query: options || {},
+            result: data
+        }
+    }
+
+    ជោគជ័យលម្អិត = (ទិន្នន័យរួម,...options) => {
+        return {
+            status: 200,
+            date: this.date,
+            query: options || {},
             result: ទិន្នន័យរួម
         }
     }
 
-    បញ្ចូលជោគជ័យ = (...ជម្រើស) => {
+    បញ្ចូលជោគជ័យ = (...options) => {
         return {
             status: 200,
             date: this.date,
-            result: ជម្រើស
+            result: options
         }
     }
 
-    បញ្ចូលបរាជ័យ = (...ជម្រើស) => {
+    បញ្ចូលបរាជ័យ = (...options) => {
         return {
             status: 400,
             date: this.date,
-            result: ជម្រើស
+            result: options
+        }
+    }
+
+    insetSuccess = (...options) => {
+        return {
+            status: 200,
+            date: this.date,
+            result: options
+        }
+    }
+
+    insetFailed = (...options) => {
+        return {
+            status: 400,
+            date: this.date,
+            result: options
         }
     }
 }

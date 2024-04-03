@@ -1,70 +1,69 @@
 import Joi from "joi";
-import { ការឆ្លើយតប } from "../helpers/response.js";
+import { Response } from "../helpers/response.js";
 import { isValidated } from "../helpers/validation.js";
-import { ទិន្នន័យអ្នកប្រើប្រាស់ទាំងអស់, បញ្ចូលទិន្នន័យអ្នកប្រើប្រាស់ } from "../models/users.js";
+import { getData, insetData, updateData } from "../models/users.js";
 
-const response = new ការឆ្លើយតប()
-const validating = new isValidated()
+const response      = new Response()
+const validating    = new isValidated()
 
 /**
  * បង្ហាញទិន្នន័យជាទិន្នន័យរួម (List) និង ទិន្នន័យលំហាត់ (Detail)
- * @param {Object} ការស្នើបន្ថែម
+ * @param {Object} request
  * @returns
  */
-export const អ្នកប្រើប្រាស់ទាំងអស់ = async (ការស្នើបន្ថែម) =>
+export const get = async (request) =>
 {
-    let ច្រើនបំផុត = ការស្នើបន្ថែម.limit || ការស្នើបន្ថែម.ច្រើនបំផុត || 20;
-    const ទំព័រ = ការស្នើបន្ថែម.page || ការស្នើបន្ថែម.ទំព័រ || 1;
-    const លម្អិត = ការស្នើបន្ថែម.id || ការស្នើបន្ថែម.លម្អិត || null;
-    const ស្វែងរក = ការស្នើបន្ថែម.search || ការស្នើបន្ថែម.ស្វែងរក || null;
-    const តម្រៀបតាម = ការស្នើបន្ថែម.sort || ការស្នើបន្ថែម.តម្រៀបតាម || "asc";
+    const page      = request.page || 1;
+    let limit       = request.limit || 20;
+    const search    = request.search || null;
+    const sort      = request.sort || "asc";
+    const id        = request.id || null;
 
-    if (!Number(ច្រើនបំផុត)) {
-        ច្រើនបំផុត = null
+    if (!Number(limit)) {
+        limit = null
     }
 
     /**
      * ទាញព័ត៌មានរបស់អ្នកប្រើប្រាស់ទាំងអស់តាមរយៈការកំណត់
-     * { ច្រើនបំផុត|limit, ទំព័រ|page, លម្អិត|id, ស្វែងរក|search, តម្រៀបតាម|sort }
+     * { limit, page, search, sort }
     */
-    const ទិន្នន័យ = await ទិន្នន័យអ្នកប្រើប្រាស់ទាំងអស់({
-        ទំព័រ:ទំព័រ,
-        ច្រើនបំផុត:ច្រើនបំផុត,
-        ស្វែងរក:ស្វែងរក,
-        តម្រៀបតាម:តម្រៀបតាម,
-        លម្អិត:លម្អិត
+    const fetchData = await getData({
+        page:page,
+        limit:limit,
+        search:search,
+        sort:sort,
+        id:id,
     });
 
-
-    if (!លម្អិត) {
+    if (!id) {
         /**
          * បង្ហាញព័ត៌មានរបស់អ្នកប្រើប្រាស់ទាំងអស់តាមរយៈការកំណត់
-         * { ច្រើនបំផុត|limit, ទំព័រ|page, ស្វែងរក|search, តម្រៀបតាម|sort }
+         * { limit, page, search, sort }
         */
-        return response.ជោគជ័យ(
-            ទិន្នន័យ.ទិន្នន័យ,
-            ទិន្នន័យ.ចំនួន,
-            ទិន្នន័យ.បង្ហាញ,
-            ការស្នើបន្ថែម
+        return response.list(
+            fetchData.data,
+            fetchData.total,
+            fetchData.show,
+            request
         );
     }
 
     /**
      * បង្ហាញព័ត៌មានលម្អិតរបស់អ្នកប្រើប្រាស់តាមរយៈ {លម្អិត|id}
     */
-    return response.ជោគជ័យលម្អិត(
-        ទិន្នន័យ.ទិន្នន័យ,
-        { id: លម្អិត }
+    return response.show(
+        fetchData.data,
+        { id: id },
     );
 };
 
 
 /**
  * បង្កើតអ្នកប្រើប្រាស់ថ្មី
- * @param {Object} ការស្នើបន្ថែម
+ * @param {Object} request
  * @returns
  */
-export const បង្កើតអ្នកប្រើប្រាស់ថ្មី = async (ការស្នើបន្ថែម) =>
+export const create = async (request) =>
 {
     /**
      * កំណត់តម្រូវការទិន្នន័យរបស់អ្នកប្រើប្រាស់ថ្មី
@@ -73,7 +72,7 @@ export const បង្កើតអ្នកប្រើប្រាស់ថ្�
      * @param {Required|String} email
      * @param {Required|String} password
      */
-    const លក្ខណ = validating.required(
+    const condition = validating.required(
         /**
          * កំណត់លក្ខខណ្ឌចាំបាច់
          */
@@ -86,17 +85,60 @@ export const បង្កើតអ្នកប្រើប្រាស់ថ្�
         /**
          * ទិន្នន័យដែលបានបោះតាមរយៈ Route
          */
-        ការស្នើបន្ថែម
+        request
     )
 
-    if (លក្ខណ)
+    if (condition)
         /**
          * ករណីមានមិនទិន្នន័យមិនគ្រប់ បង្ហាញព័ត៌មានបរាជ័យ
          */
-        return response.បញ្ចូលបរាជ័យ({ message : លក្ខណ.message })
+        return response.insetFailed({ message : condition.message })
     else
         /**
          * បង្ហាញព័ត៌មានដែលជោគជ័យ
          */
-        return await បញ្ចូលទិន្នន័យអ្នកប្រើប្រាស់(ការស្នើបន្ថែម);
+        return await insetData(request);
+};
+
+
+/**
+ * កែប្រែអ្នកប្រើប្រាស់
+ * @param {Object} request
+ * @returns
+ */
+export const update = async (request) =>
+{
+    /**
+     * កំណត់តម្រូវការទិន្នន័យរបស់អ្នកប្រើប្រាស់ថ្មី
+     * @package Joi
+     * @param {Required|String} id
+     * @param {Required|String} name
+     * @param {Required|String} email
+     */
+    const condition = validating.required(
+        /**
+         * កំណត់លក្ខខណ្ឌចាំបាច់
+         */
+        Joi.object({
+            id: Joi.string().required(),
+            name: Joi.string().required(),
+            email: Joi.string().email().required(),
+        }),
+
+        /**
+         * ទិន្នន័យដែលបានបោះតាមរយៈ Route
+         */
+        request
+    )
+
+    if (condition)
+        /**
+         * ករណីមានមិនទិន្នន័យមិនគ្រប់ បង្ហាញព័ត៌មានបរាជ័យ
+         */
+        return response.insetFailed({ message : condition.message })
+    else
+        /**
+         * បង្ហាញព័ត៌មានដែលជោគជ័យ
+         */
+        return await updateData(request);
 };

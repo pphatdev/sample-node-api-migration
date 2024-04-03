@@ -9,3 +9,5 @@ export const client = new Client({
     user: db.user,
     password: db.password,
 })
+
+client.connect()

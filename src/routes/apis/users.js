@@ -1,19 +1,35 @@
 import { Router } from 'express'
-import { បង្កើតអ្នកប្រើប្រាស់ថ្មី, អ្នកប្រើប្រាស់ទាំងអស់ } from '../../controllers/users.js'
+import { create, update, get } from '../../controllers/users.js'
 export const routes = Router()
 
-routes.get("/", async (req, res) => {
-
-    const ការស្នើបន្ថែម  = req.query
-    const ទិន្នន័យ     = await អ្នកប្រើប្រាស់ទាំងអស់(ការស្នើបន្ថែម)
-    res.send(ទិន្នន័យ)
+routes.get("/", async (req, res) =>
+{
+    const request  = req.query
+    const data     = await get(request)
+    res.send(data)
 })
 
-routes.post("/", async (req, res) => {
 
-    const ការស្នើបន្ថែម  = req.query
-    const ទិន្នន័យ     = await បង្កើតអ្នកប្រើប្រាស់ថ្មី(ការស្នើបន្ថែម)
-    res.send(ទិន្នន័យ)
+routes.get("/:id", async (req, res) =>
+{
+    const data  = await get({id: req.params.id})
+    res.send(data)
+})
+
+
+routes.post("/", async (req, res) =>
+{
+    const request  = req.query
+    const data     = await create(request)
+    res.send(data)
+})
+
+
+routes.put("/:id", async (req, res) =>
+{
+    const request  = req.query
+    const data     = await update(request)
+    res.send(data)
 })
 
 export default routes

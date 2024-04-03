@@ -1,17 +1,16 @@
 import bcryptjs from "bcryptjs";
 import { client } from "../db/configs/pg.config.js";
-import { កំណត់ហេតុ } from "../helpers/debug.js";
-import { ការឆ្លើយតប } from "../helpers/response.js";
+import { Response } from "../helpers/response.js";
 
 const { hash, genSalt } = bcryptjs
-const response = new ការឆ្លើយតប()
-await client.connect()
+const response = new Response()
 
-export const ទិន្នន័យអ្នកប្រើប្រាស់ទាំងអស់ = async ( options ) =>
+
+export const getData = async ( request ) =>
 {
-    const { ទំព័រ, ច្រើនបំផុត, ស្វែងរក, តម្រៀបតាម, លម្អិត } = options
-    const ចំនួន = await client.query(`SELECT count(id) from users`)
-    const ចំនួនទិន្នន័យ = await ចំនួន.rows[0].count || 0
+    const { page, limit, search, sort, id } = request
+    const count = await client.query(`SELECT count(id) from users`)
+    const total = await count.rows[0].count || 0
 
     return await client.query(
         `SELECT
@@ -22,32 +21,32 @@ export const ទិន្នន័យអ្នកប្រើប្រាស់�
             updated_at
         from users
             ${
-                !លម្អិត
-                ? ` ${ស្វែងរក ? ` where name ilike '%${ស្វែងរក}%' `: ""}
-                    ${តម្រៀបតាម ? ` order by name ${តម្រៀបតាម} `: ""}
-                    ${ច្រើនបំផុត ? ` limit ${ច្រើនបំផុត} `: ""}
-                    ${ទំព័រ? ` offset ${(ទំព័រ - 1) * ច្រើនបំផុត} `: ""}`
-                :` where id = ${លម្អិត}`
+                !id
+                ? ` ${search ? ` where name ilike '%${search}%' `: ""}
+                    ${sort ? ` order by name ${sort} `: ""}
+                    ${limit ? ` limit ${limit} `: ""}
+                    ${page? ` offset ${(page - 1) * limit} `: ""}`
+                :` where id = ${id}`
             }
         `
     ).then(
-        async ចម្លើយ => {
-            const ទិន្នន័យរួម = {
-                ទិន្នន័យ: ចម្លើយ.rows,
-                ចំនួន: ចំនួនទិន្នន័យ,
-                បង្ហាញ: ចម្លើយ.rowCount
+        async result => {
+            const data = {
+                data: result.rows,
+                count: total,
+                show: result.rowCount
             }
-            return ទិន្នន័យរួម
+            return data
         }
     ).catch(
-        មូលហេតុ => កំណត់ហេតុ(មូលហេតុ)
+        reason => console.log(reason)
     )
 };
 
 
-export const បញ្ចូលទិន្នន័យអ្នកប្រើប្រាស់ = async ( ទិន្នន័យ ) =>
+export const insetData = async ( request ) =>
 {
-    const { name, email, password } = ទិន្នន័យ;
+    const { name, email, password } = request;
     const passwordSalt      = await genSalt(10)
     const passwordGenerated = await hash(password, passwordSalt);
 
@@ -55,21 +54,48 @@ export const បញ្ចូលទិន្នន័យអ្នកប្រើ�
         `INSERT INTO users(name, email, password, created_at, updated_at) VALUES ($1, $2, $3, now(), now())`,
         [name, email, passwordGenerated]
     ).then(
-        ចម្លើយ => {
+        result => {
 
-            if (ចម្លើយ.rowCount < 0)
-                return ចម្លើយ
+            if (result.rowCount < 0)
+                return result
 
-            return response.បញ្ចូលជោគជ័យ({ message: "Insert Success." })
+            return response.insetSuccess({ message: "Insert Success." })
         }
     ).catch(
-        មូលហេតុ => {
+        reason => {
 
-            if (មូលហេតុ.code == "23505")
-                return response.បញ្ចូលបរាជ័យ({ message: មូលហេតុ.detail });
+            if (reason.code == "23505")
+                return response.insetFailed({ message: reason.detail });
 
-            កំណត់ហេតុ(មូលហេតុ)
-            return មូលហេតុ
+            console.log(reason)
+            return reason
+        }
+    )
+};
+
+
+export const updateData = async ( request ) =>
+{
+    const { id, name, email } = request;
+    return await client.query(
+        `UPDATE public.users SET "name"=$1, email=$2, updated_at=$3 WHERE id=$4;`,
+        [name, email, "now()", id]
+    ).then(
+        result => {
+
+            if (result.rowCount < 0)
+                return result
+
+            return response.insetSuccess({ message: "Update Success." })
+        }
+    ).catch(
+        reason => {
+
+            if (reason.code == "23505")
+                return response.insetFailed({ message: reason.detail });
+
+            console.log(reason)
+            return reason
         }
     )
 };
