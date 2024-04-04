@@ -1,5 +1,5 @@
 import { Router } from 'express'
-export const routes = Router()
+const routes = Router()
 
 // Web route
 const web = "/"

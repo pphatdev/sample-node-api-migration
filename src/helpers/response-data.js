@@ -1,43 +1,35 @@
+import { VERSION } from "../db/configs/index.js"
+
 export class Response {
 
-    constructor() {
-        this.date   = new Date()
-    }
-
-    success = (data, total = 0) => {
+    success = (data, total = 0, ...options) => {
         return {
             status: 200,
-            date: this.date,
             total: total,
-            result: data
+            success: true,
+            version: VERSION,
+            result: data,
+            ...options
         }
     }
 
-
-    client = (response) => {
-        const data = response || {}
+    notFound = (data, ...options) => {
         return {
-            status: 404,
-            date: this.date,
-            result: data
+            status: 400,
+            success: true,
+            version: VERSION,
+            result: data,
+            ...options
         }
     }
 
-    forbidden = (response) => {
-        const data = response || {}
-        return {
-            status: 403,
-            date: this.date,
-            result: data
-        }
-    }
-
-    server = (response) => {
-        const data = response || {}
+    serverError = (message = "", ...options) => {
         return {
             status: 500,
-            date: this.date,
-            result: data
+            version: VERSION,
+            success: false,
+            message: message,
+            ...options
         }
     }
 }

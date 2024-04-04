@@ -33,4 +33,5 @@ ROUTE.put("/:id", async (req, res) =>
     res.send(data)
 })
 
+
 export default ROUTE

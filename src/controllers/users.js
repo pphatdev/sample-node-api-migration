@@ -1,7 +1,7 @@
 import Joi from "joi";
-import { Response } from "../helpers/response.js";
 import { isValidated } from "../helpers/validation.js";
 import { getData, insetData, updateData } from "../models/users.js";
+import { Response } from "../helpers/response-data.js";
 
 const response      = new Response()
 const validating    = new isValidated()
@@ -28,11 +28,11 @@ export const get = async (request) =>
      * { limit, page, search, sort }
     */
     const fetchData = await getData({
-        page:page,
-        limit:limit,
-        search:search,
-        sort:sort,
-        id:id,
+        page: page,
+        limit: limit,
+        search: search,
+        sort: sort,
+        id: id,
     });
 
     if (!id) {
@@ -40,20 +40,17 @@ export const get = async (request) =>
          * បង្ហាញព័ត៌មានរបស់អ្នកប្រើប្រាស់ទាំងអស់តាមរយៈការកំណត់
          * { limit, page, search, sort }
         */
-        return response.list(
+        return response.success(
             fetchData.data,
-            fetchData.total,
-            fetchData.show,
-            request
+            fetchData.total
         );
     }
 
     /**
      * បង្ហាញព័ត៌មានលម្អិតរបស់អ្នកប្រើប្រាស់តាមរយៈ {លម្អិត|id}
     */
-    return response.show(
-        fetchData.data,
-        { id: id },
+    return response.success(
+        fetchData.data
     );
 };
 

@@ -1,34 +1,34 @@
 import bcryptjs from "bcryptjs";
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response.js";
+import { Pagination } from "../helpers/paginations.js";
 
 const { hash, genSalt } = bcryptjs
-const response = new Response()
+const response  = new Response()
+const PAGE      = new Pagination()
 
 
 export const getData = async ( request ) =>
 {
     const { page, limit, search, sort, id } = request
-    const count = await client.query(`SELECT count(id) from users`)
-    const total = await count.rows[0].count || 0
+    const count         = await client.query(`SELECT count(id) from public.users`)
+    const total         = await count.rows[0].count || 0
+    const pagination    = PAGE.list({
+        page: page,
+        limit: limit,
+        search: {
+            column: [ 'name' ],
+            value: search,
+            condition: "or"
+        },
+        sort: {
+            column: [ "name" ],
+            value: sort
+        },
+    })
 
     return await client.query(
-        `SELECT
-            id,
-            name,
-            email,
-            created_at,
-            updated_at
-        from users
-            ${
-                !id
-                ? ` ${search ? ` where name ilike '%${search}%' `: ""}
-                    ${sort ? ` order by name ${sort} `: ""}
-                    ${limit ? ` limit ${limit} `: ""}
-                    ${page? ` offset ${(page - 1) * limit} `: ""}`
-                :` where id = ${id}`
-            }
-        `
+        `SELECT id, name, email, created_at, updated_at from public.users ${ id ? `where id = ${id}` : pagination } `
     ).then(
         async result => {
             const data = {

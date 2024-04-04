@@ -1,32 +1,32 @@
 import { Router } from 'express'
+import { VERSION } from '../../db/configs/index.js'
 import { ROUTE as USERS } from './users.js'
 import { ROUTE as PASSWORD } from './password.js'
 
 const ROUTE     = Router()
-const version   = process.env.VERSOION || "v1"
-const api       = `/api/${version}`
+const API       = `/api/${VERSION}`
 
 
 /**
  * User Route Control
 */
-ROUTE.use(`${api}/users` , USERS)
+ROUTE.use(`${API}/users` , USERS)
 
 
 /**
  * Password Route Control
 */
-ROUTE.use(`${api}/password` , PASSWORD)
+ROUTE.use(`${API}/password` , PASSWORD)
 
 
 /**
  * Defualt Route
 */
-ROUTE.get(api, (req, res) => {
+ROUTE.get(API, (req, res) => {
     res.send(
         {
             status: 200,
-            path: api,
+            v: VERSION,
             date: new Date(),
             result: req.query
         }

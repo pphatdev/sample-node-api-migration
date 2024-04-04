@@ -10,4 +10,5 @@ ROUTE.put("/",  async (req, res) =>
     res.send(data)
 })
 
+
 export default ROUTE
