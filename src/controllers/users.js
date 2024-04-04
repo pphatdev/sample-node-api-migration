@@ -106,7 +106,7 @@ export const create = async (request) =>
  * @param {Object} request
  * @returns
  */
-export const update = async (request) =>
+export const update = async (request, ...options) =>
 {
     /**
      * កំណត់តម្រូវការទិន្នន័យរបស់អ្នកប្រើប្រាស់ថ្មី

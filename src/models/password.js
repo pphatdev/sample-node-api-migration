@@ -23,16 +23,15 @@ export const updateData = async ( request ) =>
         `UPDATE public.users SET "password"=$1 WHERE id=$2;`,
         [password, id]
     ).then(
-        result => {
-
+        result =>
+        {
             if (result.rowCount < 0)
                 return result
-
             return response.insetSuccess({ message: "Update Success." })
         }
     ).catch(
-        reason => {
-
+        reason =>
+        {
             if (reason.code == "23505")
                 return response.insetFailed({ message: reason.detail });
 

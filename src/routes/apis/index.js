@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { routes as users } from './users.js'
-import { routes as passwords } from './password.js'
+import { ROUTE as USERS } from './users.js'
+import { ROUTE as PASSWORD } from './password.js'
 
-const routes    = Router()
+const ROUTE     = Router()
 const version   = process.env.VERSOION || "v1"
 const api       = `/api/${version}`
 
@@ -10,19 +10,19 @@ const api       = `/api/${version}`
 /**
  * User Route Control
 */
-routes.use(`${api}/users` , users)
+ROUTE.use(`${api}/users` , USERS)
 
 
 /**
  * Password Route Control
 */
-routes.use(`${api}/password` , passwords)
+ROUTE.use(`${api}/password` , PASSWORD)
 
 
 /**
  * Defualt Route
 */
-routes.get(api, (req, res) => {
+ROUTE.get(api, (req, res) => {
     res.send(
         {
             status: 200,
@@ -33,4 +33,4 @@ routes.get(api, (req, res) => {
     )
 })
 
-export default routes
+export default ROUTE
