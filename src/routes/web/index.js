@@ -4,6 +4,8 @@ const routes = Router()
 // Web route
 const web = "/"
 
+app.set('view engine', 'pug')
+
 // Defualt
 routes.get(web, (req, res) => {
     res.send(

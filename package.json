@@ -6,7 +6,12 @@
     "main": "index.js",
     "author": "PPhatDev <info.sophat@gmail.com>",
     "scripts": {
-        "start": "nodemon ./index.js --host=0.0.0.0 --hot --open"
+        "start": "nodemon ./index.js --host=0.0.0.0 --hot --open",
+        "pm:start": "pm2 start ./index.js",
+        "pm:stop": "pm2 stop ./index.js",
+        "pm:restart": "pm2 restart ./index.js",
+        "pm:reload": "pm2 reload ./index.js",
+        "pm:delete": "pm2 delete ./index.js"
     },
     "dependencies": {
         "@types/bcryptjs": "^2.4.6",
@@ -22,6 +27,7 @@
         "ip": "^2.0.1",
         "joi": "^17.12.2",
         "npm": "^10.5.1",
-        "pg": "^8.11.3"
+        "pg": "^8.11.3",
+        "pm2": "^5.3.1"
     }
 }
