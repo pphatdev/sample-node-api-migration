@@ -1,10 +1,9 @@
 import Joi from "joi";
 import { Response } from "../helpers/response-data.js";
-import { isValidated } from "../helpers/validation.js";
+import { required } from "../helpers/validation.js";
 import { updateData } from "../models/password.js";
 
 const response      = new Response()
-const validating    = new isValidated()
 
 /**
  * កែប្រែលេខសម្ងាត់
@@ -20,7 +19,7 @@ export const updatePassword = async (resquest) =>
      * @param {Required|String} email
      * @param {Required|String} password
      */
-    const condition = validating.required(
+    const condition = required(
         /**
          * កំណត់លក្ខខណ្ឌចាំបាច់
          */

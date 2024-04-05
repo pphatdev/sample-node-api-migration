@@ -1,10 +1,9 @@
 import Joi from "joi";
-import { isValidated } from "../helpers/validation.js";
+import { required } from "../helpers/validation.js";
 import { getData, insetData, updateData } from "../models/users.js";
 import { Response } from "../helpers/response-data.js";
 
 const response      = new Response()
-const validating    = new isValidated()
 
 /**
  * បង្ហាញទិន្នន័យជាទិន្នន័យរួម (List) និង ទិន្នន័យលំហាត់ (Detail)
@@ -64,7 +63,7 @@ export const create = async (request) =>
      * @param {Required|String} email
      * @param {Required|String} password
      */
-    const condition = validating.required(
+    const condition = required(
         /**
          * កំណត់លក្ខខណ្ឌចាំបាច់
          */
@@ -107,7 +106,7 @@ export const update = async (request, ...options) =>
      * @param {Required|String} name
      * @param {Required|String} email
      */
-    const condition = validating.required(
+    const condition = required(
         /**
          * កំណត់លក្ខខណ្ឌចាំបាច់
          */

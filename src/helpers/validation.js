@@ -1,5 +1,3 @@
-import Joi from "joi";
-
 export class isValidated {
 
     /**
@@ -10,7 +8,6 @@ export class isValidated {
     password = (value = "") => {
         return /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(value);
     }
-
 
     /**
      * Email Validation pattern
@@ -30,7 +27,6 @@ export class isValidated {
     website = (value = "") => {
         return /https?:\/\/(www\.)?[a-z0-9]+\.([a-z])/i.test(value);
     }
-
 
     /**
      * Check value Validation pattern
@@ -52,17 +48,18 @@ export class isValidated {
         }
         return false
     }
+}
 
-    /**
-     * Return required message
-     * @param {Object} schema
-     * @param {Object} fields
-     * @returns
-     */
-    required = (schema, fields = {}) => {
-        let result;
-        const valid = schema.validate(fields).error?.details || []
-        Array.from(valid).map( m => { result = m })
-        return result
-    }
+
+/**
+ * Return required message
+ * @param {Object} schema
+ * @param {Object} fields
+ * @returns
+ */
+export const required = (schema, fields = {}) => {
+    let result;
+    const valid = schema.validate(fields).error?.details || []
+    Array.from(valid).map( m => { result = m })
+    return result
 }

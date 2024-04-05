@@ -1,9 +1,8 @@
 import Joi from "joi"
-import { isValidated } from "../helpers/validation.js"
+import { required } from "../helpers/validation.js"
 import { authLogin } from "../models/auth.js"
 import { Response } from "../helpers/response-data.js"
 
-const validating    = new isValidated()
 const response      = new Response()
 
 export const login = async (request) => {
@@ -16,7 +15,7 @@ export const login = async (request) => {
      * @param {Required|String} email
      * @param {Required|String} password
      */
-    const condition = validating.required(
+    const condition = required(
         Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().required()
