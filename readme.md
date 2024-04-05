@@ -3,11 +3,6 @@
     <p>This Project Built form Sample project that using NodeJs [es6] with Postgres SQL</p>
 </div>
 
-<br>
-<br>
-
-
-
 ## My Github stats 〽️
 
 <br>
