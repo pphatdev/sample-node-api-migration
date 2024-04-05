@@ -1,9 +1,7 @@
 import { Router } from 'express'
 import { create, update, get } from '../../controllers/users.js'
 import { authenticateToken } from '../../middlewares/authenticate.js'
-
 export const ROUTE = Router()
-
 
 ROUTE.use((req, res, next) => authenticateToken(req, res, next))
 
@@ -29,9 +27,9 @@ ROUTE.post("/", async (req, res) =>
 })
 
 
-ROUTE.put("/:id", async (req, res) =>
+ROUTE.put("/", async (req, res) =>
 {
-    const response = await update(req.body, req.params.id)
+    const response = await update(req.body)
     res.send(response)
 })
 

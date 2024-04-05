@@ -3,16 +3,12 @@ import ROUTE from './src/routes/apis/index.js'
 import ip from 'ip'
 import { config } from 'dotenv'
 import { Response } from './src/helpers/response-data.js'
-import bodyParser from 'body-parser'
 config()
 
 const app       = express()
 const port      = process.env.PORT || 3000
 const ENV       = process.env.NODE_ENV || "development"
 const response  = new Response()
-
-ROUTE.use(bodyParser.urlencoded({ extended: true }))
-ROUTE.use(bodyParser.json())
 
 app.use(ROUTE)
 

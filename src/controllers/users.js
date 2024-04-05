@@ -99,6 +99,7 @@ export const create = async (request) =>
  */
 export const update = async (request, ...options) =>
 {
+    console.log(request);
     /**
      * កំណត់តម្រូវការទិន្នន័យរបស់អ្នកប្រើប្រាស់ថ្មី
      * @package Joi
