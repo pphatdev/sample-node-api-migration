@@ -1,36 +1,38 @@
 import { Router } from 'express'
 import { create, update, get } from '../../controllers/users.js'
+import { authenticateToken } from '../../middlewares/authenticate.js'
+
 export const ROUTE = Router()
+
+
+ROUTE.use((req, res, next) => authenticateToken(req, res, next))
+
 
 ROUTE.get("/", async (req, res) =>
 {
-    const request   = req.query
-    const data      = await get(request)
-    res.send(data)
+    const response = await get(req.query)
+    res.send(response)
 })
 
 
 ROUTE.get("/:id", async (req, res) =>
 {
-    const data      = await get({id: req.params.id})
-    res.send(data)
+    const response = await get({id: req.params.id})
+    res.send(response)
 })
 
 
 ROUTE.post("/", async (req, res) =>
 {
-    const request   = req.query
-    const data      = await create(request)
-    res.send(data)
+    const response = await create(req.query)
+    res.send(response)
 })
 
 
 ROUTE.put("/:id", async (req, res) =>
 {
-    const id        = req.params.id
-    const request   = req.body
-    const data      = await update(request, id)
-    res.send(data)
+    const response = await update(req.body, req.params.id)
+    res.send(response)
 })
 
 

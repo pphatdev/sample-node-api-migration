@@ -1,6 +1,6 @@
 import bcryptjs from "bcryptjs";
 import { client } from "../db/configs/pg.config.js";
-import { Response } from "../helpers/response.js";
+import { Response } from "../helpers/response-data.js";
 import { Pagination } from "../helpers/paginations.js";
 
 const { hash, genSalt } = bcryptjs

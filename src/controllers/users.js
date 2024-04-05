@@ -13,15 +13,11 @@ const validating    = new isValidated()
  */
 export const get = async (request) =>
 {
-    const page      = request.page || 1;
-    let limit       = request.limit || 20;
-    const search    = request.search || null;
-    const sort      = request.sort || "asc";
-    const id        = request.id || null;
+    let limit   = request.limit || 20;
+    const { page, search, sort, id } = request;
 
-    if (!Number(limit)) {
+    if (!Number(limit))
         limit = null
-    }
 
     /**
      * ទាញព័ត៌មានរបស់អ្នកប្រើប្រាស់ទាំងអស់តាមរយៈការកំណត់
@@ -35,7 +31,7 @@ export const get = async (request) =>
         id: id,
     });
 
-    if (!id) {
+    if (!id)
         /**
          * បង្ហាញព័ត៌មានរបស់អ្នកប្រើប្រាស់ទាំងអស់តាមរយៈការកំណត់
          * { limit, page, search, sort }
@@ -44,7 +40,6 @@ export const get = async (request) =>
             fetchData.data,
             fetchData.total
         );
-    }
 
     /**
      * បង្ហាញព័ត៌មានលម្អិតរបស់អ្នកប្រើប្រាស់តាមរយៈ {លម្អិត|id}

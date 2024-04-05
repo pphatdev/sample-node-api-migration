@@ -7,20 +7,24 @@ import { ROUTE as AUTH } from './auth.js'
 const ROUTE     = Router()
 const API       = `/api/${VERSION}`
 
+
 /**
  * User Route Control
 */
 ROUTE.use(`${API}/users` , USERS)
+
 
 /**
  * Password Route Control
 */
 ROUTE.use(`${API}/password` , PASSWORD)
 
+
 /**
  * Password Route Control
 */
 ROUTE.use(`${API}/auth` , AUTH)
+
 
 /**
  * Defualt Route
@@ -37,5 +41,6 @@ ROUTE.get(
         )
     }
 )
+
 
 export default ROUTE

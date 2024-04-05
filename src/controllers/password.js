@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { Response } from "../helpers/response.js";
+import { Response } from "../helpers/response-data.js";
 import { isValidated } from "../helpers/validation.js";
 import { updateData } from "../models/password.js";
 

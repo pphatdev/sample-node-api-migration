@@ -1,57 +1,16 @@
 import { Router } from 'express'
-import session from 'express-session'
-import { updatePassword } from '../../controllers/password.js'
-import passport from 'passport'
-import Strategy from 'passport-http-bearer-base64'
+import { login } from '../../controllers/auth.js'
+import bodyParser from 'body-parser'
 export const ROUTE = Router()
 
+ROUTE.use(bodyParser.urlencoded({ extended: true }))
+ROUTE.use(bodyParser.json())
 
-const authSession = session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
+
+ROUTE.post( "/", async (req, res) =>
+{
+    const data     = await login(req)
+    res.send(data)
 })
-
-
-
-// ROUTE.use(passport.initialize())
-// ROUTE.use(passport.session())
-
-// ROUTE.use(
-//     new Strategy(
-//         function(token, done) {
-//             User.findOne({
-//                 token: token
-//             }, function(err, user) {
-//                 if (err) {
-//                     return done(err);
-//                 }
-//                 if (!user) {
-//                     return done(null, false);
-//                 }
-//                 return done(null, user);
-//             });
-//         }
-//     )
-// );
-
-ROUTE.get(
-    "/",
-    session({
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: true,
-        cookie: { secure: false }
-    }),
-    async (req, res, next) =>
-    {
-        console.info("req.session", req)
-        // const request  = req.body
-        // const data     = await updatePassword(request)
-        res.send(req.passport)
-    }
-)
-
 
 export default ROUTE

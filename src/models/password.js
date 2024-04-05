@@ -2,7 +2,7 @@ import bcryptjs from "bcryptjs";
 const { hash, genSalt, compare } = bcryptjs
 
 import { client } from "../db/configs/pg.config.js";
-import { Response } from "../helpers/response.js";
+import { Response } from "../helpers/response-data.js";
 
 const response = new Response()
 
