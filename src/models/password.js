@@ -29,8 +29,9 @@ export const getData = async ( request ) =>
         },
     })
 
+    const condition = id ? `where id = ${id}` : pagination
     return await client.query(
-        `SELECT id, name, password from public.users ${ id ? `where id = ${id}` : pagination } `
+        `SELECT id, name, password from public.users $1`, [condition]
     ).then(
         async result => {
             const data = {
