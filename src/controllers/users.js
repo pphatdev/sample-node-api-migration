@@ -37,7 +37,7 @@ export const get = async (request) =>
         */
         return response.success(
             fetchData.data,
-            fetchData.total
+            fetchData.count
         );
 
     /**

@@ -5,9 +5,9 @@ export class Response {
     success = (data, total = 0, ...options) => {
         return {
             status: 200,
-            total: total,
             success: true,
             version: VERSION,
+            total: total,
             result: data,
             ...options
         }

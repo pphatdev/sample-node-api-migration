@@ -12,7 +12,7 @@ export const getData = async ( request ) =>
 {
     const { page, limit, search, sort, id } = request
     const count         = await client.query(`SELECT count(id) from public.users`)
-    const total         = await count.rows[0].count || 0
+    const total         = count.rowCount || 0
     const pagination    = PAGE.list({
         page: page,
         limit: limit,
