@@ -26,12 +26,15 @@ ROUTE.use(bodyParser.json())
 
 
 /**
+<<<<<<< HEAD
  * Apply limited all request
 */
 ROUTE.use(limiter);
 
 
 /**
+=======
+>>>>>>> b979f9f2312d1f6ddb27b935b757888c46cfee22
  * Password Route Control
  *------------------------------------------------------------------|
  * Method | endpoint                        | middleware            |
