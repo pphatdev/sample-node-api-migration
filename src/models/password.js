@@ -3,8 +3,46 @@ const { hash, genSalt, compare } = bcryptjs
 
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
+import { Pagination } from "../helpers/paginations.js";
 
-const response = new Response()
+const response  = new Response()
+const PAGE      = new Pagination()
+
+
+export const getData = async ( request ) =>
+{
+    const { page, limit, search, sort, id } = request
+    const count         = await client.query(`SELECT count(id) from public.users`)
+    const total         = count.rowCount || 0
+    const pagination    = PAGE.list({
+        page: page,
+        limit: limit,
+        search: {
+            column: [ 'name' ],
+            value: search,
+            condition: "or"
+        },
+        sort: {
+            column: [ "name" ],
+            value: sort
+        },
+    })
+
+    return await client.query(
+        `SELECT id, name, password from public.users ${ id ? `where id = ${id}` : pagination } `
+    ).then(
+        async result => {
+            const data = {
+                data: result.rows,
+                count: total,
+                show: result.rowCount
+            }
+            return data
+        }
+    ).catch(
+        reason => console.log(reason)
+    )
+};
 
 export const updateData = async ( request ) =>
 {

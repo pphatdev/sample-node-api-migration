@@ -10,7 +10,7 @@ const { sign }      = jwt;
 const { compare }   = bcryptjs
 const response      = new Response()
 
-export const authLogin = async ( request, header ) =>
+export const authLogin = async ( request ) =>
 {
     const { email, password } = request;
     const currentUser   = await client.query(

@@ -2,7 +2,7 @@ import { VERSION } from "../db/configs/index.js"
 
 export class Response {
 
-    success = (data, total = 0, ...options) => {
+    success = (data, total = null, ...options) => {
         return {
             status: 200,
             success: true,

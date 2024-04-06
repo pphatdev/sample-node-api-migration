@@ -7,8 +7,6 @@ const response      = new Response()
 
 export const login = async (request) => {
 
-    const { body, headers } = request;
-
     /**
      * កំណត់តម្រូវការទិន្នន័យដែលត្រួវការ
      * @package Joi
@@ -20,7 +18,7 @@ export const login = async (request) => {
             email: Joi.string().email().required(),
             password: Joi.string().required()
         }),
-        body
+        request
     )
 
     if (condition)
@@ -32,5 +30,5 @@ export const login = async (request) => {
         /**
          * បង្ហាញព័ត៌មានដែលជោគជ័យ
          */
-        return await authLogin(body, headers);
+        return await authLogin(request);
 }

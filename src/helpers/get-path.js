@@ -7,15 +7,6 @@ const __dirname         = path.dirname(__filename);
 
 
 /**
- * Get file name from route api
- * @returns
- */
-export const getRouteAPI = () => {
-
-}
-
-
-/**
  * Get file name from route web
  * @returns
  */
@@ -26,7 +17,7 @@ export const getRouteWeb = () => {
         if (err) {
             return console.log('Unable to scan directory: ' + err);
         }
-        console.log(files);
+        String(files).replace(/\.?js$/, '')
         return files
     });
 }
