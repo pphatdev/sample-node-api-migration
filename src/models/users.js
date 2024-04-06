@@ -19,7 +19,8 @@ export const getData = async ( request ) =>
         search: {
             column: [ 'name' ],
             value: search,
-            condition: "or"
+            condition: "or",
+            withWere: true
         },
         sort: {
             column: [ "name" ],

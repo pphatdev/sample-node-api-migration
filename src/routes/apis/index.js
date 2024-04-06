@@ -9,6 +9,7 @@ import { ROUTE as AUTH } from './auth.js'
 const API   = `/api/${VERSION}`
 const ROUTE = Router()
 
+
 /**
  * Define Body Parser
 */
@@ -17,21 +18,41 @@ ROUTE.use(bodyParser.json())
 
 
 /**
+ * Password Route Control
+ *------------------------------------------------------------------|
+ * Method | endpoint                        | middleware            |
+ *------------------------------------------------------------------|
+ * POST   | /api/${VERSION}/auth            | null                  |
+ *------------------------------------------------------------------|
+*/
+ROUTE.use(`${API}/auth` , AUTH)
+
+
+/**
  * User Route Control
+ *------------------------------------------------------------------|
+ * Method | endpoint                        | middleware            |
+ *------------------------------------------------------------------|
+ * POST   | /api/${VERSION}/users           | null                  |
+ * GET    | /api/${VERSION}/users           | {authenticateToken}   |
+ * GET    | /api/${VERSION}/users/:id       | {authenticateToken}   |
+ * PUT    | /api/${VERSION}/users           | {authenticateToken}   |
+ *------------------------------------------------------------------|
 */
 ROUTE.use(`${API}/users` , USERS)
 
 
 /**
  * Password Route Control
+ *------------------------------------------------------------------|
+ * Method | endpoint                        | middleware            |
+ *------------------------------------------------------------------|
+ * GET    | /api/${VERSION}/password        | {authenticateToken}   |
+ * GET    | /api/${VERSION}/password/:id    | {authenticateToken}   |
+ * PUT    | /api/${VERSION}/password        | {authenticateToken}   |
+ *------------------------------------------------------------------|
 */
 ROUTE.use(`${API}/password` , PASSWORD)
-
-
-/**
- * Password Route Control
-*/
-ROUTE.use(`${API}/auth` , AUTH)
 
 
 export default ROUTE

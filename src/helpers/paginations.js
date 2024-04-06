@@ -1,4 +1,4 @@
-import { PAGE } from "../db/configs/index.js";
+import { LIMIT, PAGE, SEARCH, SORT } from "../db/configs/index.js";
 
 export class Pagination {
 

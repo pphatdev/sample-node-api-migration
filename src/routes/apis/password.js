@@ -1,30 +1,42 @@
 import { Router } from 'express'
 import { updatePassword, get } from '../../controllers/password.js'
+import { authenticateToken } from '../../middlewares/authenticate.js'
 export const ROUTE = Router()
 
+/**
+ *----------------------------------------------------------|
+ * Method | endpoint                | middleware            |
+ *----------------------------------------------------------|
+ * GET    | /api/v1/password        | {authenticateToken}   |
+ * GET    | /api/v1/password/:id    | {authenticateToken}   |
+ * PUT    | /api/v1/password        | {authenticateToken}   |
+ *----------------------------------------------------------|
+*/
 
+ROUTE.use((req, res, next) => authenticateToken(req, res, next))
+
+/**
+ * Accept only request query
+ */
 ROUTE.get("/",  async (req, res) => {
-    /**
-     * Accept only request query
-     */
     const data     = await get(req.query)
     res.send(data)
 })
 
 
+/**
+ * Accept only request params id
+ */
 ROUTE.get("/:id",  async (req, res) => {
-    /**
-     * Accept only request params id
-     */
     const data     = await get(req.params)
     res.send(data)
 })
 
 
+/**
+ * Accept only request body
+ */
 ROUTE.put("/",  async (req, res) => {
-    /**
-     * Accept only request body
-     */
     const data     = await updatePassword(req.body)
     res.send(data)
 })
