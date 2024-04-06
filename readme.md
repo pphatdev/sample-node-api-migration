@@ -13,6 +13,16 @@
 
 
 
+## Clone the project 📂
+
+```sh
+git clone https://github.com/pphatdev/apis-with-nodejs-es6.git
+```
+
+```sh
+cd ./apis-with-nodejs-es6
+```
+
 ## To Start Project ♻️
 
 ```sh
@@ -23,4 +33,31 @@ npm install
 
 ```sh
 npm run start
+```
+
+## Database Migration
+
+You can create multi table
+
+#### Signle table 1️⃣🥰
+
+```sh
+npm run db:create table_name
+```
+
+#### Multi tables 🔢🥰
+
+```sh
+npm run db:create table_name1 table_name2
+```
+After Creating sql file you have to update the sql to your own table.
+
+```sh
+cd ./migrations/sql
+```
+
+## Migrate table to Database
+
+```sh
+npm run db:migrate
 ```
