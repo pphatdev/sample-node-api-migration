@@ -35,7 +35,7 @@ npm install
 npm run start
 ```
 
-## Database Migration
+## Database Migration 🚀🛩️
 
 You can create multi table
 
@@ -56,7 +56,7 @@ After Creating sql file you have to update the sql to your own table.
 cd ./migrations/sql
 ```
 
-## Migrate table to Database
+## Migrate table to Database 〽️
 
 ```sh
 npm run db:migrate
