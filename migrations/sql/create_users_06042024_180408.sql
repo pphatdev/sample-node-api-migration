@@ -4,7 +4,7 @@
 
 -- DROP TABLE public.users;
 
-CREATE TABLE public.users (
+CREATE TABLE IF NOT EXISTS public.users (
 	id bigserial NOT NULL,
 	"name" varchar(255) NOT NULL,
 	email varchar(255) NOT NULL,

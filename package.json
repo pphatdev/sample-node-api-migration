@@ -7,11 +7,8 @@
     "author": "PPhatDev <info.sophat@gmail.com>",
     "scripts": {
         "start": "nodemon ./index.js --host=0.0.0.0 --hot --open",
-        "pm:start": "pm2 start ./index.js",
-        "pm:stop": "pm2 stop ./index.js",
-        "pm:restart": "pm2 restart ./index.js",
-        "pm:reload": "pm2 reload ./index.js",
-        "pm:delete": "pm2 delete ./index.js"
+        "db:create": "node ./commands/cli/index.js --create",
+        "db:migrate": "node ./commands/cli/index.js --migrate"
     },
     "dependencies": {
         "@types/bcryptjs": "^2.4.6",
@@ -34,7 +31,7 @@
         "npm": "^10.5.1",
         "passport": "^0.7.0",
         "passport-http-bearer-base64": "^1.0.3",
-        "pg": "^8.11.3",
+        "pg": "^8.11.5",
         "pm2": "^5.3.1",
         "serverless-http": "^3.2.0"
     }
