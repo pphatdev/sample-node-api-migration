@@ -85,3 +85,9 @@ cd ./migrations/sql
 ```sh
 npm run db:migrate
 ```
+
+## Starting Server 〽️
+
+```sh
+npm start
+```
