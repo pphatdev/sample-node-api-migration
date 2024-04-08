@@ -96,10 +96,10 @@ and these what you see on terminal! 😎
 🌞  Web development:
 🚀 Localhost: http://localhost:3000
 🚀 Local Service: http://127.0.0.1:3000
-🚀 Host Service: http://172.26.17.136:3000
+🚀 Host Service: http://{ipv4}:3000
 
 🌞  API development:
 🚀 Localhost: http://localhost:3000/api/v1/
 🚀 Local Service: http://127.0.0.1:3000/api/v1/
-🚀 Host Service: http://172.26.17.136:3000/api/v1/
+🚀 Host Service: http://{ipv4}:3000/api/v1/
 ```
