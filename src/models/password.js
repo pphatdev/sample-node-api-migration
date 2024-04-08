@@ -11,7 +11,7 @@ const PAGE      = new Pagination()
 
 export const getData = async ( request ) =>
 {
-    const { page, limit, search, sort, id } = request
+    const { page, limit, search, sort } = request
     const count         = await client.query(`SELECT count(id) from public.users`)
     const total         = count.rows[0].count || 0
     const pagination    = PAGE.list({
@@ -29,8 +29,7 @@ export const getData = async ( request ) =>
         },
     })
 
-    const condition = id ? `where id = ${id}` : pagination
-    const query     = `SELECT id, name, password from public.users ${condition}`
+    const query     = `SELECT id, name, password from public.users ${pagination}`
 
     return await client.query(query).then(
         async result => {
