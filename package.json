@@ -8,6 +8,7 @@
     "scripts": {
         "start": "nodemon ./index.js --host=0.0.0.0 --hot --open",
         "db:create": "node ./commands/cli/index.js --create",
+        "db:insert": "node ./commands/cli/index.js --insert",
         "db:migrate": "node ./commands/cli/index.js --migrate"
     },
     "dependencies": {

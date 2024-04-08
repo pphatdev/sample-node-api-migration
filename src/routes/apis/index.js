@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser'
 
 import { Router } from 'express'
-import { PORT, VERSION } from '../../db/configs/index.js'
+import { VERSION } from '../../db/configs/index.js'
 import { ROUTE as USERS } from './users.js'
 import { ROUTE as PASSWORD } from './password.js'
 import { ROUTE as AUTH } from './auth.js'
@@ -26,15 +26,12 @@ ROUTE.use(bodyParser.json())
 
 
 /**
-<<<<<<< HEAD
  * Apply limited all request
 */
 ROUTE.use(limiter);
 
 
 /**
-=======
->>>>>>> b979f9f2312d1f6ddb27b935b757888c46cfee22
  * Password Route Control
  *------------------------------------------------------------------|
  * Method | endpoint                        | middleware            |

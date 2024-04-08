@@ -7,12 +7,11 @@ const { hash, genSalt } = bcryptjs
 const response  = new Response()
 const PAGE      = new Pagination()
 
-
 export const getData = async ( request ) =>
 {
     const { page, limit, search, sort, id } = request
     const count         = await client.query(`SELECT count(id) from public.users`)
-    const total         = count.rowCount || 0
+    const total         = count.rows[0].count || 0
     const pagination    = PAGE.list({
         page: page,
         limit: limit,
@@ -28,9 +27,10 @@ export const getData = async ( request ) =>
         },
     })
 
-    return await client.query(
-        `SELECT id, name, email, created_at, updated_at from public.users ${ id ? `where id = ${id}` : pagination } `
-    ).then(
+    const condition = id ? `where id = ${id}` : pagination
+    const query     = `SELECT id, name, email, created_at, updated_at from public.users ${ condition } `
+
+    return await client.query(query).then(
         async result => {
             const data = {
                 data: result.rows,

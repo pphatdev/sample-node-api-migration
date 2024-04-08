@@ -39,6 +39,22 @@ if (commandLength >= 3) {
         })
     }
 
+    if ((options[0]) === '--insert') {
+
+        console.log(options);
+        process.exit(0)
+
+        // sqlNames.forEach( name => {
+        //     const filename = `${name}_${dateFormat}${extension}`
+        //     createSQL(filename, name)
+        // })
+
+        // new Promise(resolve => setTimeout(resolve, 100)).then(() => {
+        //     console.log(`\n✅🌈 You have created SQL: ${sqlNames}!\n`)
+        //     process.exit(0)
+        // })
+    }
+
     if ((options[0]) === '--migrate') {
         migrate()
 

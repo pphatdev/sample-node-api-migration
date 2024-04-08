@@ -51,7 +51,7 @@ app.all("*", (req, res) => {
                 const url       = `http://${ ip.address() }:${ PORT }/api/${VERSION}/` + ( filename == "index" ? "" : filename )
                 return url != currentPath ? url : ""
             })
-            .filter( url => url != "" )
+            // .filter( url => url != "" )
             .filter( url => url != `http://${ ip.address() }:${ PORT }/api/${VERSION}/` )
         })
     )
