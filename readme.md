@@ -25,7 +25,7 @@ cd ./apis-with-nodejs-es6
 
 ## To Start Project ♻️
 
-#### Config Database ⚙️
+### Config Database ⚙️
 
 make sure your database local is working. copy `.env.exmaple` to `.env` than change the env configuration.
 
@@ -53,13 +53,13 @@ cp .env.example .env
 npm install
 ```
 
-#### Starting Project 🚀
+### Starting Project 🚀
 
 ```sh
 npm run start
 ```
 
-## Database Migration 🚀🛩️
+### Database Migration 🚀🛩️
 
 You can create multi table
 
@@ -80,13 +80,13 @@ After Creating sql file you have to update the sql to your own table.
 cd ./migrations/sql
 ```
 
-## Migrate table to Database 〽️
+### Migrate table to Database 〽️
 
 ```sh
 npm run db:migrate
 ```
 
-## Starting Server 〽️
+### Starting Server 〽️
 
 ```sh
 npm start
