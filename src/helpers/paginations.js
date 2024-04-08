@@ -13,6 +13,7 @@ export class Pagination {
         let response    = "";
 
         const { page, limit, search, sort } = options
+        // console.log(sort);
 
         // Check Searching Key & value
         if (search.value != null && search.value != "null" && search.value != "" && search.value != undefined) {
@@ -26,15 +27,15 @@ export class Pagination {
 
 
         // Checking Sort Key & value
-        if (sort.value != null && search.value != "null" && search.value != "" && search.value != undefined) {
-            Array.from(sort.column).map(
+        if (sort.value != null && sort.value != "null" && sort.value != "" && sort.value != undefined) {
+            sort.column.map(
                 (value, index) => {
                     setSort += index >= 1 ? ` , ${value}` : value;
                 }
             )
         }
 
-        response += setSort ? ` order by ${setSort} '${sort.value}' ` : ' ';
+        response += setSort ? ` order by ${setSort} ${sort.value} ` : ` order by id asc`;
         response += limit ? ` limit ${limit} ` : ' ';
         response += page ? ` offset ${(page - 1) * limit} ` : ' ';
         return(response)

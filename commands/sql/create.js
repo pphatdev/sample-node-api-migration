@@ -13,7 +13,7 @@ export const createSQL = (filename, tableName) =>
         /**
          * Reading from template stubs
         */
-        const stubs     = fs.readFileSync('./commands/stub/[name].stub')
+        const stubs     = fs.readFileSync('./commands/stub/sql.stub')
         const fromStubs = Buffer.from(stubs).toString()
 
         /**

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { create, update, get } from '../../controllers/users.js'
+import { create, update, get, getOnce } from '../../controllers/users.js'
 import { authenticateToken } from '../../middlewares/authenticate.js'
 export const ROUTE = Router()
 
@@ -30,7 +30,7 @@ ROUTE.get("/", async (req, res) => {
  * Accept only params url id
  */
 ROUTE.get("/:id", async (req, res) => {
-    const response = await get({id: req.params.id})
+    const response = await getOnce({id: req.params.id})
     res.send(response)
 })
 

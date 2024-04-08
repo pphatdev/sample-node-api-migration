@@ -1,6 +1,8 @@
 import moment from "moment";
 import { createSQL } from "../sql/create.js";
 import { migrate } from "../sql/migrate.js";
+import { createController } from "../controllers/index.js";
+import { createModel } from "../models/index.js";
 
 const commands      = process.argv
 const commandLength = process.argv.length;
@@ -39,27 +41,51 @@ if (commandLength >= 3) {
         })
     }
 
-    if ((options[0]) === '--insert') {
 
-        console.log(options);
-        process.exit(0)
-
-        // sqlNames.forEach( name => {
-        //     const filename = `${name}_${dateFormat}${extension}`
-        //     createSQL(filename, name)
-        // })
-
-        // new Promise(resolve => setTimeout(resolve, 100)).then(() => {
-        //     console.log(`\n✅🌈 You have created SQL: ${sqlNames}!\n`)
-        //     process.exit(0)
-        // })
-    }
-
+    /**
+     * Migrate Table
+    */
     if ((options[0]) === '--migrate') {
         migrate()
 
         new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
             console.log(`✅🌈  Migration completed!\n`)
+            process.exit(0)
+        })
+    }
+
+
+    /**
+     * Create Controller
+    */
+    if ((options[0]) === '--controller') {
+
+        const controllerNames = options.slice(1, options.length)
+        controllerNames.forEach( name => {
+            const filename = `${name}`
+            createController(filename)
+        })
+
+        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+            console.log(`✅🌈  You have created controller file!\n`)
+            process.exit(0)
+        })
+    }
+
+
+    /**
+     * Create Model
+    */
+    if ((options[0]) === '--model') {
+
+        const modelNames = options.slice(1, options.length)
+        modelNames.forEach( name => {
+            const filename = `${name}`
+            createModel(filename)
+        })
+
+        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+            console.log(`✅🌈  You have created model file!\n`)
             process.exit(0)
         })
     }

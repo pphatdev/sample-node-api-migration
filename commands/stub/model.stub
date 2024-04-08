@@ -8,24 +8,24 @@ const PAGE      = new Pagination()
 export const getData = async ( request ) =>
 {
     const { page, limit, search, sort } = request
-    const count         = await client.query(`SELECT count(id) from public.users`)
+    const count         = await client.query(`-- sql`)
     const total         = count.rows[0].count || 0
     const pagination    = PAGE.list({
         page: page,
         limit: limit,
         search: {
-            column: [ 'name' ],
-            value: search,
-            condition: "or",
-            withWere: true
+            column: [],         // search field ['name', 'id', 'etc...']
+            value: search,      // search value
+            condition: "or",    // or, and
+            withWere: true      // include 'where'
         },
         sort: {
-            column: [ "name" ],
-            value: sort
+            column: [ ],        // sort field  ['name', 'id', 'etc...']
+            value: sort         // desc, asc
         },
     })
 
-    const query     = `SELECT id, name, email, created_at, updated_at from public.users ${ pagination } `
+    const query     = `select * from public.[name] ${ pagination } `
 
     return await client.query(query).then(
         async result => {
@@ -45,7 +45,7 @@ export const getData = async ( request ) =>
 export const getDataDetail = async ( { id } ) =>
 {
     return await client.query(
-        `SELECT id, name, email, created_at, updated_at from public.users where id=$1`, [id]
+        `select * from public.[name] where id=$1`, [id]
     ).then(
         async result => {
             return response.success(
@@ -63,7 +63,7 @@ export const insetData = async ( request ) =>
     const { name, email, password } = request;
 
     return await client.query(
-        `INSERT INTO users(name, email, password, created_at, updated_at) VALUES ($1, $2, $3, now(), now())`,
+        `INSERT INTO public.[name](...)`,
         [name, email, password ]
     ).then(
         result => {
@@ -88,10 +88,10 @@ export const insetData = async ( request ) =>
 
 export const updateData = async ( request ) =>
 {
-    const { id, name, email } = request;
+    const { a, b, c } = request;
     return await client.query(
-        `UPDATE public.users SET "name"=$1, email=$2, updated_at=$3 WHERE id=$4;`,
-        [name, email, "now()", id]
+        `UPDATE public.[name] SET ...`,
+        [ a, b, c ]
     ).then(
         result => {
 

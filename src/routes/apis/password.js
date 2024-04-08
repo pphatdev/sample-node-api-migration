@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { updatePassword, get } from '../../controllers/password.js'
+import { updatePassword, get, getOnce } from '../../controllers/password.js'
 import { authenticateToken } from '../../middlewares/authenticate.js'
 export const ROUTE = Router()
 
@@ -28,7 +28,7 @@ ROUTE.get("/",  async (req, res) => {
  * Accept only request params id
  */
 ROUTE.get("/:id",  async (req, res) => {
-    const data     = await get(req.params)
+    const data     = await getOnce(req.params)
     res.send(data)
 })
 

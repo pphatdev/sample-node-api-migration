@@ -46,6 +46,23 @@ export const getData = async ( request ) =>
     )
 };
 
+
+export const getDataDetail = async ( { id } ) =>
+{
+    return await client.query(
+        `SELECT id, name, password from public.users where id=$1`, [id]
+    ).then(
+        async result => {
+            return response.success(
+                result.rows
+            );
+        }
+    ).catch(
+        reason => console.log(reason)
+    )
+};
+
+
 export const updateData = async ( request ) =>
 {
     const { id, oldPassword, newPassword } = request;

@@ -1,14 +1,12 @@
 import Joi from "joi";
 import { required } from "../helpers/validation.js";
-import { getData, getDataDetail, insetData, updateData } from "../models/users.js";
+import { getData, getDataDetail, insetData, updateData } from "../models/[name].js";
 import { Response } from "../helpers/response-data.js";
-import bcryptjs from "bcryptjs";
-const { hash, genSalt } = bcryptjs
 
 const response      = new Response()
 
 /**
- * បង្ហាញទិន្នន័យជាទិន្នន័យរួម (List)
+ * get [name] List
  * @param {Object} request
  * @returns
  */
@@ -39,7 +37,7 @@ export const get = async (request) =>
 
 
 /**
- * បង្ហាញទិន្នន័យលំអិត(Detail)
+ * show [name] Detail
  * @param {Object} request
  * @returns
  */
@@ -78,7 +76,7 @@ export const getOnce = async (request) =>
 
 
 /**
- * បង្កើតអ្នកប្រើប្រាស់ថ្មី
+ * Create new [name]
  * @param {Object} request
  * @returns
  */
@@ -107,9 +105,6 @@ export const create = async (request) =>
         request
     )
 
-    const passwordSalt  = await genSalt(10)
-    request.password    = await hash(request.password, passwordSalt);
-
     if (condition)
         /**
          * ករណីមានមិនទិន្នន័យមិនគ្រប់ បង្ហាញព័ត៌មានបរាជ័យ
@@ -124,7 +119,7 @@ export const create = async (request) =>
 
 
 /**
- * កែប្រែអ្នកប្រើប្រាស់
+ * Update [name]
  * @param {Object} request
  * @returns
  */
