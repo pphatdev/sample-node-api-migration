@@ -103,3 +103,7 @@ and these what you see on terminal! 😎
 🚀 Local Service: http://127.0.0.1:3000/api/v1/
 🚀 Host Service: http://{ipv4}:3000/api/v1/
 ```
+
+## Bug Report
+
+[Help me to Improve](https://github.com/pphatdev/sample-node-api-migration/discussions/new?category=general)
