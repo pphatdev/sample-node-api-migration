@@ -25,6 +25,30 @@ cd ./apis-with-nodejs-es6
 
 ## To Start Project ♻️
 
+#### Config Database ⚙️
+
+make sure your database local is working. copy `.env.exmaple` to `.env` than change the env configuration.
+
+> If you skip this step you can't start the node service.
+
+```env
+# App Enviroment
+VERSION="v1"
+APP_NAME="REST APIs with NodeJs"
+NODE_ENV="development"
+
+# DB Connection
+DB_HOST="your host"
+DB_NAME="your database name"
+DB_PORT="your PORT"
+DB_USER="your username"
+DB_PWD="your password"
+```
+
+```sh
+cp .env.example .env
+```
+
 ```sh
 npm install
 ```
