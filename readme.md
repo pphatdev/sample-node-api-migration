@@ -53,12 +53,6 @@ cp .env.example .env
 npm install
 ```
 
-### Starting Project 🚀
-
-```sh
-npm run start
-```
-
 ### Database Migration 🚀🛩️
 
 You can create multi table
@@ -88,6 +82,24 @@ npm run db:migrate
 
 ### Starting Server 〽️
 
+Finally you can start the project.
+
 ```sh
 npm start
+```
+
+and these what you see on terminal! 😎
+
+```bash
+♻️  Starting with: [development] Mode!
+
+🌞  Web development:
+🚀 Localhost: http://localhost:3000
+🚀 Local Service: http://127.0.0.1:3000
+🚀 Host Service: http://172.26.17.136:3000
+
+🌞  API development:
+🚀 Localhost: http://localhost:3000/api/v1/
+🚀 Local Service: http://127.0.0.1:3000/api/v1/
+🚀 Host Service: http://172.26.17.136:3000/api/v1/
 ```
