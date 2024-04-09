@@ -12,27 +12,31 @@ const PAGE      = new Pagination()
 export const getData = async ( request ) =>
 {
     const { page, limit, search, sort } = request
-    const count         = await client.query(`SELECT count(id) from public.users`)
-    const total         = count.rows[0].count || 0
-    const pagination    = PAGE.list({
-        page: page,
-        limit: limit,
-        search: {
-            column: [ 'name' ],
-            value: search,
-            condition: "or",
-            withWere: true
-        },
-        sort: {
-            column: [ "name" ],
-            value: sort
-        },
-    })
-
-    const query     = `SELECT id, name, password from public.users ${pagination}`
+    const count = await client.query(`SELECT count(id) from public.users`)
+    const total = count.rows[0].count || 0
+    const query = String(
+        `SELECT id, name, password from public.users ${
+            PAGE.list(
+                {
+                    page: page,
+                    limit: limit,
+                    search: {
+                        column: [ 'name' ],
+                        value: search,
+                        condition: "or",
+                        withWere: true
+                    },
+                    sort: {
+                        column: [ "name" ],
+                        value: sort
+                    },
+                }
+            )
+        }`
+    )
 
     return await client.query(query).then(
-        async result => {
+        result => {
             const data = {
                 data: result.rows,
                 count: total,
