@@ -3,6 +3,7 @@ import { createSQL } from "../sql/create.js";
 import { migrate } from "../sql/migrate.js";
 import { createController } from "../controllers/index.js";
 import { createModel } from "../models/index.js";
+import { createRoutes } from "../routes/index.js";
 
 const commands      = process.argv
 const commandLength = process.argv.length;
@@ -86,6 +87,43 @@ if (commandLength >= 3) {
 
         new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
             console.log(`✅🌈  You have created model file!\n`)
+            process.exit(0)
+        })
+    }
+
+
+    /**
+     * Create Route
+    */
+    if ((options[0]) === '--route') {
+
+        const modelNames = options.slice(1, options.length)
+        modelNames.forEach( name => {
+            const filename = `${name}`
+            createRoutes(filename)
+        })
+
+        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+            console.log(`✅🌈  You have created model file!\n`)
+            process.exit(0)
+        })
+    }
+
+    /**
+     * Create Controller, Create Route, Create Model
+    */
+    if ((options[0]) === '--rcm') {
+
+        const modelNames = options.slice(1, options.length)
+        modelNames.forEach( name => {
+            const filename = `${name}`
+            createRoutes(filename)
+            createController(filename)
+            createModel(filename)
+        })
+
+        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+            console.log(`✅🌈 All file created!\n`)
             process.exit(0)
         })
     }
