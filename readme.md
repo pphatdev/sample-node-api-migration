@@ -38,7 +38,7 @@ Command-line built-in
 ## Clone the project 📂
 
 ```sh
-git clone https://github.com/pphatdev/apis-with-nodejs-es6.git
+git clone https://github.com/pphatdev/sample-node-api-migration.git
 ```
 
 ```sh
