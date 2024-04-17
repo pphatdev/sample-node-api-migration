@@ -1,5 +1,5 @@
 import express from 'express'
-import ROUTE from './src/routes/apis/index.js'
+import ROUTE from './src/apis/index.js'
 import ip from 'ip'
 import fs from "fs"
 import { Response } from './src/helpers/response-data.js'
@@ -45,7 +45,7 @@ app.all("*", (req, res) => {
             method: req.method,
             current: currentURL,
             message: `We can't find [${req.method}]:${ currentURL } on this server! Please check {api_endpint} below.`,
-            api_endpint: fs.readdirSync('./src/routes/apis')
+            api_endpint: fs.readdirSync('./src/apis')
             .map( file => {
                 const filename  = String(file).replaceAll('.js', '')
                 const url       = `http://${ ip.address() }:${ PORT }/api/${VERSION}/` + ( filename == "index" ? "" : filename )

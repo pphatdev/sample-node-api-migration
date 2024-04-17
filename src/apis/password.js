@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { updatePassword, get, getOnce } from '../../controllers/password.js'
-import { authenticateToken } from '../../middlewares/authenticate.js'
+import { updatePassword, get, getOnce } from '../controllers/password.js'
+import { authenticateToken } from '../middlewares/authenticate.js'
 export const ROUTE = Router()
 
 /**

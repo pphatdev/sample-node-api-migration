@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser'
 
 import { Router } from 'express'
-import { VERSION } from '../../db/configs/index.js'
+import { VERSION } from '../db/configs/index.js'
 import { ROUTE as USERS } from './users.js'
 import { ROUTE as PASSWORD } from './password.js'
 import { ROUTE as AUTH } from './auth.js'
