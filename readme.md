@@ -3,20 +3,42 @@
     <p>This Project Built form Sample project that using NodeJs [es6] with Postgres SQL</p>
 </div>
 
-## My Github stats 〽️
+## Project Structure 📂
 
-<br>
+### Project Sources
+Control the APIs
+```sh
+src
+├───controllers
+├───db
+│   └───configs
+├───helpers
+├───middlewares
+├───models
+└───routes
+    ├───apis
+    └───web
+```
 
-<div align="center" style="max-width: 500px; margin-left: auto; margin-right: auto;">
-    <img align="" width="99.9%" src="https://github-readme-activity-graph.vercel.app/graph?username=pphatdev&bg_color=ffffff00&color=298f1d&line=1f8f00&point=248f12&area=true&hide_border=true&hide_title=true" />
-</div>
-
-
+### Project CLI Built-in
+Command-line built-in
+```sh
+├───commands
+│   ├───cli
+│   ├───controllers
+│   ├───models
+│   ├───routes
+│   ├───sql
+│   └───stub
+├───migrations
+│   └───sql
+└───src
+```
 
 ## Clone the project 📂
 
 ```sh
-git clone https://github.com/pphatdev/apis-with-nodejs-es6.git
+git clone https://github.com/pphatdev/sample-node-api-migration.git
 ```
 
 ```sh
@@ -102,6 +124,37 @@ and these what you see on terminal! 😎
 🚀 Localhost: http://localhost:3000/api/v1/
 🚀 Local Service: http://127.0.0.1:3000/api/v1/
 🚀 Host Service: http://{ipv4}:3000/api/v1/
+```
+
+## Usage 🧭⚡
+In this project you can create routes, controllers, and models by cli. How to do that please check documentation below.
+
+### Create Routes 📂
+```bash
+npm run create:route routename1, routename2
+```
+
+### Create Controllers 📂
+```bash
+npm run create:controller controllername1, controllername2
+```
+
+### Create Controllers 📂
+```bash
+npm run create:controller controllername1, controllername2
+```
+
+### Create Models 😎
+```bash
+npm run create:model modelname1, modelname2
+```
+
+### Create Route, Controller, and Model
+
+You can create route, controller, and model by signle command.
+
+```bash
+npm run create:rcm rcmname
 ```
 
 ## Bug Report

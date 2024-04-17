@@ -11,8 +11,8 @@ export const createController = (filename) =>
 
         const oldFile   = fs.existsSync(`./src/controllers/${filename.replaceAll('_','-')}.js`)
         if (oldFile) {
-            console.log(`\x1b[41m Controller file is already exist!\x1b[0m\n`)
-            process.exit(0)
+            return console.log(`\x1b[41m Controller file is already exist!\x1b[0m\n`)
+            // process.exit(0)
         }
 
         /**
@@ -22,12 +22,12 @@ export const createController = (filename) =>
         const fromStubs = Buffer.from(stubs).toString()
 
         if (/[0-9]$/.test(filename.replaceAll('_','-'))) {
-            console.log(`\x1b[41m Index of controller name can't be a number!\x1b[0m`)
-            process.exit(0)
+            return console.log(`\x1b[41m Index of controller name can't be a number!\x1b[0m`)
+            // process.exit(0)
         }
 
         const content   = fromStubs.replaceAll('[name]', filename.replaceAll('_','-'))
-        fs.writeFileSync(`./src/controllers/${filename.replaceAll('_','-')}.js`, content);
+        return fs.writeFileSync(`./src/controllers/${filename.replaceAll('_','-')}.js`, content);
 
     } catch (err) {
 

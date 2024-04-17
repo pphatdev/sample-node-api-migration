@@ -7,8 +7,12 @@
     "author": "PPhatDev <info.sophat@gmail.com>",
     "scripts": {
         "start": "nodemon ./index.js --host=0.0.0.0 --hot --open",
+
         "create:controller": "node ./commands/cli/index.js --controller",
+        "create:route": "node ./commands/cli/index.js --route",
         "create:model": "node ./commands/cli/index.js --model",
+        "create:rcm": "node ./commands/cli/index.js --rcm",
+
         "db:create": "node ./commands/cli/index.js --create",
         "db:migrate": "node ./commands/cli/index.js --migrate"
     },
