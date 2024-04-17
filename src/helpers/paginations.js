@@ -1,4 +1,6 @@
 import { LIMIT, PAGE, SEARCH, SORT } from "../db/configs/index.js";
+import SqlString from "sqlstring";
+const { escape }= SqlString
 
 export class Pagination {
 
@@ -114,7 +116,7 @@ export class Pagination {
             ${ issetSearch
                 ? `WHERE ${ issetcondition
                     ? `${conditions.value} and`
-                    : ``} ${ searches } ilike '%${ search.value }%'`
+                    : ``} ${ searches } ilike ${escape(`%${ search.value }%`)}`
                 : issetcondition
                     ? `${conditions.operator} ${conditions.value}`
                     : noValue
