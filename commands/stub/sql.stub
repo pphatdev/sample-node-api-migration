@@ -9,5 +9,5 @@ CREATE TABLE IF NOT EXISTS public.[name] (
 	-- your field name
 	"status" BOOLEAN NOT NULL DEFAULT true,
 	is_deleted BOOLEAN NOT NULL DEFAULT false,
-	created_date DATE NOT NULL DEFAULT timestamp(0)
+	created_date DATE NOT NULL DEFAULT now()
 );
