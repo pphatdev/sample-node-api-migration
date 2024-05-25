@@ -1,43 +1,134 @@
 import { LIMIT, PAGE, SEARCH, SORT } from "../db/configs/index.js";
+import SqlString from "sqlstring";
+const { escape }= SqlString
 
 export class Pagination {
 
-    list = (options = {
+    query = (options = {
+        table: "",
+        selectColumns: [],
+        conditions: {
+            operator: 'WHERE',
+            value: ''
+        },
         page: PAGE,
         limit: LIMIT,
         search: SEARCH,
         sort: SORT,
     }) => {
-        let setSearch   = "";
-        let setSort     = "";
-        let response    = "";
 
-        const { page, limit, search, sort } = options
-        // console.log(sort);
+        const {
+            table,
+            selectColumns,
+            conditions,
+            page,
+            limit,
+            search,
+            sort
+        } = options
 
-        // Check Searching Key & value
-        if (search.value != null && search.value != "null" && search.value != "" && search.value != undefined) {
-            Array.from(search.column).map(
-                (value, index) => {
-                    setSearch += index >= 1 ? ` ${search.condition} ${value}` : value;
-                }
-            )
-        }
-        response += setSearch ? `${search.withWere ? `where`:''} ${setSearch} ilike '%${search.value}%' ` : ' ';
+        /**
+         * Declare No value param
+         */
+        const noValue = ""
+
+        /**
+         * Select Columns from table {table}
+         * @var {String} table
+         * @param {Array} selectColumns
+         * @return {String} `column1, column2`
+         */
+        const columns = Array.from(
+            selectColumns
+        ).map(
+            column => column
+        ).join(", ")
 
 
-        // Checking Sort Key & value
-        if (sort.value != null && sort.value != "null" && sort.value != "" && sort.value != undefined) {
-            sort.column.map(
-                (value, index) => {
-                    setSort += index >= 1 ? ` , ${value}` : value;
-                }
-            )
-        }
+        /**
+         * Search value from table {table}
+         * @var {String} table
+         * @param {String} search.value
+         * @return {Boolean} true, false
+         */
+        const issetSearch = (
+            search.value != null
+            && search.value != "null"
+            && search.value != ""
+            && search.value != undefined
+        )
 
-        response += setSort ? ` order by ${setSort} ${sort.value} ` : ` order by id asc`;
-        response += limit ? ` limit ${limit} ` : ' ';
-        response += page ? ` offset ${(page - 1) * limit} ` : ' ';
-        return(response)
+        /**
+         * Sorting Data
+         * @param {String} sort.value
+         * @return {Boolean} true, false
+         */
+        const issetSort = (
+            sort.value != null
+            && sort.value != "null"
+            && sort.value != ""
+            && sort.value != undefined
+        )
+
+        /**
+         * Searching Colums from {table}
+         * @param {String} search.column
+         * @return {String} `column1, column2`
+         */
+        const searches = Array.from(
+            search.column
+        ).map(
+            column => column
+        ).join(` ${search.operator} `)
+
+
+        /**
+         * Sorting Data from {table}
+         * @param {String} sort.column
+         * @return {String} `column1, column2`
+         */
+        const sorts = Array.from(
+            sort.column
+        ).map(
+            column => column
+        ).join(", ")
+
+
+        /**
+         * Initalize conditions
+         * @param {String} conditions.value
+         * @return {Boolean} true, false
+         */
+        const issetcondition = (
+            conditions.value != null
+            && conditions.value != "null"
+            && conditions.value != ""
+            && conditions.value != undefined
+        )
+
+        /**
+         * String Query Returning
+         * @example `SELECT column1, column2 FROM table WHERE column1 = '%value%' ORDER BY column1 ASC LIMIT 10 OFFSET 0`
+         * @returns {String} query
+         */
+        return (
+            `SELECT ${ columns } FROM ${ table }
+            ${ issetSearch
+                ? `WHERE ${ issetcondition
+                    ? `${conditions.value} and`
+                    : ``} ${ searches } ilike ${escape(`%${ search.value }%`)}`
+                : issetcondition
+                    ? `${conditions.operator} ${conditions.value}`
+                    : noValue
+            }
+            ${ issetSort
+                ? `order by ${ sorts } ${sort.value}`
+                : noValue } ${ limit ? `limit ${limit}` : noValue
+            }
+            ${ page
+                ? `offset ${(page - 1) * limit}`
+                : noValue
+            }`
+        )
     }
 }

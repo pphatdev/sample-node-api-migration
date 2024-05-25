@@ -1,6 +1,6 @@
-import pg from "pg";
+import pgsql from "pg";
 import { db } from "./env.js";
-const Client = pg.Client;
+const { Client } = pgsql
 
 export const client = new Client({
     host: db.host,
@@ -10,4 +10,7 @@ export const client = new Client({
     password: db.password,
 })
 
-client.connect()
+client.connect(err => {
+    if(err)
+        return console.error(`\ncould not connect to postgres '${err.code}\n`);
+});

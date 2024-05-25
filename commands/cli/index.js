@@ -62,15 +62,22 @@ if (commandLength >= 3) {
     if ((options[0]) === '--controller') {
 
         const controllerNames = options.slice(1, options.length)
-        controllerNames.forEach( name => {
-            const filename = `${name}`
-            createController(filename)
-        })
+        if (controllerNames.length > 0) {
+            controllerNames.forEach( name => {
+                const filename = `${name}`
+                createController(filename)
+            })
 
-        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
-            console.log(`✅🌈  You have created controller file!\n`)
+            new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+                console.log(`✅🌈  You have created controller file!\n`)
+                process.exit(0)
+            })
+        }
+        else {
+            console.log(`\x1b[41mcontroller name can't be blank!!\x1b[0m\n`)
+            console.log(`\x1b[33m[TRY]: \x1b[30mnpm run create:controller controllername\x1b[0m\n\n`)
             process.exit(0)
-        })
+        }
     }
 
 
@@ -80,15 +87,22 @@ if (commandLength >= 3) {
     if ((options[0]) === '--model') {
 
         const modelNames = options.slice(1, options.length)
-        modelNames.forEach( name => {
-            const filename = `${name}`
-            createModel(filename)
-        })
+        if (modelNames.length > 0) {
+            modelNames.forEach( name => {
+                const filename = `${name}`
+                createModel(filename)
+            })
 
-        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
-            console.log(`✅🌈  You have created model file!\n`)
+            new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+                console.log(`✅🌈  You have created model file!\n`)
+                process.exit(0)
+            })
+        }
+        else {
+            console.log(`\x1b[41mmodel name can't be blank!!\x1b[0m\n`)
+            console.log(`\x1b[33m[TRY]: \x1b[30mnpm run create:model modelname\x1b[0m\n\n`)
             process.exit(0)
-        })
+        }
     }
 
 
@@ -97,16 +111,23 @@ if (commandLength >= 3) {
     */
     if ((options[0]) === '--route') {
 
-        const modelNames = options.slice(1, options.length)
-        modelNames.forEach( name => {
-            const filename = `${name}`
-            createRoutes(filename)
-        })
+        const routeNames = options.slice(1, options.length)
+        if (routeNames.length > 0) {
+            routeNames.forEach( name => {
+                const filename = `${name}`
+                createRoutes(filename)
+            })
 
-        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
-            console.log(`✅🌈  You have created model file!\n`)
+            new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+                console.log(`✅🌈  You have created route file!\n`)
+                process.exit(0)
+            })
+        }
+        else {
+            console.log(`\x1b[41mroute name can't be blank!!\x1b[0m\n`)
+            console.log(`\x1b[33m[TRY]: \x1b[30mnpm run create:route routename\x1b[0m\n\n`)
             process.exit(0)
-        })
+        }
     }
 
     /**
@@ -114,17 +135,25 @@ if (commandLength >= 3) {
     */
     if ((options[0]) === '--rcm') {
 
-        const modelNames = options.slice(1, options.length)
-        modelNames.forEach( name => {
-            const filename = `${name}`
-            createRoutes(filename)
-            createController(filename)
-            createModel(filename)
-        })
+        const rcmNames = options.slice(1, options.length)
+        if (rcmNames.length > 0 ) {
+            rcmNames.forEach( name => {
+                const filename = `${name}`
+                createRoutes(filename)
+                createController(filename)
+                createModel(filename)
+            })
 
-        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
-            console.log(`✅🌈 All file created!\n`)
+            new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+                console.log(`✅🌈 All file created!\n`)
+                process.exit(0)
+            })
+        }
+        else
+        {
+            console.log(`\x1b[41mrcm name can't be blank!!\x1b[0m\n`)
+            console.log(`\x1b[33m[TRY]: \x1b[30mnpm run create:rcm rcmname\x1b[0m\n\n`)
             process.exit(0)
-        })
+        }
     }
 }

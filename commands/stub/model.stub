@@ -8,27 +8,31 @@ const PAGE      = new Pagination()
 export const getData = async ( request ) =>
 {
     const { page, limit, search, sort } = request
-    const count         = await client.query(`-- sql`)
-    const total         = count.rows[0].count || 0
-    const pagination    = PAGE.list({
+    const count = await client.query(`SELECT count(id) from public.[name]`)
+    const total = count.rows[0].count || 0
+    const query = PAGE.query({
+        table: 'public.[name]',
+        selectColumns: ["*"],
+        conditions: {
+            operator: 'WHERE',
+            value: ''
+        },
         page: page,
         limit: limit,
         search: {
-            column: [],         // search field ['name', 'id', 'etc...']
-            value: search,      // search value
-            condition: "or",    // or, and
-            withWere: true      // include 'where'
+            column: [],
+            value: search,
+            operator: "or",
+            withWere: true
         },
         sort: {
-            column: [ ],        // sort field  ['name', 'id', 'etc...']
-            value: sort         // desc, asc
+            column: [],
+            value: sort
         },
     })
 
-    const query     = `select * from public.[name] ${ pagination } `
-
-    return await client.query(query).then(
-        async result => {
+    return await client.query(query, []).then(
+        result => {
             const data = {
                 data: result.rows,
                 count: total,
@@ -45,7 +49,7 @@ export const getData = async ( request ) =>
 export const getDataDetail = async ( { id } ) =>
 {
     return await client.query(
-        `select * from public.[name] where id=$1`, [id]
+        `SELECT * from public.[name] where id=$1`, [id]
     ).then(
         async result => {
             return response.success(
@@ -58,51 +62,21 @@ export const getDataDetail = async ( { id } ) =>
 };
 
 
-export const insetData = async ( request ) =>
-{
-    const { name, email, password } = request;
-
-    return await client.query(
-        `INSERT INTO public.[name](...)`,
-        [name, email, password ]
-    ).then(
-        result => {
-
-            if (result.rowCount < 0)
-                return result
-
-            return response.insetSuccess({ message: "Insert Success." })
-        }
-    ).catch(
-        reason => {
-
-            if (reason.code == "23505")
-                return response.insetFailed({ message: reason.detail });
-
-            console.log(reason)
-            return reason
-        }
-    )
-};
-
-
 export const updateData = async ( request ) =>
 {
-    const { a, b, c } = request;
     return await client.query(
-        `UPDATE public.[name] SET ...`,
-        [ a, b, c ]
+        `UPDATE public.[name] SET "name"=$1 WHERE id=$2;`,
+        [name, id]
     ).then(
-        result => {
-
+        result =>
+        {
             if (result.rowCount < 0)
                 return result
-
             return response.insetSuccess({ message: "Update Success." })
         }
     ).catch(
-        reason => {
-
+        reason =>
+        {
             if (reason.code == "23505")
                 return response.insetFailed({ message: reason.detail });
 
