@@ -14,7 +14,8 @@ const response      = new Response()
  */
 export const get = async (request) =>
 {
-    let limit   = request.limit || 20;
+
+    let limit   = parseInt(request.limit) || -1;
     const { page, search, sort } = request;
 
     if (!Number(limit))

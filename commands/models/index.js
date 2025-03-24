@@ -18,7 +18,7 @@ export const createModel = (filename) =>
         /**
          * Reading from template stubs
         */
-        const stubs     = fs.readFileSync('./commands/stub/controller.stub')
+        const stubs     = fs.readFileSync('./commands/stub/model.stub')
         const fromStubs = Buffer.from(stubs).toString()
 
         if (/[0-9]$/.test(filename.replaceAll('_','-'))) {
