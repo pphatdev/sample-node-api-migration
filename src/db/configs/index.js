@@ -15,3 +15,5 @@ export const LIMIT      = process.env.LIMIT || -1
 export const SEARCH     = { column: [], value: null, condition: "or", withWere: true }
 export const SORT       = { column: [], value: "asc" }
 export const COLUMNS    = []
+
+export const IMAGES_PATH = process.env.IMAGES_PATH || "uploads/images/"
