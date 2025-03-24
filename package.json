@@ -6,7 +6,7 @@
     "main": "index.js",
     "author": "PPhatDev <info.sophat@gmail.com>",
     "scripts": {
-        "start": "nodemon ./index.js --host=0.0.0.0 --hot --open",
+        "start": "npx nodemon ./index.js --host=0.0.0.0 --hot",
 
         "create:controller": "node ./commands/cli/index.js --controller",
         "create:route": "node ./commands/cli/index.js --route",
