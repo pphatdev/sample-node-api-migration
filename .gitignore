@@ -2,3 +2,5 @@
 .env
 # Local Netlify folder
 .netlify
+
+public/uploads/*
