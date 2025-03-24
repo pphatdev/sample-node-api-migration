@@ -5,7 +5,7 @@ import ip from 'ip'
 
 import { createReadStream, promises as fs } from 'fs'
 import { Response } from "../helpers/response-data.js"
-import { getData, insetData } from "../models/images.js"
+import { getData, getDataDetail, insetData } from "../models/images.js"
 import { PORT, VERSION } from "../db/configs/index.js"
 const response = new Response()
 
@@ -44,7 +44,7 @@ export const create = async (req, res) => {
             original_name: req.file.originalname,
             mime_type: req.file.mimetype,
             size: req.file.size,
-            path: `http://${ ip.address() }:${ PORT }/api/${VERSION}/files/image/${req.file.filename}`
+            path: `http://${ip.address()}:${PORT}/api/${VERSION}/files/image/${req.file.filename}`
         }
 
         return res.json(await insetData(fileData))
@@ -133,9 +133,8 @@ export const getImage = async (req, res) => {
 }
 
 
-export const get = async (req, res) =>
-{
-    const { page = 1, search, sort = 'asc', limit = -1 } = {...req?.query, ...req?.body};
+export const get = async (req, res) => {
+    const { page = 1, search, sort = 'asc', limit = -1 } = { ...req?.query, ...req?.body };
     if (!Number(limit))
         limit = null
 
@@ -148,3 +147,12 @@ export const get = async (req, res) =>
 
     res.json(fetchData);
 };
+
+
+export const getOnce = async (req, res) => {
+    const { id } = { ...req?.params, ...req?.body };
+    const fetchData = await getDataDetail({
+        id: id
+    });
+    res.json(fetchData);
+}

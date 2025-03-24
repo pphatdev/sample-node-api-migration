@@ -2,17 +2,17 @@ import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
 import { Pagination } from "../helpers/paginations.js";
 
-const response  = new Response()
-const PAGE      = new Pagination()
+const response = new Response()
+const PAGE = new Pagination()
 
-export const getData = async ( request ) => {
+export const getData = async (request) => {
     const { page, limit, search, sort } = request
     const count = await client.query(`SELECT count(id) from public.files`)
     const total = count.rows[0].count || 0
 
     const query = PAGE.query({
         table: 'public.files',
-        selectColumns: [ "id", "filename", "original_name", "mime_type", "size", "path", "created_by", "is_public", "created_date"],
+        selectColumns: ["id", "filename", "original_name", "mime_type", "size", "path", "created_by", "is_public", "created_date"],
         conditions: {
             operator: 'WHERE',
             value: ''
@@ -33,7 +33,7 @@ export const getData = async ( request ) => {
 
     return await client.query(query, []).then(
         result => {
-            return response.success( result.rows, Number(total));
+            return response.success(result.rows, Number(total));
         }
     ).catch(
         reason => console.log(reason)
@@ -84,42 +84,13 @@ export const insetData = async (request) => {
     )
 };
 
-export const getDataDetail = async ( { id } ) =>
-{
-    return await client.query(
-        `SELECT * from public.files where id=$1`, [id]
-    ).then(
+
+export const getDataDetail = async ({ id }) => {
+    return await client.query(`SELECT * from public.files where id=$1`, [id]).then(
         async result => {
-            return response.success(
-                result.rows
-            );
+            return response.success(result.rows, 1);
         }
     ).catch(
         reason => console.log(reason)
-    )
-};
-
-
-export const updateData = async ( request ) =>
-{
-    return await client.query(
-        `UPDATE public.files SET "name"=$1 WHERE id=$2;`,
-        [name, id]
-    ).then(
-        result =>
-        {
-            if (result.rowCount < 0)
-                return result
-            return response.insetSuccess({ message: "Update Success." })
-        }
-    ).catch(
-        reason =>
-        {
-            if (reason.code == "23505")
-                return response.insetFailed({ message: reason.detail });
-
-            console.log(reason)
-            return reason
-        }
     )
 };
