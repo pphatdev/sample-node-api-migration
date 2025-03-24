@@ -63,7 +63,8 @@ ROUTE.use(`${API}/users` , USERS)
  * Method | endpoint                        | middleware            |
  *------------------------------------------------------------------|
  * POST   | /api/${VERSION}/files/upload    | null                  |
- * GET    | /api/${VERSION}/files/:filename | {authenticateToken}   |
+ * GET    | /api/${VERSION}/files/image/:filename | null           |
+ * GET    | /api/${VERSION}/files           | null                  |
  *------------------------------------------------------------------|
 */
 ROUTE.use(`${API}/files` , FILES)

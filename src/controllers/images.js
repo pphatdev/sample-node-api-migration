@@ -11,6 +11,7 @@ const response = new Response()
 
 export const uploadSingle = upload.single('file')
 
+
 export const notFoundImage = (option = { width: 300, height: 300 }) => {
     const { width, height } = option
     return Buffer.from(`
@@ -29,6 +30,7 @@ export const notFoundImage = (option = { width: 300, height: 300 }) => {
         `
     )
 }
+
 
 export const create = async (req, res) => {
     try {
@@ -54,6 +56,7 @@ export const create = async (req, res) => {
         )
     }
 }
+
 
 export const getImage = async (req, res) => {
     try {

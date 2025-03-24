@@ -1,9 +1,8 @@
 import { Router } from 'express'
 import { authenticateToken } from '../middlewares/authenticate.js'
-import { getImage, create, uploadSingle, get as list } from '../controllers/images.js'
+import { getImage, create, uploadSingle, get } from '../controllers/images.js'
 
 export const ROUTE = Router()
-
 
 /**
  * Upload endpoint - Accept multipart form data
@@ -21,7 +20,7 @@ ROUTE.post("/upload", uploadSingle, create)
 ROUTE.get("/image/:filename", getImage)
 
 
-ROUTE.all("/image", list)
+ROUTE.get("/", get)
 
 
 export default ROUTE
