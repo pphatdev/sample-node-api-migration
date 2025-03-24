@@ -1,6 +1,6 @@
 import { LIMIT, PAGE, SEARCH, SORT } from "../db/configs/index.js";
 import SqlString from "sqlstring";
-const { escape }= SqlString
+const { escape } = SqlString
 
 export class Pagination {
 
@@ -112,20 +112,20 @@ export class Pagination {
          * @returns {String} query
          */
         return (
-            `SELECT ${ columns } FROM ${ table }
-            ${ issetSearch
-                ? `WHERE ${ issetcondition
+            `SELECT ${columns} FROM ${table}
+            ${issetSearch
+                ? `WHERE ${issetcondition
                     ? `${conditions.value} and`
-                    : ``} ${ searches } ilike ${escape(`%${ search.value }%`)}`
+                    : ``} ${searches} ilike ${escape(`%${search.value}%`)}`
                 : issetcondition
                     ? `${conditions.operator} ${conditions.value}`
                     : noValue
             }
-            ${ issetSort
-                ? `order by ${ sorts } ${sort.value}`
-                : noValue } ${ limit ? `limit ${limit}` : noValue
+            ${issetSort
+                ? `order by ${sorts} ${sort.value}`
+                : noValue} ${typeof limit === 'number' && limit != -1 ? `limit ${limit}` : noValue
             }
-            ${ page
+            ${page
                 ? `offset ${(page - 1) * limit}`
                 : noValue
             }`
