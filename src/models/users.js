@@ -20,13 +20,13 @@ export const getData = async ( request ) =>
         page: page,
         limit: limit,
         search: {
-            column: [ 'name' ],
+            column: [ 'name', 'email' ],
             value: search,
             operator: "or",
             withWere: true
         },
         sort: {
-            column: [ "name"],
+            column: [ "name", 'email'],
             value: sort
         },
     })
