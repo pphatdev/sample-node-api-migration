@@ -38,11 +38,7 @@ export class Pagination {
          * @param {Array} selectColumns
          * @return {String} `column1, column2`
          */
-        const columns = Array.from(
-            selectColumns
-        ).map(
-            column => column
-        ).join(", ")
+        const columns = Array.from( selectColumns ).map( column => column ).join(", ")
 
 
         /**
@@ -75,11 +71,7 @@ export class Pagination {
          * @param {String} search.column
          * @return {String} `column1, column2`
          */
-        const searches = Array.from(
-            search.column
-        ).map(
-            column => column
-        ).join(` ${search.operator} `)
+        const searches = Array.from( search.column ).map( column => column ).join(` ${search.operator} `)
 
 
         /**
@@ -87,12 +79,7 @@ export class Pagination {
          * @param {String} sort.column
          * @return {String} `column1, column2`
          */
-        const sorts = Array.from(
-            sort.column
-        ).map(
-            column => column
-        ).join(", ")
-
+        const sorts = Array.from( sort.column ).map( column => column ).join(", ")
 
         /**
          * Initalize conditions
