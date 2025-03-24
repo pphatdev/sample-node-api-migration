@@ -38,7 +38,7 @@ export class Pagination {
          * @param {Array} selectColumns
          * @return {String} `column1, column2`
          */
-        const columns = Array.from( selectColumns ).map( column => column ).join(", ")
+        const columns = Array.from(selectColumns).map(column => column).join(", ")
 
 
         /**
@@ -69,17 +69,18 @@ export class Pagination {
         /**
          * Searching Colums from {table}
          * @param {String} search.column
-         * @return {String} `column1, column2`
+         * @return {String} `column1 ILIKE '%value%' OR column2 ILIKE '%value%'`
          */
-        const searches = Array.from( search.column ).map( column => column ).join(` ${search.operator} `)
-
+        const searches = Array.from(search.column).map(column =>
+            `${column} ilike ${escape(`%${search.value}%`)}`
+        ).join(` ${search.operator} `)
 
         /**
          * Sorting Data from {table}
          * @param {String} sort.column
          * @return {String} `column1, column2`
          */
-        const sorts = Array.from( sort.column ).map( column => column ).join(", ")
+        const sorts = Array.from(sort.column).map(column => column).join(", ")
 
         /**
          * Initalize conditions
@@ -95,25 +96,25 @@ export class Pagination {
 
         /**
          * String Query Returning
-         * @example `SELECT column1, column2 FROM table WHERE column1 = '%value%' ORDER BY column1 ASC LIMIT 10 OFFSET 0`
+         * @example `SELECT column1, column2 FROM table WHERE (column1 ILIKE '%value%' OR column2 ILIKE '%value%') ORDER BY column1 ASC LIMIT 10 OFFSET 0`
          * @returns {String} query
          */
         return (
             `SELECT ${columns} FROM ${table}
             ${issetSearch
                 ? `WHERE ${issetcondition
-                    ? `${conditions.value} and`
-                    : ``} ${searches} ilike ${escape(`%${search.value}%`)}`
+                    ? `${conditions.value} AND`
+                    : ``} (${searches})`
                 : issetcondition
                     ? `${conditions.operator} ${conditions.value}`
                     : noValue
             }
             ${issetSort
-                ? `order by ${sorts} ${sort.value}`
-                : noValue} ${typeof limit === 'number' && limit != -1 ? `limit ${limit}` : noValue
+                ? `ORDER BY ${sorts} ${sort.value}`
+                : noValue} ${typeof limit === 'number' && limit != -1 ? `LIMIT ${limit}` : noValue
             }
             ${page
-                ? `offset ${(page - 1) * limit}`
+                ? `OFFSET ${(page - 1) * limit}`
                 : noValue
             }`
         )
