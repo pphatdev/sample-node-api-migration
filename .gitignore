@@ -4,3 +4,5 @@
 .netlify
 
 public/uploads/*
+
+/.cache-local
