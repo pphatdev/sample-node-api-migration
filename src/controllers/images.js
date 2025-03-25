@@ -7,10 +7,10 @@ import ImageModel from "../models/images.js"
 import { createReadStream, promises as fs } from 'fs'
 import { Response } from "../helpers/response-data.js"
 import { PORT, VERSION } from "../db/configs/index.js"
-import { ImageCache } from "../helpers/image-cache.js"
+import { ImageCache } from "../helpers/utils/caches/images.js"
 
 const response = new Response()
-const { getData, getDataDetail, insetData } = ImageModel
+const { getData, getDataDetail, insertData } = ImageModel
 
 export const uploadSingle = upload.single('file')
 
@@ -50,7 +50,7 @@ export const create = async (req, res) => {
             path: `http://${ip.address()}:${PORT}/api/${VERSION}/files/image/${req.file.filename}`
         }
 
-        return res.json(await insetData(fileData))
+        return res.json(await insertData(fileData))
 
     } catch (error) {
         console.error('Upload error:', error)
