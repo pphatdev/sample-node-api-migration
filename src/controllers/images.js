@@ -2,12 +2,15 @@ import { upload } from "../middlewares/image.js"
 import sharp from 'sharp'
 import path from 'path'
 import ip from 'ip'
+import ImageModel from "../models/images.js"
 
 import { createReadStream, promises as fs } from 'fs'
 import { Response } from "../helpers/response-data.js"
-import { getData, getDataDetail, insetData } from "../models/images.js"
 import { PORT, VERSION } from "../db/configs/index.js"
+import { ImageCache } from "../helpers/image-cache.js"
+
 const response = new Response()
+const { getData, getDataDetail, insetData } = ImageModel
 
 export const uploadSingle = upload.single('file')
 
@@ -58,21 +61,34 @@ export const create = async (req, res) => {
 }
 
 
+const imageCache = new ImageCache({ ttl: 3600 }); // 1 hour cache
+
 export const getImage = async (req, res) => {
     try {
-        const { filename } = req.params
-        const { fm, q, w, h, fit } = req.query
-        const filePath = path.join(process.cwd(), 'public/uploads/images', filename)
-        let transform = sharp()
-        let fileStream
+        const { filename } = req.params;
+        const { fm, q, w, h, fit } = req.query;
+        const filePath = path.join(process.cwd(), 'public/uploads/images', filename);
+
+        // Create a cache key based on the image parameters
+        const cacheKey = `${filename}-w${w || ''}-h${h || ''}-fm${fm || ''}-q${q || ''}-fit${fit || ''}`;
+
+        // Try to get from cache first
+        const cachedImage = await imageCache.getImage(cacheKey, '.png');
+        if (cachedImage) {
+            res.set('Content-Type', 'image/png');
+            return res.send(cachedImage);
+        }
+
+        let transform = sharp();
+        let fileStream;
 
         try {
-            await fs.access(filePath)
-            fileStream = createReadStream(filePath)
+            await fs.access(filePath);
+            fileStream = createReadStream(filePath);
         } catch (error) {
             // Generate placeholder if file not found
-            const width = w ? parseInt(w) : 300
-            const height = h ? parseInt(h) : width
+            const width = w ? parseInt(w) : 300;
+            const height = h ? parseInt(h) : width;
 
             transform = sharp({
                 create: {
@@ -83,13 +99,10 @@ export const getImage = async (req, res) => {
                 }
             })
                 .composite([{
-                    input: notFoundImage({
-                        width,
-                        height
-                    }),
+                    input: notFoundImage({ width, height }),
                     top: 0,
                     left: 0
-                }])
+                }]);
         }
 
         if (w || h) {
@@ -97,38 +110,35 @@ export const getImage = async (req, res) => {
                 width: w ? parseInt(w) : undefined,
                 height: h ? parseInt(h) : undefined,
                 fit: fit || 'cover'
-            })
+            });
         }
 
         if (fm) {
             transform = transform.toFormat(fm, {
                 quality: q ? parseInt(q) : 60
-            })
+            });
         } else {
-            // Default to PNG if no format specified
-            transform = transform.png()
+            transform = transform.png();
         }
 
+        // Create a buffer from the transformed image
+        let imageBuffer;
         if (fileStream) {
-            fileStream
-                .pipe(transform)
-                .pipe(res)
-                .on('error', (error) => {
-                    console.error('Streaming error:', error)
-                    res.status(500).json({ error: 'Error processing image' })
-                })
+            imageBuffer = await fileStream.pipe(transform).toBuffer();
         } else {
-            // Send placeholder directly
-            transform
-                .pipe(res)
-                .on('error', (error) => {
-                    console.error('Placeholder generation error:', error)
-                    res.status(500).json({ error: 'Error generating placeholder' })
-                })
+            imageBuffer = await transform.toBuffer();
         }
+
+        // Cache the transformed image
+        await imageCache.saveImage(cacheKey, imageBuffer, '.png');
+
+        // Send the response
+        res.set('Content-Type', 'image/png');
+        res.send(imageBuffer);
 
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        console.error('Image processing error:', error);
+        res.status(500).json({ error: error.message });
     }
 }
 
