@@ -1,7 +1,7 @@
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
 import { Pagination } from "../helpers/paginations.js";
-import { FileCache } from "../helpers/file-cache.js";
+import { FileCache } from "../helpers/utils/caches/files.js";
 
 const response = new Response();
 const PAGE = new Pagination();

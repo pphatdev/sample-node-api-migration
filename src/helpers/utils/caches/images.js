@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { FileCache } from './file-cache.js';
+import { FileCache } from './files.js';
 
 export class ImageCache extends FileCache {
     constructor(options = {}) {
