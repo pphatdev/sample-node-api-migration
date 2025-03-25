@@ -1,15 +1,27 @@
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
 import { Pagination } from "../helpers/paginations.js";
+import { FileCache } from "../helpers/file-cache.js";
 
-const response  = new Response()
-const PAGE      = new Pagination()
+const response = new Response();
+const PAGE = new Pagination();
+const cache = new FileCache({
+    cacheDir: '.cache-local/users',
+    ttl: 3600 // 1 hour
+});
 
-export const getData = async ( request ) =>
-{
-    const { page, limit, search, sort } = request
-    const count = await client.query(`SELECT count(id) from public.users`)
-    const total = count.rows[0].count || 0
+export const getData = async (request) => {
+    const { page, limit, search, sort } = request;
+
+    // Create cache key from request parameters
+    const cacheKey = `list_${page}_${limit}_${search}_${sort}`;
+    const cachedData = await cache.get(cacheKey);
+    if (cachedData) {
+        return cachedData;
+    }
+
+    const count = await client.query(`SELECT count(id) from public.users`);
+    const total = count.rows[0].count || 0;
     const query = PAGE.query({
         table: 'public.users',
         selectColumns: ["id", "name", "email", "created_at", "updated_at"],
@@ -29,7 +41,7 @@ export const getData = async ( request ) =>
             column: [ "name", 'email'],
             value: sort
         },
-    })
+    });
 
     return await client.query(query, []).then(
         async result => {
@@ -37,45 +49,49 @@ export const getData = async ( request ) =>
                 data: result.rows,
                 count: total,
                 show: result.rowCount
-            }
-            return data
+            };
+            await cache.set(cacheKey, data);
+            return data;
         }
     ).catch(
         reason => console.log(reason)
-    )
+    );
 };
 
+export const getDataDetail = async ({ id }) => {
+    const cacheKey = `detail_${id}`;
+    const cachedData = await cache.get(cacheKey);
+    if (cachedData) {
+        return cachedData;
+    }
 
-export const getDataDetail = async ( { id } ) =>
-{
     return await client.query(
         `SELECT id, name, email, created_at, updated_at from public.users where id=$1`, [id]
     ).then(
         async result => {
-            return response.success(
-                result.rows
-            );
+            const responseData = response.success(result.rows);
+            await cache.set(cacheKey, responseData);
+            return responseData;
         }
     ).catch(
         reason => console.log(reason)
-    )
+    );
 };
 
-
-export const insetData = async ( request ) =>
-{
+export const insetData = async (request) => {
     const { name, email, password } = request;
 
     return await client.query(
         `INSERT INTO users(name, email, password, created_at, updated_at) VALUES ($1, $2, $3, now(), now())`,
-        [name, email, password ]
+        [name, email, password]
     ).then(
-        result => {
-
+        async result => {
             if (result.rowCount < 0)
-                return result
+                return result;
 
-            return response.insetSuccess({ message: "Insert Success." })
+            // Clear cache after insertion
+            await cache.clear();
+            return response.insetSuccess({ message: "Insert Success." });
         }
     ).catch(
         reason => {
@@ -86,23 +102,22 @@ export const insetData = async ( request ) =>
             console.log(reason)
             return reason
         }
-    )
+    );
 };
 
-
-export const updateData = async ( request ) =>
-{
+export const updateData = async (request) => {
     const { id, name, email } = request;
     return await client.query(
         `UPDATE public.users SET "name"=$1, email=$2, updated_at=$3 WHERE id=$4;`,
         [name, email, "now()", id]
     ).then(
-        result => {
-
+        async result => {
             if (result.rowCount < 0)
-                return result
+                return result;
 
-            return response.insetSuccess({ message: "Update Success." })
+            // Clear cache after update
+            await cache.clear();
+            return response.insetSuccess({ message: "Update Success." });
         }
     ).catch(
         reason => {
@@ -113,5 +128,5 @@ export const updateData = async ( request ) =>
             console.log(reason)
             return reason
         }
-    )
+    );
 };

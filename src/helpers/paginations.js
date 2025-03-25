@@ -111,7 +111,11 @@ export class Pagination {
             }
             ${issetSort
                 ? `ORDER BY ${sorts} ${sort.value}`
-                : noValue} ${typeof limit === 'number' && limit != -1 ? `LIMIT ${limit}` : noValue
+                : noValue
+            }
+            ${typeof limit === 'number' && limit != -1
+                ? `LIMIT ${limit}`
+                : noValue
             }
             ${page
                 ? `OFFSET ${(page - 1) * limit}`
