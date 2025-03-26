@@ -38,7 +38,7 @@ export const notFoundImage = (option = { width: 300, height: 300 }) => {
 export const create = async (req, res) => {
     try {
         if (!req.file) {
-            return res.status(400).json(response.failed('No file uploaded'))
+            return res.status(400).json(response.insetFailed('No file uploaded'))
         }
 
         const fileData = {
@@ -47,7 +47,7 @@ export const create = async (req, res) => {
             original_name: req.file.originalname,
             mime_type: req.file.mimetype,
             size: req.file.size,
-            path: `http://${ip.address()}:${PORT}/api/${VERSION}/files/image/${req.file.filename}`
+            path: `/source/${VERSION}/files/image/${req.file.filename}`
         }
 
         return res.json(await insertData(fileData))
@@ -55,7 +55,7 @@ export const create = async (req, res) => {
     } catch (error) {
         console.error('Upload error:', error)
         return res.status(500).json(
-            response.failed('Error uploading file')
+            response.insetFailed('Error uploading file')
         )
     }
 }

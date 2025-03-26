@@ -5,7 +5,7 @@ import { VERSION } from '../db/configs/index.js'
 import { ROUTE as FILES } from './images.js'
 import { rateLimit } from 'express-rate-limit'
 
-const API   = `/api/${VERSION}`
+const API   = `/source/${VERSION}`
 const ROUTE = Router()
 
 const limiter = rateLimit({
