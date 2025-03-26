@@ -1,18 +1,17 @@
 import Joi from "joi";
 import { Response } from "../helpers/response-data.js";
 import { required } from "../helpers/validation.js";
-import { updateData, getData, getDataDetail } from "../models/password.js";
-
-const response      = new Response()
+import PasswordModel from "../models/password.js";
+const { updateData, getData, getDataDetail } = PasswordModel
+const response = new Response()
 
 /**
  * បង្ហាញទិន្នន័យជាទិន្នន័យរួម (List) និង ទិន្នន័យលំហាត់ (Detail)
  * @param {Object} request
  * @returns
  */
-export const get = async (request) =>
-{
-    let limit   = request.limit || 20;
+export const get = async (request) => {
+    let limit = request.limit || 20;
     const { page, search, sort } = request;
 
     if (!Number(limit))
@@ -36,8 +35,7 @@ export const get = async (request) =>
 };
 
 
-export const getOnce = async (request) =>
-{
+export const getOnce = async (request) => {
     /**
      * កំណត់តម្រូវការទិន្នន័យរបស់អ្នកប្រើប្រាស់ថ្មី
      * @package Joi
@@ -61,7 +59,7 @@ export const getOnce = async (request) =>
         /**
          * ករណីមានមិនទិន្នន័យមិនគ្រប់ បង្ហាញព័ត៌មានបរាជ័យ
          */
-        return response.insetFailed({ message : condition.message })
+        return response.insetFailed({ message: condition.message })
     else
         /**
          * បង្ហាញព័ត៌មានដែលជោគជ័យ
@@ -74,8 +72,7 @@ export const getOnce = async (request) =>
  * @param {Object} ការស្នើបន្ថែម
  * @returns
  */
-export const updatePassword = async (resquest) =>
-{
+export const updatePassword = async (resquest) => {
     /**
      * កំណត់តម្រូវការទិន្នន័យរបស់អ្នកប្រើប្រាស់ថ្មី
      * @package Joi
@@ -104,7 +101,7 @@ export const updatePassword = async (resquest) =>
         /**
          * ករណីមានមិនទិន្នន័យមិនគ្រប់ បង្ហាញព័ត៌មានបរាជ័យ
          */
-        return response.insetFailed({ message : condition.message })
+        return response.insetFailed({ message: condition.message })
     else
         /**
          * បង្ហាញព័ត៌មានដែលជោគជ័យ
