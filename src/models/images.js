@@ -1,4 +1,4 @@
-import { client } from "../db/configs/pg.config.js";
+import { client } from "../db/configs/mysql.config.js";
 import { Response } from "../helpers/response-data.js";
 import { Pagination } from "../helpers/paginations.js";
 import { FileCache } from "../helpers/utils/caches/files.js";
@@ -19,11 +19,11 @@ class ImageModel {
             return cachedData;
         }
 
-        const count = await client.query(`SELECT count(id) from public.files`);
-        const total = count.rows[0].count || 0;
+        const count = await client.query(`SELECT COUNT(id) as count FROM red_ant_express.files`);
+        const total = count[0][0].count || 0;
 
         const query = ImageModel.#pagination.query({
-            table: 'public.files',
+            table: 'red_ant_express.files',
             selectColumns: ["id", "filename", "original_name", "mime_type", "size", "path", "created_by", "is_public", "created_date"],
             conditions: {
                 operator: 'WHERE',
@@ -34,7 +34,7 @@ class ImageModel {
             search: {
                 column: ["original_name", "filename"],
                 value: search,
-                operator: "or",
+                operator: "OR",
                 withWere: true
             },
             sort: {
@@ -44,8 +44,8 @@ class ImageModel {
         });
 
         try {
-            const result = await client.query(query, []);
-            const responseData = ImageModel.#response.success(result.rows, Number(total));
+            const [rows] = await client.query(query);
+            const responseData = ImageModel.#response.success(rows, Number(total));
             await ImageModel.#cache.set(cacheKey, responseData);
             return responseData;
         } catch (error) {
@@ -56,20 +56,19 @@ class ImageModel {
 
     static async insertData({ id, filename, original_name, mime_type, size, path }) {
         try {
-            const result = await client.query(
-                `INSERT INTO public.files(
+            const [result] = await client.query(
+                `INSERT INTO red_ant_express.files(
                     id, filename, original_name, mime_type, size, path,
                     created_by, is_public, status, is_deleted, created_date
-                ) VALUES ($1, $2, $3, $4, $5, $6, 1, true, true, false, CURRENT_TIMESTAMP)
-                RETURNING id`,
+                ) VALUES (?, ?, ?, ?, ?, ?, 1, true, true, false, CURRENT_TIMESTAMP)`,
                 [id, filename, original_name, mime_type, size, path]
             );
 
-            if (result.rowCount < 0) return result;
+            if (result.affectedRows === 0) return result;
 
             await ImageModel.#cache.clear();
             return ImageModel.#response.insetSuccess({
-                id: result.rows[0].id,
+                id: id,
                 message: "Image uploaded successfully.",
                 filename,
                 original_name,
@@ -83,7 +82,7 @@ class ImageModel {
         }
     }
 
-    static async getDataDetail({id}) {
+    static async getDataDetail({ id }) {
         const cacheKey = `detail_${id}`;
         const cachedData = await ImageModel.#cache.get(cacheKey);
         if (cachedData) {
@@ -91,11 +90,11 @@ class ImageModel {
         }
 
         try {
-            const result = await client.query(
-                `SELECT * from public.files where id=$1`,
+            const [rows] = await client.query(
+                `SELECT * FROM red_ant_express.files WHERE id = ?`,
                 [id]
             );
-            const responseData = ImageModel.#response.success(result.rows, 1);
+            const responseData = ImageModel.#response.success(rows, 1);
             await ImageModel.#cache.set(cacheKey, responseData);
             return responseData;
         } catch (error) {

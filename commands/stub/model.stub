@@ -1,4 +1,4 @@
-import { client } from "../db/configs/pg.config.js";
+import { client } from "../db/configs/mysql.config.js";
 import { Response } from "../helpers/response-data.js";
 import { Pagination } from "../helpers/paginations.js";
 
@@ -8,10 +8,10 @@ const PAGE      = new Pagination()
 export const getData = async ( request ) =>
 {
     const { page, limit, search, sort } = request
-    const count = await client.query(`SELECT count(id) from public.[name]`)
+    const count = await client.query(`SELECT count(id) from red_ant_express.[name]`)
     const total = count.rows[0].count || 0
     const query = PAGE.query({
-        table: 'public.[name]',
+        table: 'red_ant_express.[name]',
         selectColumns: ["*"],
         conditions: {
             operator: 'WHERE',
@@ -49,7 +49,7 @@ export const getData = async ( request ) =>
 export const getDataDetail = async ( { id } ) =>
 {
     return await client.query(
-        `SELECT * from public.[name] where id=$1`, [id]
+        `SELECT * from red_ant_express.[name] where id=$1`, [id]
     ).then(
         async result => {
             return response.success(
@@ -65,7 +65,7 @@ export const getDataDetail = async ( { id } ) =>
 export const updateData = async ( request ) =>
 {
     return await client.query(
-        `UPDATE public.[name] SET "name"=$1 WHERE id=$2;`,
+        `UPDATE red_ant_express.[name] SET "name"=$1 WHERE id=$2;`,
         [name, id]
     ).then(
         result =>

@@ -1,10 +1,10 @@
--- public.[name] definition
+-- red_ant_express.[name] definition
 
 -- Drop table
 
--- DROP TABLE public.[name];
+-- DROP TABLE red_ant_express.[name];
 
-CREATE TABLE IF NOT EXISTS public.[name] (
+CREATE TABLE IF NOT EXISTS red_ant_express.[name] (
 	id SERIAL PRIMARY KEY,
 	-- your field name
 	"status" BOOLEAN NOT NULL DEFAULT true,
