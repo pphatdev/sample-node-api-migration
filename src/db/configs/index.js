@@ -16,4 +16,4 @@ export const SEARCH     = { column: [], value: null, condition: "or", withWere: 
 export const SORT       = { column: [], value: "asc" }
 export const COLUMNS    = []
 
-export const IMAGES_PATH = process.env.IMAGES_PATH || "uploads/images/"
+export const DESTINATION = process.env.DESTINATION || "uploads"

@@ -1,12 +1,11 @@
 import { upload } from "../middlewares/image.js"
 import sharp from 'sharp'
 import path from 'path'
-import ip from 'ip'
 import ImageModel from "../models/images.js"
 
 import { createReadStream, promises as fs } from 'fs'
 import { Response } from "../helpers/response-data.js"
-import { PORT, VERSION } from "../db/configs/index.js"
+import { VERSION } from "../db/configs/index.js"
 import { ImageCache } from "../helpers/utils/caches/images.js"
 
 const response = new Response()
@@ -67,7 +66,7 @@ export const getImage = async (req, res) => {
     try {
         const { filename } = req.params;
         const { fm, q, w, h, fit } = req.query;
-        const filePath = path.join(process.cwd(), 'public/uploads/images', filename);
+        const filePath = path.join(process.cwd(), `../${DESTINATION}/public/media/file/crm/uploadfile`, filename);
 
         // Create a cache key based on the image parameters
         const cacheKey = `${filename}-w${w || ''}-h${h || ''}-fm${fm || ''}-q${q || ''}-fit${fit || ''}`;
