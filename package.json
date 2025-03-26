@@ -7,7 +7,7 @@
     "author": "PPhatDev <info.sophat@gmail.com>",
     "scripts": {
         "dev": "node --watch ./index.js --host=0.0.0.0",
-        "start": "node ./index.js",
+        "start": "node ./index.js --host=0.0.0.0",
         "create:controller": "node ./commands/cli/index.js --controller",
         "create:route": "node ./commands/cli/index.js --route",
         "create:model": "node ./commands/cli/index.js --model",
