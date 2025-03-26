@@ -5,6 +5,7 @@ import { VERSION } from '../db/configs/index.js'
 import { ROUTE as USERS } from './users.js'
 import { ROUTE as PASSWORD } from './password.js'
 import { ROUTE as AUTH } from './auth.js'
+import { ROUTE as FILES } from './images.js'
 import { rateLimit } from 'express-rate-limit'
 
 const API   = `/api/${VERSION}`
@@ -54,6 +55,19 @@ ROUTE.use(`${API}/auth` , AUTH)
  *------------------------------------------------------------------|
 */
 ROUTE.use(`${API}/users` , USERS)
+
+
+/**
+ * Files Route Control
+ *------------------------------------------------------------------|
+ * Method | endpoint                        | middleware            |
+ *------------------------------------------------------------------|
+ * POST   | /api/${VERSION}/files/upload    | null                  |
+ * GET    | /api/${VERSION}/files/image/:filename | null           |
+ * GET    | /api/${VERSION}/files           | null                  |
+ *------------------------------------------------------------------|
+*/
+ROUTE.use(`${API}/files` , FILES)
 
 
 /**
