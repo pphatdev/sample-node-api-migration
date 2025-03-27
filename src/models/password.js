@@ -27,7 +27,7 @@ class PasswordModel {
                     value: ''
                 },
                 page,
-                limit,
+                limit: '$1',
                 search: {
                     column: ['name'],
                     value: search,
@@ -40,7 +40,7 @@ class PasswordModel {
                 },
             });
 
-            const result = await client.query(query, []);
+            const result = await client.query(query, [limit]);
             return {
                 data: result.rows,
                 count: total,

@@ -11,11 +11,11 @@ const response = new Response()
  * @returns
  */
 export const get = async (request) => {
-    let limit = request.limit || 20;
+    let limit = parseInt(request.limit, 10) || 20;
     const { page, search, sort } = request;
 
-    if (!Number(limit))
-        limit = null
+    if (isNaN(limit) || limit <= 0)
+        limit = 20;
 
     /**
      * ទាញព័ត៌មានរបស់អ្នកប្រើប្រាស់ទាំងអស់តាមរយៈការកំណត់
