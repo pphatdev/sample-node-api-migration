@@ -11,11 +11,7 @@ const cache = new FileCache({
 });
 
 export const getData = async (request) => {
-    const { page, limit, search, sort = "asc" } = request;
-    const validSortValues = ["asc", "desc"];
-    if (!validSortValues.includes(sort.toLowerCase())) {
-        throw new Error("Invalid sort value");
-    }
+    const { page, limit, search, sort } = request;
 
     // Create cache key from request parameters
     const cacheKey = `list_${page}_${limit}_${search}_${sort}`;
@@ -62,7 +58,7 @@ export const getData = async (request) => {
     );
 };
 
-export const getDataDetail = async ({ id }) => {
+export const getDataDetail = async (id) => {
     const cacheKey = `detail_${id}`;
     const cachedData = await cache.get(cacheKey);
     if (cachedData) {
