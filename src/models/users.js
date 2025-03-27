@@ -12,6 +12,10 @@ const cache = new FileCache({
 
 export const getData = async (request) => {
     const { page, limit, search, sort = "asc" } = request;
+    const validSortValues = ["asc", "desc"];
+    if (!validSortValues.includes(sort.toLowerCase())) {
+        throw new Error("Invalid sort value");
+    }
 
     // Create cache key from request parameters
     const cacheKey = `list_${page}_${limit}_${search}_${sort}`;
