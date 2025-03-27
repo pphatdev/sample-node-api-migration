@@ -11,7 +11,11 @@ export class ImageCache extends FileCache {
     }
 
     getCacheFilePath(key, extension) {
-        return path.join(this.cacheDir, `${key}${extension}`);
+        const filePath = path.resolve(this.cacheDir, `${key}${extension}`);
+        if (!filePath.startsWith(path.resolve(this.cacheDir))) {
+            throw new Error('Invalid file path');
+        }
+        return filePath;
     }
 
     async saveImage(key, imageBuffer, extension) {
