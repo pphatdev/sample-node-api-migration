@@ -15,7 +15,11 @@ export class FileCache {
     }
 
     getCacheFilePath(key) {
-        return path.join(this.cacheDir, `${key}.json`);
+        const filePath = path.resolve(this.cacheDir, `${key}.json`);
+        if (!filePath.startsWith(path.resolve(this.cacheDir))) {
+            throw new Error('Invalid cache key');
+        }
+        return filePath;
     }
 
     async set(key, data) {
@@ -47,9 +51,12 @@ export class FileCache {
 
     async del(key) {
         try {
-            await fs.unlink(this.getCacheFilePath(key));
+            const filePath = this.getCacheFilePath(key);
+            await fs.unlink(filePath);
         } catch (error) {
-            // Ignore deletion errors
+            if (error.message !== 'Invalid cache key') {
+                // Ignore deletion errors
+            }
         }
     }
 
