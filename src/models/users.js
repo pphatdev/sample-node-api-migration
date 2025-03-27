@@ -11,7 +11,7 @@ const cache = new FileCache({
 });
 
 export const getData = async (request) => {
-    const { page, limit, search, sort } = request;
+    const { page, limit, search, sort = "asc" } = request;
 
     // Create cache key from request parameters
     const cacheKey = `list_${page}_${limit}_${search}_${sort}`;
@@ -39,9 +39,9 @@ export const getData = async (request) => {
         },
         sort: {
             column: [ "name", 'email'],
-            value: `$1` // Use parameterized query for sort value
+            value: sort
         },
-    }, [sort]); // Pass sort value as parameter
+    });
 
     return await client.query(query, []).then(
         async result => {
