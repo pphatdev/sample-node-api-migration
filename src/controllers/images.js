@@ -2,6 +2,7 @@ import { upload } from "../middlewares/image.js"
 import sharp from 'sharp'
 import path from 'path'
 import ImageModel from "../models/images.js"
+import { DESTINATION } from "../db/configs/index.js"
 
 import { createReadStream, promises as fs } from 'fs'
 import { Response } from "../helpers/response-data.js"
