@@ -88,4 +88,24 @@ export class Response {
             ...options
         }
     }
+
+    validateError = (data) => {
+        let errors = {};
+        data.forEach(error => {
+            errors[error.path] = (()=> {
+                if (!error?.message) {
+                    const field = error.type.charAt(0).toUpperCase() + error.type.slice(1).toLowerCase();
+                    return `${field} is ${(error?.msg)?.toLowerCase()}`
+                }
+                return `${error?.message.replace(/"/g, '')}`
+            })();
+        });
+
+        return {
+            status: 422,
+            success: false,
+            version: VERSION,
+            result: errors
+        };
+    }
 }
