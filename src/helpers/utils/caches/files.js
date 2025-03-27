@@ -16,7 +16,8 @@ export class FileCache {
 
     getCacheFilePath(key) {
         const filePath = path.resolve(this.cacheDir, `${key}.json`);
-        if (!filePath.startsWith(path.resolve(this.cacheDir))) {
+        const relative = path.relative(this.cacheDir, filePath);
+        if (relative.startsWith('..') || path.isAbsolute(relative)) {
             throw new Error('Invalid cache key');
         }
         return filePath;
