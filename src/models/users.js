@@ -39,9 +39,9 @@ export const getData = async (request) => {
         },
         sort: {
             column: [ "name", 'email'],
-            value: sort
+            value: `$1` // Use parameterized query for sort value
         },
-    });
+    }, [sort]); // Pass sort value as parameter
 
     return await client.query(query, []).then(
         async result => {
