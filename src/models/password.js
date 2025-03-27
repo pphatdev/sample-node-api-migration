@@ -9,6 +9,11 @@ class PasswordModel {
     static #response = new Response();
     static #pagination = new Pagination();
 
+    static #validateSort(sort) {
+        const allowedSortValues = ["name", "id", "password"];
+        return allowedSortValues.includes(sort) ? sort : "name";
+    }
+
     static async getData({ page, limit, search, sort }) {
         try {
             const count = await client.query(`SELECT count(id) from public.users`);
@@ -31,7 +36,7 @@ class PasswordModel {
                 },
                 sort: {
                     column: ["name"],
-                    value: sort
+                    value: PasswordModel.#validateSort(sort)
                 },
             });
 
