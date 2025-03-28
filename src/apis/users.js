@@ -1,14 +1,10 @@
 import { Router } from 'express'
-import { create, update, get, getOnce } from '../controllers/users.js'
+import { create, update, get , getOnce } from '../controllers/users.js'
 import { authenticateToken } from '../middlewares/authenticate.js'
-import Joi from 'joi'
-import { Response } from '../helpers/response-data.js'
-import { query, validationResult } from 'express-validator'
 import { Validation } from '../helpers/validator.js'
-
+import { Controller } from '../helpers/response/base.js'
 
 export const ROUTE = Router()
-const response = new Response()
 
 
 /**
@@ -25,47 +21,21 @@ ROUTE.post("/", async (req, res) => {
  */
 ROUTE.use((req, res, next) => authenticateToken(req, res, next))
 
+
 /**
  * Accept only request query
  */
 ROUTE.get("/",
     Validation.base.list,
-    async (req, res) => {
-        const { errors } = validationResult(req);
-        if (errors.length > 0) {
-            return res.status(422).json(
-                response.validateError(errors)
-            );
-        }
-        res.send(await get({
-            limit: -1,
-            sort: 'asc',
-            page: 1,
-            ...req.params,
-            ...req.query,
-        }))
-    })
+    async (req, res) => Controller.get(req, res, get)
+)
+
 
 /**
  * Accept only params url id
  */
-ROUTE.get("/:id", async (req, res) => {
+ROUTE.get("/:id", async (req, res) => Controller.getOnce(req, res, getOnce))
 
-    const query = { ...req.params, ...req.query }
-    const schema = Joi.object({
-        id: Joi.number().required()
-    });
-
-    const { error } = schema.validate(query);
-
-    if (error ) {
-        return res.status(422).json(
-            response.validateError(error.details)
-        );
-    }
-
-    res.send(await getOnce(query))
-})
 
 /**
  * Accept only request body
