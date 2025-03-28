@@ -38,9 +38,9 @@ export const getData = async (request) => {
         sort: { column: [ "name", 'email'], value: '?'},
     });
 
-    const raw = query.replace('?', sort);
+    const raw = query.replace('?', '$1');
 
-    return await client.query(raw, []).then(
+    return await client.query(raw, [sort]).then(
         async result => {
             const data = {
                 data: result.rows,
