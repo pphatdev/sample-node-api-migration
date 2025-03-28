@@ -2,7 +2,7 @@ import bcryptjs  from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
-import { LOGIN_EXP } from "../db/configs/index.js";
+import { APP_SECRET_KEY, LOGIN_EXP } from "../db/configs/index.js";
 import { randomUUID } from 'crypto';
 import moment from "moment";
 
@@ -42,7 +42,7 @@ export const authLogin = async ( request ) =>
      * Create Auth bearer Token
      */
     const id        = randomUUID();
-    const token     = sign({ userId }, 'secret', { expiresIn: moment(LOGIN_EXP).diff() });
+    const token     = sign({ userId }, APP_SECRET_KEY, { expiresIn: moment(LOGIN_EXP).diff() });
 
 
     return await client.query(

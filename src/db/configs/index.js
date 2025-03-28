@@ -17,3 +17,4 @@ export const SORT       = { column: [], value: "asc" }
 export const COLUMNS    = []
 
 export const IMAGES_PATH = process.env.IMAGES_PATH || "uploads/images/"
+export const APP_SECRET_KEY = process.env.APP_SECRET_KEY || "my-secret-key"
