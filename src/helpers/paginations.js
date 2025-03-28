@@ -99,7 +99,7 @@ export class Pagination {
          * @example `SELECT column1, column2 FROM table WHERE (column1 ILIKE '%value%' OR column2 ILIKE '%value%') ORDER BY column1 ASC LIMIT 10 OFFSET 0`
          * @returns {String} query
          */
-        return (
+        const query = (
             `SELECT ${columns} FROM ${table}
             ${issetSearch
                 ? `WHERE ${issetcondition
@@ -122,5 +122,6 @@ export class Pagination {
                 : noValue
             }`
         )
+        return query
     }
 }

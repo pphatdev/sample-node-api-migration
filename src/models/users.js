@@ -16,9 +16,7 @@ export const getData = async (request) => {
     // Create cache key from request parameters
     const cacheKey = `list_${page}_${limit}_${search}_${sort}`;
     const cachedData = await cache.get(cacheKey);
-    if (cachedData) {
-        return cachedData;
-    }
+    if (cachedData) { return cachedData; }
 
     const count = await client.query(`SELECT count(id) from public.users`);
     const total = count.rows[0].count || 0;
@@ -37,13 +35,12 @@ export const getData = async (request) => {
             operator: "or",
             withWere: true
         },
-        sort: {
-            column: [ "name", 'email'],
-            value: sort
-        },
+        sort: { column: [ "name", 'email'], value: '?'},
     });
 
-    return await client.query(query, []).then(
+    const raw = query.replace('?', sort);
+
+    return await client.query(raw, []).then(
         async result => {
             const data = {
                 data: result.rows,
@@ -53,9 +50,7 @@ export const getData = async (request) => {
             await cache.set(cacheKey, data);
             return data;
         }
-    ).catch(
-        reason => console.log(reason)
-    );
+    ).catch( reason => console.log(reason) );
 };
 
 export const getDataDetail = async (id) => {
@@ -73,9 +68,7 @@ export const getDataDetail = async (id) => {
             await cache.set(cacheKey, responseData);
             return responseData;
         }
-    ).catch(
-        reason => console.log(reason)
-    );
+    ).catch( reason => console.log(reason) );
 };
 
 export const insetData = async (request) => {
@@ -95,7 +88,6 @@ export const insetData = async (request) => {
         }
     ).catch(
         reason => {
-
             if (reason.code == "23505")
                 return response.insetFailed({ message: reason.detail });
 
