@@ -20,6 +20,11 @@ export const getData = async (request) => {
 
     const count = await client.query(`SELECT count(id) from public.users`);
     const total = count.rows[0].count || 0;
+    
+    // List of allowed columns for sorting
+    const allowedSortColumns = ["name", "email"];
+    const sortColumn = allowedSortColumns.includes(sort) ? sort : "name";
+
     const query = PAGE.query({
         table: 'public.users',
         selectColumns: ["id", "name", "email", "created_at", "updated_at"],
@@ -38,7 +43,7 @@ export const getData = async (request) => {
         sort: { column: ["name", 'email'], value: '?' },
     });
 
-    const raw = query.replace('?', sort);
+    const raw = query.replace('?', sortColumn);
 
     return await client.query(raw, []).then(
         async result => {
