@@ -2,7 +2,7 @@ import { Router } from 'express'
 import { create, update, get , getOnce } from '../controllers/users.js'
 import { authenticateToken } from '../middlewares/authenticate.js'
 import { Validation } from '../helpers/validator.js'
-import { Controller } from '../helpers/response/base.js'
+import { Controller } from '../helpers/response/controller.js'
 
 export const ROUTE = Router()
 
