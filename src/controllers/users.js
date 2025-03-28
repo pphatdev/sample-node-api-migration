@@ -34,7 +34,7 @@ export const get = async ({ page, search, sort, limit }) => {
  * @returns
  */
 export const getOnce = async ({id}) => {
-    return await getDataDetail(request);
+    return await getDataDetail(id);
 };
 
 
