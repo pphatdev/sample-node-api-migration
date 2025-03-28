@@ -30,12 +30,12 @@ export const getData = async (request) => {
         page: page,
         limit: limit,
         search: {
-            column: [ 'name', 'email' ],
+            column: ['name', 'email'],
             value: search,
             operator: "or",
             withWere: true
         },
-        sort: { column: [ "name", 'email'], value: '?'},
+        sort: { column: ["name", 'email'], value: '?' },
     });
 
     const raw = query.replace('?', '$1');
@@ -50,7 +50,7 @@ export const getData = async (request) => {
             await cache.set(cacheKey, data);
             return data;
         }
-    ).catch( reason => console.log(reason) );
+    ).catch(reason => console.log(reason));
 };
 
 export const getDataDetail = async (id) => {
@@ -68,7 +68,7 @@ export const getDataDetail = async (id) => {
             await cache.set(cacheKey, responseData);
             return responseData;
         }
-    ).catch( reason => console.log(reason) );
+    ).catch(reason => console.log(reason));
 };
 
 export const insetData = async (request) => {
