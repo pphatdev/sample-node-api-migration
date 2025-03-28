@@ -67,7 +67,13 @@ export const getImage = async (req, res) => {
     try {
         const { filename } = req.params;
         const { fm, q, w, h, fit } = req.query;
-        const filePath = path.join(process.cwd(), 'public/uploads/images', filename);
+        const rootDir = path.join(process.cwd(), 'public/uploads/images');
+        const filePath = path.resolve(rootDir, filename);
+
+        // Check if the filePath is within the root directory
+        if (!filePath.startsWith(rootDir)) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
 
         // Create a cache key based on the image parameters
         const cacheKey = `${filename}-w${w || ''}-h${h || ''}-fm${fm || ''}-q${q || ''}-fit${fit || ''}`;
