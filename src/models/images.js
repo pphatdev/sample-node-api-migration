@@ -39,12 +39,12 @@ class ImageModel {
             },
             sort: {
                 column: ['id', 'original_name'],
-                value: sort
+                value: '$1' // Use parameterized query for sort value
             },
         });
 
         try {
-            const result = await client.query(query, []);
+            const result = await client.query(query, [sort]);
             const responseData = ImageModel.#response.success(result.rows, Number(total));
             await ImageModel.#cache.set(cacheKey, responseData);
             return responseData;
