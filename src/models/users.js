@@ -69,6 +69,33 @@ export const getDataDetail = async (id) => {
     ).catch(reason => console.log(reason));
 };
 
+export const insetData = async ( request ) =>
+{
+    const { name, email, password } = request;
+
+    return await client.query(
+        `INSERT INTO users(name, email, password, created_at, updated_at) VALUES ($1, $2, $3, now(), now())`,
+        [name, email, password]
+    ).then(
+        result => {
+
+            if (result.rowCount < 0)
+                return result
+
+            return response.insetSuccess({ message: "Insert Success." })
+        }
+    ).catch(
+        reason => {
+
+            if (reason.code == "23505")
+                return response.insetFailed({ message: reason.detail });
+
+            console.log(reason)
+            return reason
+        }
+    )
+};
+
 export const updateData = async (request) => {
     const { id, name, email } = request;
     return await client.query(
