@@ -41,7 +41,7 @@
         "passport": "^0.7.0",
         "passport-http-bearer-base64": "^1.0.3",
         "pg": "^8.11.5",
-        "pm2": "^5.3.1",
+        "pm2": "^6.0.7",
         "serverless-http": "^3.2.0",
         "sharp": "^0.33.5",
         "sqlstring": "^2.3.3"
