@@ -35,12 +35,10 @@ export const getData = async (request) => {
             operator: "or",
             withWere: true
         },
-        sort: { column: ["name", 'email'], value: '?' },
+        sort: { column: ["name", 'email'], value: sort || 'ASC' },
     });
 
-    const raw = query.replace('?', sort);
-
-    return await client.query(raw, []).then(
+    return await client.query(query, []).then(
         async result => {
             const data = {
                 data: result.rows,
@@ -69,32 +67,6 @@ export const getDataDetail = async (id) => {
             return responseData;
         }
     ).catch(reason => console.log(reason));
-};
-
-export const insetData = async (request) => {
-    const { name, email, password } = request;
-
-    return await client.query(
-        `INSERT INTO users(name, email, password, created_at, updated_at) VALUES ($1, $2, $3, now(), now())`,
-        [name, email, password]
-    ).then(
-        async result => {
-            if (result.rowCount < 0)
-                return result;
-
-            // Clear cache after insertion
-            await cache.clear();
-            return response.insetSuccess({ message: "Insert Success." });
-        }
-    ).catch(
-        reason => {
-            if (reason.code == "23505")
-                return response.insetFailed({ message: reason.detail });
-
-            console.log(reason)
-            return reason
-        }
-    );
 };
 
 export const updateData = async (request) => {

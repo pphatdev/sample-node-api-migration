@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { required } from "../helpers/validation.js";
-import { getData, getDataDetail, insetData, updateData } from "../models/users.js";
+import { getData, getDataDetail, updateData } from "../models/users.js";
 import { Response } from "../helpers/response-data.js";
 import bcryptjs from "bcryptjs";
 const { hash, genSalt } = bcryptjs
