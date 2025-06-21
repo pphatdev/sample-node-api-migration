@@ -20,7 +20,7 @@ export const getData = async (request) => {
 
     const count = await client.query(`SELECT count(id) from public.users`);
     const total = count.rows[0].count || 0;
-    
+
     // List of allowed columns for sorting
     const allowedSortColumns = ["name", "email"];
     const sortColumn = allowedSortColumns.includes(sort) ? sort : "name";
@@ -76,8 +76,7 @@ export const getDataDetail = async (id) => {
     ).catch(reason => console.log(reason));
 };
 
-export const insetData = async ( request ) =>
-{
+export const insertData = async (request) => {
     const { name, email, password } = request;
 
     return await client.query(
