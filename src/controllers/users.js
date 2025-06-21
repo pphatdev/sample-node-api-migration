@@ -79,7 +79,7 @@ export const create = async (request) => {
         /**
          * បង្ហាញព័ត៌មានដែលជោគជ័យ
          */
-        return await insetData(request);
+        return await insertData(request);
 };
 
 
