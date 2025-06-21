@@ -6,6 +6,8 @@ import { ROUTE as USERS } from './users.js'
 import { ROUTE as PASSWORD } from './password.js'
 import { ROUTE as AUTH } from './auth.js'
 import { ROUTE as FILES } from './images.js'
+import { ROUTE as POSTS } from './posts.js'
+
 import { rateLimit } from 'express-rate-limit'
 
 const API   = `/api/${VERSION}`
@@ -81,6 +83,19 @@ ROUTE.use(`${API}/files` , FILES)
  *------------------------------------------------------------------|
 */
 ROUTE.use(`${API}/password` , PASSWORD)
+
+
+/**
+ * Post Route Control
+ *------------------------------------------------------------------|
+ * Method | endpoint                        | middleware            |
+ *------------------------------------------------------------------|
+ * GET    | /api/${VERSION}/posts        | {authenticateToken}   |
+ * GET    | /api/${VERSION}/posts/:id    | {authenticateToken}   |
+ * PUT    | /api/${VERSION}/posts        | {authenticateToken}   |
+ *------------------------------------------------------------------|
+*/
+ROUTE.use(`${API}/posts` , POSTS)
 
 
 export default ROUTE
