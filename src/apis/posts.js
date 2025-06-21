@@ -1,46 +1,40 @@
 import { Router } from 'express'
 import { create, update, get, getOnce } from '../controllers/posts.js'
 import { authenticateToken } from '../middlewares/authenticate.js'
+import { Validation } from '../helpers/validator.js'
 export const ROUTE = Router()
 
-/**
- * Set authenticate
- */
+
 ROUTE.use((req, res, next) => authenticateToken(req, res, next))
 
+ROUTE.post("/",
+    async (req, res) => {
+        const response = await create(req.body)
+        res.send(response)
+    }
+)
 
-/**
- * Accept only request body
- */
-ROUTE.post("/", async (req, res) => {
-    const response = await create(req.body)
-    res.send(response)
-})
+ROUTE.get("/",
+    Validation.base.list,
+    async (req, res) => {
+        const response = await get(req.query)
+        res.send(response)
+    }
+)
 
+ROUTE.get("/:id",
+    Validation.base.detail,
+    async (req, res) => {
+        const response = await getOnce({id: req.params.id})
+        res.send(response)
+    }
+)
 
-/**
- * Accept only request query
- */
-ROUTE.get("/", async (req, res) => {
-    const response = await get(req.query)
-    res.send(response)
-})
-
-/**
- * Accept only params url id
- */
-ROUTE.get("/:id", async (req, res) => {
-    const response = await getOnce({id: req.params.id})
-    res.send(response)
-})
-
-/**
- * Accept only request body
- */
-ROUTE.put("/", async (req, res) => {
-    const response = await update(req.body)
-    res.send(response)
-})
-
+ROUTE.put("/",
+    async (req, res) => {
+        const response = await update(req.body)
+        res.send(response)
+    }
+)
 
 export default ROUTE

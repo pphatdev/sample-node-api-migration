@@ -27,75 +27,17 @@ const limiter = rateLimit({
 ROUTE.use(bodyParser.urlencoded({ extended: true }))
 ROUTE.use(bodyParser.json())
 
-
-/**
- * Apply limited all request
-*/
 ROUTE.use(limiter);
 
+ROUTE.use(`${API}/auth`, AUTH)
 
-/**
- * Password Route Control
- *------------------------------------------------------------------|
- * Method | endpoint                        | middleware            |
- *------------------------------------------------------------------|
- * POST   | /api/${VERSION}/auth            | null                  |
- *------------------------------------------------------------------|
-*/
-ROUTE.use(`${API}/auth` , AUTH)
+ROUTE.use(`${API}/users`, USERS)
 
+ROUTE.use(`${API}/files`, FILES)
 
-/**
- * User Route Control
- *------------------------------------------------------------------|
- * Method | endpoint                        | middleware            |
- *------------------------------------------------------------------|
- * POST   | /api/${VERSION}/users           | null                  |
- * GET    | /api/${VERSION}/users           | {authenticateToken}   |
- * GET    | /api/${VERSION}/users/:id       | {authenticateToken}   |
- * PUT    | /api/${VERSION}/users           | {authenticateToken}   |
- *------------------------------------------------------------------|
-*/
-ROUTE.use(`${API}/users` , USERS)
+ROUTE.use(`${API}/password`, PASSWORD)
 
-
-/**
- * Files Route Control
- *------------------------------------------------------------------|
- * Method | endpoint                        | middleware            |
- *------------------------------------------------------------------|
- * POST   | /api/${VERSION}/files/upload    | null                  |
- * GET    | /api/${VERSION}/files/image/:filename | null           |
- * GET    | /api/${VERSION}/files           | null                  |
- *------------------------------------------------------------------|
-*/
-ROUTE.use(`${API}/files` , FILES)
-
-
-/**
- * Password Route Control
- *------------------------------------------------------------------|
- * Method | endpoint                        | middleware            |
- *------------------------------------------------------------------|
- * GET    | /api/${VERSION}/password        | {authenticateToken}   |
- * GET    | /api/${VERSION}/password/:id    | {authenticateToken}   |
- * PUT    | /api/${VERSION}/password        | {authenticateToken}   |
- *------------------------------------------------------------------|
-*/
-ROUTE.use(`${API}/password` , PASSWORD)
-
-
-/**
- * Post Route Control
- *------------------------------------------------------------------|
- * Method | endpoint                        | middleware            |
- *------------------------------------------------------------------|
- * GET    | /api/${VERSION}/posts        | {authenticateToken}   |
- * GET    | /api/${VERSION}/posts/:id    | {authenticateToken}   |
- * PUT    | /api/${VERSION}/posts        | {authenticateToken}   |
- *------------------------------------------------------------------|
-*/
-ROUTE.use(`${API}/posts` , POSTS)
+ROUTE.use(`${API}/posts`, POSTS)
 
 
 export default ROUTE

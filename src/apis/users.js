@@ -6,44 +6,23 @@ import { Controller } from '../helpers/response/controller.js'
 
 export const ROUTE = Router()
 
+ROUTE.post("/", async (req, res) => res.send(await create(req.body)) )
 
-/**
- * Accept only request body
- */
-ROUTE.post("/", async (req, res) => {
-    const response = await create(req.body)
-    res.send(response)
-})
-
-
-/**
- * Set authenticate
- */
 ROUTE.use((req, res, next) => authenticateToken(req, res, next))
 
-
-/**
- * Accept only request query
- */
 ROUTE.get("/",
     Validation.base.list,
     async (req, res) => Controller.get(req, res, get)
 )
 
+ROUTE.get("/:id",
+    Validation.base.id,
+    async (req, res) => Controller.getOnce(req, res, getOnce)
+)
 
-/**
- * Accept only params url id
- */
-ROUTE.get("/:id", async (req, res) => Controller.getOnce(req, res, getOnce))
-
-
-/**
- * Accept only request body
- */
 ROUTE.put("/", async (req, res) => {
     const response = await update(req.body)
     res.send(response)
 })
-
 
 export default ROUTE

@@ -4,25 +4,15 @@ import { getImage, create, uploadSingle, get, getOnce } from '../controllers/ima
 
 export const ROUTE = Router()
 
-/**
- * Upload endpoint - Accept multipart form data
- */
+
+ROUTE.use((req, res, next) => authenticateToken(req, res, next))
+
 ROUTE.post("/upload", uploadSingle, create)
 
-/**
- * Set authenticate for all routes below
- */
-// ROUTE.use((req, res, next) => authenticateToken(req, res, next))
-
-/**
- * Retrieve file with transformations - Accept params and query
- */
 ROUTE.get("/image/:filename", getImage)
-
 
 ROUTE.get("/", get)
 
 ROUTE.get("/:id", getOnce)
-
 
 export default ROUTE
