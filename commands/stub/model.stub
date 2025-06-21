@@ -5,8 +5,7 @@ import { Pagination } from "../helpers/paginations.js";
 const response  = new Response()
 const PAGE      = new Pagination()
 
-export const getData = async ( request ) =>
-{
+export const getData = async ( request ) => {
     const { page, limit, search, sort } = request
     const count = await client.query(`SELECT count(id) from public.[name]`)
     const total = count.rows[0].count || 0
@@ -46,8 +45,7 @@ export const getData = async ( request ) =>
 };
 
 
-export const getDataDetail = async ( { id } ) =>
-{
+export const getDataDetail = async ( { id } ) => {
     return await client.query(
         `SELECT * from public.[name] where id=$1`, [id]
     ).then(
@@ -62,8 +60,31 @@ export const getDataDetail = async ( { id } ) =>
 };
 
 
-export const updateData = async ( request ) =>
-{
+export const insertData = async ( request ) => {
+    const { name } = request
+
+    return await client.query(
+        `INSERT INTO public.[name] ("name") VALUES ($1) RETURNING id;`,
+        [name]
+    ).then(
+        result => {
+            if (result.rowCount < 0)
+                return result
+            return response.insetSuccess({ message: "Insert Success." })
+        }
+    ).catch(
+        reason => {
+            if (reason.code == "23505")
+                return response.insetFailed({ message: reason.detail });
+
+            console.log(reason)
+            return reason
+        }
+    )
+};
+
+
+export const updateData = async ( request ) => {
     return await client.query(
         `UPDATE public.[name] SET "name"=$1 WHERE id=$2;`,
         [name, id]
