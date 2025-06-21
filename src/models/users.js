@@ -20,6 +20,11 @@ export const getData = async (request) => {
 
     const count = await client.query(`SELECT count(id) from public.users`);
     const total = count.rows[0].count || 0;
+    
+    // List of allowed columns for sorting
+    const allowedSortColumns = ["name", "email"];
+    const sortColumn = allowedSortColumns.includes(sort) ? sort : "name";
+
     const query = PAGE.query({
         table: 'public.users',
         selectColumns: ["id", "name", "email", "created_at", "updated_at"],
@@ -38,7 +43,9 @@ export const getData = async (request) => {
         sort: { column: ["name", 'email'], value: sort || 'ASC' },
     });
 
-    return await client.query(query, []).then(
+    const raw = query.replace('?', sortColumn);
+
+    return await client.query(raw, []).then(
         async result => {
             const data = {
                 data: result.rows,
@@ -67,6 +74,33 @@ export const getDataDetail = async (id) => {
             return responseData;
         }
     ).catch(reason => console.log(reason));
+};
+
+export const insetData = async ( request ) =>
+{
+    const { name, email, password } = request;
+
+    return await client.query(
+        `INSERT INTO users(name, email, password, created_at, updated_at) VALUES ($1, $2, $3, now(), now())`,
+        [name, email, password]
+    ).then(
+        result => {
+
+            if (result.rowCount < 0)
+                return result
+
+            return response.insetSuccess({ message: "Insert Success." })
+        }
+    ).catch(
+        reason => {
+
+            if (reason.code == "23505")
+                return response.insetFailed({ message: reason.detail });
+
+            console.log(reason)
+            return reason
+        }
+    )
 };
 
 export const updateData = async (request) => {
