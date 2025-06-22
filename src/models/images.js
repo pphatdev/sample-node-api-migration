@@ -5,7 +5,6 @@ import { FileCache } from "../helpers/utils/caches/files.js";
 
 class ImageModel {
 
-    static #response = new Response();
     static #pagination = new Pagination();
     static #cache = new FileCache({
         cacheDir: '.cache-local/images',
@@ -45,7 +44,7 @@ class ImageModel {
 
         try {
             const result = await client.query(query, [sort]);
-            const responseData = ImageModel.#response.success(result.rows, Number(total));
+            const responseData = Response.success(result.rows, Number(total));
             await ImageModel.#cache.set(cacheKey, responseData);
             return responseData;
         } catch (error) {
@@ -68,7 +67,7 @@ class ImageModel {
             if (result.rowCount < 0) return result;
 
             await ImageModel.#cache.clear();
-            return ImageModel.#response.insetSuccess({
+            return Response.insetSuccess({
                 id: result.rows[0].id,
                 message: "Image uploaded successfully.",
                 filename,
@@ -95,7 +94,7 @@ class ImageModel {
                 `SELECT * from public.files where id=$1`,
                 [id]
             );
-            const responseData = ImageModel.#response.success(result.rows, 1);
+            const responseData = Response.success(result.rows, 1);
             await ImageModel.#cache.set(cacheKey, responseData);
             return responseData;
         } catch (error) {

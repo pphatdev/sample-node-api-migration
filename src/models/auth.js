@@ -8,7 +8,6 @@ import moment from "moment";
 
 const { sign }      = jwt;
 const { compare }   = bcryptjs
-const response      = new Response()
 
 export const authLogin = async ( request ) =>
 {
@@ -23,7 +22,7 @@ export const authLogin = async ( request ) =>
      * ករណីគ្មាន email មិនត្រឹមត្រូវ
     */
     if (currentUser.rowCount <= 0)
-        return response.authClient({ message: "Wrong Email." });
+        return Response.authClient({ message: "Wrong Email." });
 
     /**
      * ប្រៀបធៀបពាក្យសំងាត់ រវាង Database និង ពាក្យសំងាត់ដែលបានបញ្ចូល
@@ -36,7 +35,7 @@ export const authLogin = async ( request ) =>
      * ករណីគ្មាន password មិនត្រឹមត្រូវ
     */
     if (!isPasswordMatch)
-        return response.authClient({ message: "Wrong Password." });
+        return Response.authClient({ message: "Wrong Password." });
 
     /**
      * Create Auth bearer Token
@@ -56,7 +55,7 @@ export const authLogin = async ( request ) =>
             if (result.rowCount < 0)
                 return result
 
-            return response.authSuccess({
+            return Response.authSuccess({
                 userId: userId,
                 clientId: id,
                 createdAt: moment().format('DD-MM-YYYY HH:mm:ss A'),
@@ -70,7 +69,7 @@ export const authLogin = async ( request ) =>
         reason => {
 
             if (reason.code == "23505")
-                return response.insetFailed({ message: reason.detail });
+                return Response.insetFailed({ message: reason.detail });
 
             console.log(reason)
             return reason

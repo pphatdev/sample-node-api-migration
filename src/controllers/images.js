@@ -9,7 +9,6 @@ import { Response } from "../helpers/response-data.js"
 import { PORT, VERSION } from "../db/configs/index.js"
 import { ImageCache } from "../helpers/utils/caches/images.js"
 
-const response = new Response()
 const { getData, getDataDetail, insertData } = ImageModel
 
 export const uploadSingle = upload.single('file')
@@ -30,15 +29,14 @@ export const notFoundImage = (option = { width: 300, height: 300 }) => {
                 </clipPath>
             </defs>
         </svg>
-        `
-    )
+    `, )
 }
 
 
 export const create = async (req, res) => {
     try {
         if (!req.file) {
-            return res.status(400).json(response.failed('No file uploaded'))
+            return res.status(400).json(Response.failed('No file uploaded'))
         }
 
         const fileData = {
@@ -55,7 +53,7 @@ export const create = async (req, res) => {
     } catch (error) {
         console.error('Upload error:', error)
         return res.status(500).json(
-            response.failed('Error uploading file')
+            Response.failed('Error uploading file')
         )
     }
 }

@@ -1,7 +1,6 @@
 import { validationResult } from "express-validator";
 import Joi from "joi";
 import { Response } from "../response-data.js";
-const response = new Response();
 
 export class Controller {
 
@@ -9,7 +8,7 @@ export class Controller {
         const { errors } = validationResult(req);
         if (errors.length > 0) {
             return res.status(422).json(
-                response.validateError(errors)
+                Response.validateError(errors)
             );
         }
         res.send(
@@ -34,7 +33,7 @@ export class Controller {
 
         if (error) {
             return res.status(422).json(
-                response.validateError(error.details)
+                Response.validateError(error.details)
             );
         }
         res.send(await getDetail(query))

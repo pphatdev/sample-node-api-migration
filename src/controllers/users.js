@@ -5,8 +5,6 @@ import { Response } from "../helpers/response-data.js";
 import bcryptjs from "bcryptjs";
 const { hash, genSalt } = bcryptjs
 
-const response = new Response()
-
 /**
  * បង្ហាញទិន្នន័យជាទិន្នន័យរួម (List)
  * @param {Object} request
@@ -21,7 +19,7 @@ export const get = async ({ page, search, sort, limit }) => {
         sort: sort
     });
 
-    return response.success(
+    return Response.success(
         fetchData.data,
         fetchData.count
     );
@@ -74,7 +72,7 @@ export const create = async (request) => {
         /**
          * ករណីមានមិនទិន្នន័យមិនគ្រប់ បង្ហាញព័ត៌មានបរាជ័យ
          */
-        return response.insetFailed({ message: condition.message })
+        return Response.insetFailed({ message: condition.message })
     else
         /**
          * បង្ហាញព័ត៌មានដែលជោគជ័យ
@@ -117,7 +115,7 @@ export const update = async (request, ...options) => {
         /**
          * ករណីមានមិនទិន្នន័យមិនគ្រប់ បង្ហាញព័ត៌មានបរាជ័យ
          */
-        return response.insetFailed({ message: condition.message })
+        return Response.insetFailed({ message: condition.message })
     else
         /**
          * បង្ហាញព័ត៌មានដែលជោគជ័យ

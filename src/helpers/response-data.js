@@ -2,7 +2,7 @@ import { VERSION } from "../db/configs/index.js"
 
 export class Response {
 
-    success = (data, total = null, ...options) => {
+    static success = (data, total = null, ...options) => {
         return {
             status: 200,
             success: true,
@@ -13,7 +13,7 @@ export class Response {
         }
     }
 
-    notFound = (data, ...options) => {
+    static notFound = (data, ...options) => {
         return {
             status: 404,
             success: true,
@@ -23,7 +23,7 @@ export class Response {
         }
     }
 
-    insetSuccess = (...options) => {
+    static insetSuccess = (...options) => {
         return {
             status: 200,
             date: this.date,
@@ -31,7 +31,7 @@ export class Response {
         }
     }
 
-    insetFailed = (...options) => {
+    static insetFailed = (...options) => {
         return {
             status: 400,
             date: this.date,
@@ -39,7 +39,7 @@ export class Response {
         }
     }
 
-    serverError = (message = "", ...options) => {
+    static serverError = (message = "", ...options) => {
         return {
             status: 500,
             success: false,
@@ -49,7 +49,7 @@ export class Response {
         }
     }
 
-    authSuccess = (data, ...options) => {
+    static authSuccess = (data, ...options) => {
         return {
             status: 200,
             success: true,
@@ -59,7 +59,7 @@ export class Response {
         }
     }
 
-    authClient = (message, ...options) => {
+    static authClient = (message, ...options) => {
         return {
             status: 400,
             success: false,
@@ -69,7 +69,7 @@ export class Response {
         }
     }
 
-    unAuth = (message, ...options) => {
+    static unAuth = (message, ...options) => {
         return {
             status: 401,
             success: false,
@@ -79,7 +79,7 @@ export class Response {
         }
     }
 
-    invalidToken = (message, ...options) => {
+    static invalidToken = (message, ...options) => {
         return {
             status: 403,
             success: false,
@@ -89,7 +89,7 @@ export class Response {
         }
     }
 
-    validateError = (data) => {
+    static validateError = (data) => {
         let errors = {};
         data.forEach(error => {
             errors[error.path] = (()=> {

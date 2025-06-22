@@ -3,7 +3,7 @@ import { Response } from "../helpers/response-data.js";
 import { Pagination } from "../helpers/paginations.js";
 import { FileCache } from "../helpers/utils/caches/files.js";
 
-const response = new Response();
+
 const PAGE = new Pagination();
 const cache = new FileCache({
     cacheDir: '.cache-local/users',
@@ -69,7 +69,7 @@ export const getDataDetail = async (id) => {
         `SELECT id, name, email, created_at, updated_at from public.users where id=$1`, [id]
     ).then(
         async result => {
-            const responseData = response.success(result.rows);
+            const responseData = Response.success(result.rows);
             await cache.set(cacheKey, responseData);
             return responseData;
         }
@@ -88,13 +88,13 @@ export const insertData = async (request) => {
             if (result.rowCount < 0)
                 return result
 
-            return response.insetSuccess({ message: "Insert Success." })
+            return Response.insetSuccess({ message: "Insert Success." })
         }
     ).catch(
         reason => {
 
             if (reason.code == "23505")
-                return response.insetFailed({ message: reason.detail });
+                return Response.insetFailed({ message: reason.detail });
 
             console.log(reason)
             return reason
@@ -114,13 +114,13 @@ export const updateData = async (request) => {
 
             // Clear cache after update
             await cache.clear();
-            return response.insetSuccess({ message: "Update Success." });
+            return Response.insetSuccess({ message: "Update Success." });
         }
     ).catch(
         reason => {
 
             if (reason.code == "23505")
-                return response.insetFailed({ message: reason.detail });
+                return Response.insetFailed({ message: reason.detail });
 
             console.log(reason)
             return reason

@@ -3,8 +3,6 @@ import { required } from "../helpers/validation.js"
 import { authLogin } from "../models/auth.js"
 import { Response } from "../helpers/response-data.js"
 
-const response      = new Response()
-
 export const login = async (request) => {
 
     /**
@@ -25,7 +23,7 @@ export const login = async (request) => {
         /**
          * ករណីមានមិនទិន្នន័យមិនគ្រប់ បង្ហាញព័ត៌មានបរាជ័យ
          */
-        return response.authClient({ message : condition.message })
+        return Response.authClient({ message : condition.message })
     else
         /**
          * បង្ហាញព័ត៌មានដែលជោគជ័យ

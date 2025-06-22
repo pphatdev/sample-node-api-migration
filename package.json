@@ -40,6 +40,7 @@
         "npm": "^10.5.1",
         "passport": "^0.7.0",
         "passport-http-bearer-base64": "^1.0.3",
+        "perf_hooks": "^0.0.1",
         "pg": "^8.11.5",
         "pm2": "^6.0.7",
         "serverless-http": "^3.2.0",
