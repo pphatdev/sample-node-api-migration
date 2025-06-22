@@ -4,61 +4,62 @@ const { hash, genSalt, compare } = bcryptjs;
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
 import { Pagination } from "../helpers/paginations.js";
+import { executeQuery } from "../db/query.js";
+
+const PAGE = new Pagination()
 
 class PasswordModel {
-    static #response = new Response();
     static #pagination = new Pagination();
 
-    static #validateSort(sort) {
-        const allowedSortValues = ["name", "id", "password"];
-        return allowedSortValues.includes(sort) ? sort : "name";
-    }
-
-    static async getData({ page, limit, search, sort }) {
+    static async getData(request) {
         try {
-            const count = await client.query(`SELECT count(id) from public.users`);
-            const total = count.rows[0].count || 0;
+            let limit = request.limit || 20;
+            const { page, search, sort } = request
 
-            const query = PasswordModel.#pagination.query({
+            if (!Number(limit))
+                limit = null
+
+            const countResult = await executeQuery(`SELECT count(id) from public.users`);
+
+            const total = countResult.data.rows[0].count || 0
+            const query = PAGE.query({
                 table: 'public.users',
-                selectColumns: ["id", "name", "password"],
-                conditions: {
-                    operator: 'WHERE',
-                    value: ''
-                },
-                page,
-                limit: '$1',
+                selectColumns: ["*"],
+                conditions: { operator: 'WHERE', value: '' },
+                page: page,
+                limit: limit,
                 search: {
-                    column: ['name'],
+                    column: [],
                     value: search,
                     operator: "or",
                     withWere: true
                 },
                 sort: {
-                    column: ["name"],
-                    value: PasswordModel.#validateSort(sort)
+                    // column: ["id"],
+                    value: sort
                 },
-            });
+            })
 
-            const result = await client.query(query, [limit]);
-            return {
-                data: result.rows,
-                count: total,
-                show: result.rowCount
-            };
+            const result = await executeQuery(query, []);
+
+            return Response.success(
+                result.data.rows,
+                total
+            );
+
         } catch (error) {
-            console.error(error);
-            throw error;
+            console.error('Error in getData:', error);
+            return Response.serverError({ message: 'Failed to retrieve posts' });
         }
     }
 
-    static async getDataDetail({id}) {
+    static async getDataDetail({ id }) {
         try {
             const result = await client.query(
                 `SELECT id, name, password from public.users where id=$1`,
                 [id]
             );
-            return PasswordModel.#response.success(result.rows);
+            return Response.success(result.rows);
         } catch (error) {
             console.error(error);
             throw error;
@@ -76,7 +77,7 @@ class PasswordModel {
             const isMatch = await compare(oldPassword, currentPassword);
 
             if (!isMatch) {
-                return PasswordModel.#response.insetFailed({
+                return Response.insetFailed({
                     message: "Old Password is not match."
                 });
             }
@@ -93,12 +94,12 @@ class PasswordModel {
                 return result;
             }
 
-            return PasswordModel.#response.insetSuccess({
+            return Response.insetSuccess({
                 message: "Update Success."
             });
         } catch (error) {
             if (error.code === "23505") {
-                return PasswordModel.#response.insetFailed({
+                return Response.insetFailed({
                     message: error.detail
                 });
             }
