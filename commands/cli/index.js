@@ -1,6 +1,6 @@
 import moment from "moment";
 import { createSQL } from "../sql/create.js";
-import { migrate } from "../sql/migrate.js";
+import { migrate, procedures, views } from "../sql/migrate.js";
 import { createController } from "../controllers/index.js";
 import { createModel } from "../models/index.js";
 import { createRoutes } from "../routes/index.js";
@@ -48,6 +48,8 @@ if (commandLength >= 3) {
     */
     if ((options[0]) === '--migrate') {
         migrate()
+        views()
+        procedures()
 
         new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
             console.log(`✅🌈  Migration completed!\n`)

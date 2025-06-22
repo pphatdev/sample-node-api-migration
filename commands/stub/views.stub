@@ -1,0 +1,4 @@
+-- public.[name] source
+
+CREATE OR REPLACE VIEW public.[name]
+AS ;
