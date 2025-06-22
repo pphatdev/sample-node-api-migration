@@ -11,6 +11,10 @@ export class Pagination {
             operator: 'WHERE',
             value: ''
         },
+        sort: {
+            column: ["id"],
+            value: 'ASC'
+        },
         page: PAGE,
         limit: LIMIT,
         search: SEARCH,
@@ -80,7 +84,7 @@ export class Pagination {
          * @param {String} sort.column
          * @return {String} `column1, column2`
          */
-        const sorts = Array.from(sort.column).map(column => column).join(", ")
+        const sorts = Array.from(sort.column || ["id"] ).map(column => column).join(", ")
 
         /**
          * Initalize conditions
