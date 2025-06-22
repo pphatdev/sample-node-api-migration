@@ -1,15 +1,15 @@
 import { Router } from 'express'
-import { create, update, get, getOnce } from '../controllers/posts.js'
 import { authenticateToken } from '../middlewares/authenticate.js'
 import { Validation } from '../helpers/validator.js'
-export const ROUTE = Router()
+import { getData, getDataDetail, insertData, updateData } from '../models/posts.js'
 
+export const ROUTE = Router()
 
 ROUTE.use((req, res, next) => authenticateToken(req, res, next))
 
 ROUTE.post("/",
     async (req, res) => {
-        const response = await create(req.body)
+        const response = await insertData(req.body)
         res.send(response)
     }
 )
@@ -17,7 +17,7 @@ ROUTE.post("/",
 ROUTE.get("/",
     Validation.base.list,
     async (req, res) => {
-        const response = await get(req.query)
+        const response = await getData(req.query)
         res.send(response)
     }
 )
@@ -25,14 +25,14 @@ ROUTE.get("/",
 ROUTE.get("/:id",
     Validation.base.detail,
     async (req, res) => {
-        const response = await getOnce({id: req.params.id})
+        const response = await getDataDetail(req.params)
         res.send(response)
     }
 )
 
 ROUTE.put("/",
     async (req, res) => {
-        const response = await update(req.body)
+        const response = await updateData(req.body)
         res.send(response)
     }
 )
