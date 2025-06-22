@@ -17,5 +17,10 @@ export class Validation {
 
     static base = {
         list: Validation.list(),
+        detail: query('id').isUUID().withMessage('ID must be a valid UUID'),
+        id: query('id').isNumeric().withMessage('ID must be a valid number')
     }
+
+    static idUUID = query('id').isUUID().withMessage('ID must be a valid UUID')
+    static id = query('id').isNumeric().withMessage('ID must be a valid number')
 }
