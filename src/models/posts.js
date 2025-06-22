@@ -21,9 +21,6 @@ export const getData = async (request) => {
             limit = null
 
         const countResult = await executeQuery(`SELECT count(id) from public.posts`);
-        if (!countResult.success) {
-            throw new Error('Failed to get post count');
-        }
 
         const total = countResult.data.rows[0].count || 0
         const query = PAGE.query({
@@ -42,15 +39,12 @@ export const getData = async (request) => {
                 withWere: true
             },
             sort: {
-                column: [],
+                column: ["id"],
                 value: sort
             },
         })
 
         const result = await executeQuery(query, []);
-        if (!result.success) {
-            throw new Error('Failed to get posts data');
-        }
 
         return Response.success(
             result.data.rows,
