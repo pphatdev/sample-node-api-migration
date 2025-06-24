@@ -52,8 +52,13 @@ export const getData = async (request) => {
                 count: total,
                 show: result.rowCount
             };
+
             await cache.set(cacheKey, data);
-            return data;
+
+            return Response.success(
+                data.data,
+                data.show
+            );
         }
     ).catch(reason => console.log(reason));
 };
