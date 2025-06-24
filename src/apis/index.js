@@ -7,6 +7,7 @@ import { ROUTE as PASSWORD } from './password.js'
 import { ROUTE as AUTH } from './auth.js'
 import { ROUTE as FILES } from './images.js'
 import { ROUTE as POSTS } from './posts.js'
+import { ROUTE as PROJECTS } from './projects.js'
 
 import { rateLimit } from 'express-rate-limit'
 
@@ -19,7 +20,6 @@ const limiter = rateLimit({
 	standardHeaders: 'draft-7',
 	legacyHeaders: false
 })
-
 
 /**
  * Define Body Parser
@@ -39,5 +39,6 @@ ROUTE.use(`${API}/password`, PASSWORD)
 
 ROUTE.use(`${API}/posts`, POSTS)
 
+ROUTE.use(`${API}/projects`, PROJECTS)
 
 export default ROUTE
