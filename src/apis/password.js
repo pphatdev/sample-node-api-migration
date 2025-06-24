@@ -2,8 +2,9 @@ import { Router } from 'express'
 import { authenticateToken } from '../middlewares/authenticate.js'
 import { Validation } from '../helpers/validator.js'
 import PasswordModel from '../models/password.js'
+import { Controller } from '../helpers/response/controller.js'
 
-const { getData, getDataDetail, updateData} = PasswordModel
+const { getData, getDataDetail, updateData } = PasswordModel
 
 export const ROUTE = Router()
 
@@ -17,12 +18,9 @@ ROUTE.get("/",
     }
 )
 
-ROUTE.get("/:id",  async (req, res) => {
-    const data = await getDataDetail(req.params)
-    res.send(data)
-})
+ROUTE.get("/:id", async (req, res) => Controller.getOnce(req, res, getDataDetail))
 
-ROUTE.put("/",  async (req, res) => {
+ROUTE.put("/", async (req, res) => {
     const data = await updateData(req.body)
     res.send(data)
 })
