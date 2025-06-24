@@ -3,10 +3,9 @@
 -- Drop table
 
 -- DROP TABLE public.users;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE IF NOT EXISTS public.users (
-	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+	id bigserial NOT NULL,
 	"name" varchar(255) NOT NULL,
 	email varchar(255) NOT NULL,
 	email_verified_at timestamp(0) NULL,

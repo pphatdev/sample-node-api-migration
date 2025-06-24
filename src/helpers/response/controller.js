@@ -26,7 +26,7 @@ export class Controller {
     static async getOnce(req, res, getDetail) {
         const query = { ...req.params, ...req.query }
         const schema = Joi.object({
-            id: Joi.number().required()
+            id: Joi.string().uuid().required()
         });
 
         const { error } = schema.validate(query);
