@@ -3,18 +3,18 @@ import path from 'path'
 
 const storage = multer.diskStorage({
     destination: 'public/uploads/images',
-    filename: (req, file, cb) => {
+    filename: (req, file, next) => {
         const uniqueId = crypto.randomUUID()
-        cb(null, uniqueId + path.extname(file.originalname))
+        next(null, uniqueId + path.extname(file.originalname))
     }
 })
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req, file, next) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
     if (allowedTypes.includes(file.mimetype)) {
-        cb(null, true)
+        next(null, true)
     } else {
-        cb(new Error('Invalid file type. Only JPEG, PNG, GIF and WebP allowed.'), false)
+        next(new Error('Invalid file type. Only JPEG, PNG, GIF and WebP allowed.'), false)
     }
 }
 
