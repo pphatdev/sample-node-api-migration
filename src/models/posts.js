@@ -74,7 +74,7 @@ export const getDataDetail = async ({ id }) => {
             return Response.notFound({ message: 'Post not found' });
         }
 
-        const responseData = Response.success(result.data.rows);
+        const responseData = Response.detailSuccess(result.data.rows);
         await cache.set(cacheKey, responseData);
 
         return responseData;

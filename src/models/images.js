@@ -44,7 +44,7 @@ class ImageModel {
 
         try {
             const result = await client.query(query, [sort]);
-            const responseData = Response.success(result.rows, Number(total));
+            const responseData = Response.detailSuccess(result.rows, Number(total));
             await ImageModel.#cache.set(cacheKey, responseData);
             return responseData;
         } catch (error) {

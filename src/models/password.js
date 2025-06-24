@@ -59,7 +59,7 @@ class PasswordModel {
                 `SELECT id, name, password from public.users where id=$1`,
                 [id]
             );
-            return Response.success(result.rows);
+            return Response.detailSuccess(result.rows);
         } catch (error) {
             console.error(error);
             throw error;

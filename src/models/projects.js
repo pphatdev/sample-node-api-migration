@@ -54,7 +54,7 @@ export const getDataDetail = async ({ id }) => {
     return await client.query(
         `SELECT * from public.projects where id=$1`, [id]
     ).then(
-        async result => Response.success( result.rows )
+        async result => Response.detailSuccess( result.rows )
     ).catch(
         reason => console.log(reason)
     )
