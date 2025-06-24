@@ -3,11 +3,12 @@
 -- Drop table
 
 -- DROP TABLE public.projects;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 DROP TABLE IF EXISTS public.projects;
 
 CREATE TABLE IF NOT EXISTS public.projects (
-	id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 	name VARCHAR(255) NOT NULL,
 	description TEXT,
 	image VARCHAR(255),

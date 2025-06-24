@@ -3,11 +3,10 @@
 -- Drop table
 
 -- DROP TABLE public.post_contents;
-
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE IF NOT EXISTS public.post_contents (
-	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 	parent_id UUID NOT NULL REFERENCES public.posts(id) ON DELETE CASCADE,
 	content JSONB NOT NULL,
 	"status" BOOLEAN NOT NULL DEFAULT true,
