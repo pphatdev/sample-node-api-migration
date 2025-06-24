@@ -15,6 +15,8 @@ class PasswordModel {
         try {
             let limit = request.limit || 20;
             const { page, search, sort } = request
+            const allowedSortColumns = ["id", "name", "created_at"]; // Whitelist of allowed columns
+            const validatedSort = allowedSortColumns.includes(sort) ? sort : "id"; // Default to "id" if invalid
 
             if (!Number(limit))
                 limit = null
@@ -36,7 +38,7 @@ class PasswordModel {
                 },
                 sort: {
                     // column: ["id"],
-                    value: sort
+                    value: validatedSort
                 },
             })
 
