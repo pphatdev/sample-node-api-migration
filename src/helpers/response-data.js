@@ -7,7 +7,7 @@ export class Response {
             status: 200,
             success: true,
             version: VERSION,
-            total: total,
+            total: parseFloat(total || 0),
             result: data,
             ...options
         }
