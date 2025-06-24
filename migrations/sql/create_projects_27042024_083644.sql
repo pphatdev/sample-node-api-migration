@@ -4,14 +4,19 @@
 
 -- DROP TABLE public.projects;
 
+DROP TABLE IF EXISTS public.projects;
+
 CREATE TABLE IF NOT EXISTS public.projects (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
-	description VARCHAR(255) ,
-	icon VARCHAR(255) NOT NULL,
-	live VARCHAR(255) NOT NULL,
-	source VARCHAR(255) NOT NULL,
-	"status" BOOLEAN NOT NULL DEFAULT true,
+	description TEXT,
+	image VARCHAR(255),
+	published BOOLEAN NOT NULL DEFAULT true,
+	tags TEXT[],
+	source JSONB,
+	authors JSONB,
+	languages TEXT[],
 	is_deleted BOOLEAN NOT NULL DEFAULT false,
-	created_date DATE NOT NULL DEFAULT now()
+	created_date TIMESTAMP NOT NULL DEFAULT now(),
+	updated_date TIMESTAMP DEFAULT now()
 );
