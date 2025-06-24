@@ -15,7 +15,8 @@ export const migrate = () => {
             console.log(`〽️ \x1b[30m[${response.command}]:\x1b[32m ${file}\x1b[0m`)
         }
         else {
-            const messages = [...response]
+            // Handle case where response might be an array of results
+            const messages = Array.isArray(response) ? response : [response]
             console.log(`〽️ \x1b[30m[${messages[0].command}]:\x1b[32m ${file}\x1b[0m`)
         }
     });
@@ -36,7 +37,8 @@ export const views = () => {
             console.log(`〽️ \x1b[30m[${response.command}]:\x1b[32m ${file}\x1b[0m`)
         }
         else {
-            const messages = [...response]
+            // Handle case where response might be an array of results
+            const messages = Array.isArray(response) ? response : [response]
             console.log(`〽️ \x1b[30m[${messages[0].command}]:\x1b[32m ${file}\x1b[0m`)
         }
     });
@@ -47,7 +49,7 @@ export const procedures = () => {
     const files = fs.readdirSync('./migrations/functions').map( file => { return file })
 
     // Starting message
-    console.log(`♻️  Reading from ${files.length} functions ${files.length > 1 ? "files" : 'file'}: [\x1b[35m./src/db/functions/*.sql\x1b[0m\]`)
+    console.log(`♻️  Reading from ${files.length} functions ${files.length > 1 ? "files" : 'file'}: [\x1b[35m./src/db/functions/*.sql\x1b[0m\]\n`)
 
     files.map(async file => {
         const reading   = fs.readFileSync('./migrations/functions/' + file, 'utf8');
@@ -56,8 +58,9 @@ export const procedures = () => {
             console.log(`〽️ \x1b[30m[${response.command}]:\x1b[32m ${file}\x1b[0m`)
         }
         else {
-            const messages = [...response]
-            console.log(`〽️ \x1b[30m[${messages[0].command}]:\x1b[32m ${file}\x1b[0m`)
+            // Handle case where response might be an array of results
+            const messages = Array.isArray(response) ? response : [response]
+            console.log(`〽️ \x1b[30m[${messages[0].command ?? "EXAMPLE"}]:\x1b[32m ${file}\x1b[0m`)
         }
     });
 }
