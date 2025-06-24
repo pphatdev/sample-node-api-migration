@@ -16,7 +16,11 @@ export const getData = async (request) => {
     // Create cache key from request parameters
     const cacheKey = `list_${page}_${limit}_${search}_${sort}`;
     const cachedData = await cache.get(cacheKey);
-    if (cachedData) { return cachedData; }
+
+    if (cachedData) return Response.success(
+        cachedData ? cachedData.data : [],
+        cachedData ? cachedData.count : 0
+    )
 
     const count = await client.query(`SELECT count(id) from public.users`);
     const total = count.rows[0].count || 0;
@@ -66,6 +70,7 @@ export const getData = async (request) => {
 export const getDataDetail = async (id) => {
     const cacheKey = `detail_${id}`;
     const cachedData = await cache.get(cacheKey);
+
     if (cachedData) {
         return cachedData;
     }
@@ -74,9 +79,18 @@ export const getDataDetail = async (id) => {
         `SELECT id, name, email, created_at, updated_at from public.users where id=$1`, [id]
     ).then(
         async result => {
-            const responseData = Response.success(result.rows);
+
+            if (result.rowCount > 0) {
+                const responseData = Response.detailSuccess(result.rows);
+                await cache.set(cacheKey, responseData);
+                return responseData;
+            }
+
+            const responseData = Response.notFound({ message: "Data not found." });
             await cache.set(cacheKey, responseData);
+
             return responseData;
+
         }
     ).catch(reason => console.log(reason));
 };
