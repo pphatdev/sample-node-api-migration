@@ -81,7 +81,7 @@ export const getDataDetail = async ({ id }) => {
 
     } catch (error) {
         console.warn('Error in getDataDetail:', error);
-        return Response.failed({ message: 'Failed to retrieve post detail' });
+        return Response.insetFailed({ message: 'Failed to retrieve post detail' });
     }
 };
 
