@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { authenticateToken } from '../middlewares/authenticate.js'
 import { Validation } from '../helpers/validator.js'
 import { getData, getDataDetail, insertData, updateData } from '../models/posts.js'
+import { Controller } from '../helpers/response/controller.js'
 
 export const ROUTE = Router()
 
@@ -22,13 +23,7 @@ ROUTE.get("/",
     }
 )
 
-ROUTE.get("/:id",
-    Validation.base.detail,
-    async (req, res) => {
-        const response = await getDataDetail(req.params)
-        res.send(response)
-    }
-)
+ROUTE.get("/:id", async (req, res) => Controller.getOnce(req, res, getDataDetail))
 
 ROUTE.put("/",
     async (req, res) => {
