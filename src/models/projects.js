@@ -5,6 +5,7 @@ import ip from "ip";
 import ImageModel from "./images.js";
 import { PORT, VERSION } from "../db/configs/index.js";
 import { FileCache } from "../helpers/utils/caches/files.js";
+import { paramsToNameFile } from "../helpers/utils/convertion/string.js";
 
 const PAGE = new Pagination()
 
@@ -18,7 +19,7 @@ export const getData = async (request) => {
     const { page, limit, search, sort, published } = request
 
     // Create cache key based on request parameters
-    const cacheKey = `projects_list_${Object.entries(request).sort().map(([key, value]) => `${key}-${value}`).join('_')}`;
+    const cacheKey = `projects_list_${paramsToNameFile(request)}`;
 
     // Try to get data from cache first
     const cachedData = await cache.get(cacheKey)
