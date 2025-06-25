@@ -14,6 +14,9 @@ import { rateLimit } from 'express-rate-limit'
 const API   = `/api/${VERSION}`
 const ROUTE = Router()
 
+ROUTE.use(`${API}/projects`, PROJECTS)
+
+
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
@@ -38,7 +41,5 @@ ROUTE.use(`${API}/files`, FILES)
 ROUTE.use(`${API}/password`, PASSWORD)
 
 ROUTE.use(`${API}/posts`, POSTS)
-
-ROUTE.use(`${API}/projects`, PROJECTS)
 
 export default ROUTE
