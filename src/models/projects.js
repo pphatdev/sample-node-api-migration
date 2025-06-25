@@ -1,13 +1,10 @@
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
-import { Pagination } from "../helpers/paginations.js";
-import ip from "ip";
-import ImageModel from "./images.js";
-import { PORT, VERSION } from "../db/configs/index.js";
+import { query as pagination } from "../helpers/paginations.js";
+import { DEFAULT_IMAGE_SOURCE } from "../helpers/utils/constant.js";
 import { FileCache } from "../helpers/utils/caches/files.js";
 import { paramsToNameFile } from "../helpers/utils/convertion/string.js";
-
-const PAGE = new Pagination()
+import { insertData as insetImage } from "./images.js";
 
 // Initialize cache with 15 minutes TTL for projects data
 const cache = new FileCache({
@@ -17,7 +14,7 @@ const cache = new FileCache({
 
 export const getData = async (request) => {
 
-    const { page, limit, search, sort, published, image } = request
+    const { page, limit, search, sort, published, image } = {DEFAULT_IMAGE_SOURCE,...request}
 
     // option for image
     const imageOption = new URLSearchParams(image).toString();
@@ -35,7 +32,7 @@ export const getData = async (request) => {
     const count = await client.query(`SELECT count(id) from public.projects`)
     const total = count.rows[0].count || 0
 
-    const query = PAGE.query({
+    const query = pagination({
         table: 'public.get_projects',
         selectColumns: [
             "id",
@@ -114,7 +111,7 @@ export const insertData = async (request) => {
 
     request.body.image = request.file.filename;
 
-    const { status } = await ImageModel.insertData(fileData)
+    const { status } = await insetImage(fileData)
 
     if (status !== 200) {
         res.status(status).json(Response.insetFailed({ message: "Failed to insert image data." }));

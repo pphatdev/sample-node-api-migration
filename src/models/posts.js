@@ -1,11 +1,9 @@
 import { Response } from "../helpers/response-data.js";
-import { Pagination } from "../helpers/paginations.js";
+import { query as pagination } from "../helpers/paginations.js";
 import { FileCache } from "../helpers/utils/caches/files.js";
 import { required } from "../helpers/validation.js";
 import { executeQuery } from "../db/query.js";
 import Joi from "joi";
-
-const PAGE = new Pagination()
 
 const cache = new FileCache({
     cacheDir: '.cache-local/posts',
@@ -23,7 +21,7 @@ export const getData = async (request) => {
         const countResult = await executeQuery(`SELECT count(id) from public.posts`);
 
         const total = countResult.data.rows[0].count || 0
-        const query = PAGE.query({
+        const query = pagination({
             table: 'public.posts',
             selectColumns: ["*"],
             conditions: {

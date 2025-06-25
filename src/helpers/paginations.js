@@ -2,9 +2,9 @@ import { LIMIT, PAGE, SEARCH, SORT } from "../db/configs/index.js";
 import SqlString from "sqlstring";
 const { escape } = SqlString
 
-export class Pagination {
+class Pagination {
 
-    query = (params) => {
+    static query = (params) => {
 
         const options = {
             ...{
@@ -131,3 +131,7 @@ export class Pagination {
         return query
     }
 }
+
+export const {
+    query
+} = Pagination

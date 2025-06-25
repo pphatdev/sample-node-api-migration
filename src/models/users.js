@@ -1,10 +1,9 @@
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
-import { Pagination } from "../helpers/paginations.js";
+import { query as pagination } from "../helpers/paginations.js";
 import { FileCache } from "../helpers/utils/caches/files.js";
 
 
-const PAGE = new Pagination();
 const cache = new FileCache({
     cacheDir: '.cache-local/users',
     ttl: 3600 // 1 hour
@@ -29,7 +28,7 @@ export const getData = async (request) => {
     const allowedSortColumns = ["name", "email"];
     const sortColumn = allowedSortColumns.includes(sort) ? sort : "name";
 
-    const query = PAGE.query({
+    const query = pagination({
         table: 'public.users',
         selectColumns: ["id", "name", "email", "created_at", "updated_at"],
         conditions: {

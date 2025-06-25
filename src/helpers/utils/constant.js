@@ -1,0 +1,1 @@
+export const DEFAULT_IMAGE_SOURCE = { w: 512, q: 80, fmt: 'webp', fit: 'cover' };

@@ -3,14 +3,10 @@ const { hash, genSalt, compare } = bcryptjs;
 
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
-import { Pagination } from "../helpers/paginations.js";
+import { query as pagination } from "../helpers/paginations.js";
 import { executeQuery } from "../db/query.js";
 
-const PAGE = new Pagination()
-
 class PasswordModel {
-    static #pagination = new Pagination();
-
     static async getData(request) {
         try {
             let limit = request.limit || 20;
@@ -24,7 +20,7 @@ class PasswordModel {
             const countResult = await executeQuery(`SELECT count(id) from public.users`);
 
             const total = countResult.data.rows[0].count || 0
-            const query = PAGE.query({
+            const query = pagination({
                 table: 'public.users',
                 selectColumns: ["*"],
                 conditions: { operator: 'WHERE', value: '' },

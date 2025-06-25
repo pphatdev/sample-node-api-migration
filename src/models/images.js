@@ -1,12 +1,11 @@
 import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
-import { Pagination } from "../helpers/paginations.js";
+import { query as pagination } from "../helpers/paginations.js";
 import { FileCache } from "../helpers/utils/caches/files.js";
 import { paramsToNameFile } from "../helpers/utils/convertion/string.js";
 
 class ImageModel {
 
-    static pagination = new Pagination();
     static cache = new FileCache({
         cacheDir: '.cache-local/images',
         ttl: Infinity // Cache will not expire
@@ -25,7 +24,7 @@ class ImageModel {
         const count = await client.query(`SELECT count(id) from public.files`);
         const total = count.rows[0].count || 0;
 
-        const query = ImageModel.pagination.query({
+        const query = pagination({
             table: 'public.files',
             selectColumns: ["id", "filename", "original_name", "mime_type", "size", "path", "created_by", "is_public", "created_date"],
             page,
@@ -117,5 +116,7 @@ class ImageModel {
         }
     }
 }
+
+export const { getData, insertData, getDataDetail, clearCache } = ImageModel;
 
 export default ImageModel;
