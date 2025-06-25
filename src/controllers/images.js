@@ -148,6 +148,10 @@ export const getImage = async (req, res) => {
 
 
 export const get = async (req, res) => {
+
+    console.log('get images data', req?.query, req?.body);
+    
+
     const { page = 1, search, sort = 'asc', limit = -1 } = { ...req?.query, ...req?.body };
     if (!Number(limit))
         limit = null

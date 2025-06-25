@@ -2,18 +2,22 @@ import { client } from "../db/configs/pg.config.js";
 import { Response } from "../helpers/response-data.js";
 import { Pagination } from "../helpers/paginations.js";
 import { FileCache } from "../helpers/utils/caches/files.js";
+import { paramsToNameFile } from "../helpers/utils/convertion/string.js";
 
 class ImageModel {
 
-    static #pagination = new Pagination();
-    static #cache = new FileCache({
+    static pagination = new Pagination();
+    static cache = new FileCache({
         cacheDir: '.cache-local/images',
-        ttl: 3600 // 1 hour
+        ttl: Infinity // Cache will not expire
     });
 
-    static async getData({ page, limit, search, sort }) {
-        const cacheKey = `list_${page}_${limit}_${search}_${sort}`;
-        const cachedData = await ImageModel.#cache.get(cacheKey);
+    static async getData(request) {
+
+        const { page, limit, search, sort } = request
+
+        const cacheKey = `list_${paramsToNameFile(request)}`;
+        const cachedData = await ImageModel.cache.get(cacheKey);
         if (cachedData) {
             return cachedData;
         }
@@ -21,13 +25,9 @@ class ImageModel {
         const count = await client.query(`SELECT count(id) from public.files`);
         const total = count.rows[0].count || 0;
 
-        const query = ImageModel.#pagination.query({
+        const query = ImageModel.pagination.query({
             table: 'public.files',
             selectColumns: ["id", "filename", "original_name", "mime_type", "size", "path", "created_by", "is_public", "created_date"],
-            conditions: {
-                operator: 'WHERE',
-                value: ''
-            },
             page,
             limit,
             search: {
@@ -37,15 +37,15 @@ class ImageModel {
                 withWere: true
             },
             sort: {
-                column: ['id', 'original_name'],
-                value: '$1' // Use parameterized query for sort value
+                column: [],
+                value: sort
             },
         });
 
         try {
-            const result = await client.query(query, [sort]);
-            const responseData = Response.detailSuccess(result.rows, Number(total));
-            await ImageModel.#cache.set(cacheKey, responseData);
+            const result = await client.query(query, []);
+            const responseData = Response.success(result.rows, Number(total));
+            await ImageModel.cache.set(cacheKey, responseData);
             return responseData;
         } catch (error) {
             console.error(error);
@@ -66,7 +66,7 @@ class ImageModel {
 
             if (result.rowCount < 0) return result;
 
-            await ImageModel.#cache.clear();
+            await ImageModel.cache.clear();
             return Response.insetSuccess({
                 id: result.rows[0].id,
                 message: "Image uploaded successfully.",
@@ -84,7 +84,7 @@ class ImageModel {
 
     static async getDataDetail({id}) {
         const cacheKey = `detail_${id}`;
-        const cachedData = await ImageModel.#cache.get(cacheKey);
+        const cachedData = await ImageModel.cache.get(cacheKey);
         if (cachedData) {
             return cachedData;
         }
@@ -95,8 +95,18 @@ class ImageModel {
                 [id]
             );
             const responseData = Response.success(result.rows, 1);
-            await ImageModel.#cache.set(cacheKey, responseData);
+            await ImageModel.cache.set(cacheKey, responseData);
             return responseData;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async clearCache() {
+        try {
+            await ImageModel.cache.clear();
+            return Response.success(null, 0, "Cache cleared successfully.");
         } catch (error) {
             console.error(error);
             throw error;
