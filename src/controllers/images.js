@@ -8,8 +8,9 @@ import { createReadStream, promises as fs } from 'fs'
 import { Response } from "../helpers/response-data.js"
 import { PORT, VERSION } from "../db/configs/index.js"
 import { ImageCache } from "../helpers/utils/caches/images.js"
+import { paramsToNameFile } from "../helpers/utils/convertion/string.js"
 
-const { getData, getDataDetail, insertData } = ImageModel
+const { getData, insertData } = ImageModel
 
 export const uploadSingle = upload.single('file')
 
@@ -63,16 +64,16 @@ const imageCache = new ImageCache({ ttl: 3600 }); // 1 hour cache
 
 export const getImage = async (req, res) => {
     try {
-        const { filename, publicPath } = req.params;
+        const { filename, folder } = req.params;
         const { fm, q, w, h, fit } = req.query;
-        const rootDir = path.join(process.cwd(), publicPath ?? 'public/uploads/images');
+        const rootDir = path.join(process.cwd(), `public/uploads/${folder || 'images'}`);
         const filePath = path.resolve(rootDir, filename);
 
         if (!filePath.startsWith(rootDir)) {
             return res.status(403).json({ error: 'Forbidden' });
         }
 
-        const cacheKey = `${filename}-w${w || ''}-h${h || ''}-fm${fm || ''}-q${q || ''}-fit${fit || ''}`;
+        const cacheKey = `_file_${paramsToNameFile({...req.params, ...req.query})}`;
 
         // Try to get from cache first
         const cachedImage = await imageCache.getImage(cacheKey, '.png');
@@ -146,9 +147,6 @@ export const getImage = async (req, res) => {
 
 
 export const get = async (req, res) => {
-
-    console.log('get images data', req?.query, req?.body);
-    
 
     const { page = 1, search, sort = 'asc', limit = -1 } = { ...req?.query, ...req?.body };
     if (!Number(limit))

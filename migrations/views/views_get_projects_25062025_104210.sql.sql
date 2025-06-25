@@ -5,7 +5,7 @@ select
     p.id,
     "name",
     p.description,
-    concat ('/api/v1/files/image/', p.image) as image,
+    concat ('/api/v1/files/projects/', p.image) as image,
     p.published,
     p.tags,
     p."source",

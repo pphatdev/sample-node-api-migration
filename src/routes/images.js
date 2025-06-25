@@ -11,7 +11,7 @@ ROUTE.get("/", Validation.base.list, async (req, res) => {
     res.send(response)
 })
 
-ROUTE.get("/image/:filename", getImage)
+ROUTE.get("/:folder/:filename", getImage)
 
 ROUTE.get("/:id", Validation.base.detail, (req, res) => {
     const { id } = req.params
