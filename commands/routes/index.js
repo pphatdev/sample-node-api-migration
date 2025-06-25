@@ -9,7 +9,7 @@ export const createRoutes = (filename) =>
 {
     try {
 
-        const oldFile   = fs.existsSync(`./src/apis/${filename.replaceAll('_','-')}.js`)
+        const oldFile   = fs.existsSync(`./src/routes/${filename.replaceAll('_','-')}.js`)
         if (oldFile) {
             return console.log(`\x1b[41m Route file is already exist!\x1b[0m\n`)
             // process.exit(0)
@@ -27,13 +27,13 @@ export const createRoutes = (filename) =>
         }
 
         const content   = fromStubs.replaceAll('[name]', filename.replaceAll('_','-'))
-        return fs.writeFileSync(`./src/apis/${filename.replaceAll('_','-')}.js`, content);
+        return fs.writeFileSync(`./src/routes/${filename.replaceAll('_','-')}.js`, content);
 
     } catch (err) {
 
         console.error(err);
     }
     finally {
-        console.log(`➡️  \x1b[30m[CREATED]:\x1b[32m ./src/apis/routes/${filename}.js\x1b[0m`)
+        console.log(`➡️  \x1b[30m[CREATED]:\x1b[32m ./src/routes/routes/${filename}.js\x1b[0m`)
     }
 }

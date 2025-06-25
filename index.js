@@ -1,5 +1,5 @@
 import express from 'express'
-import ROUTE from './src/apis/index.js'
+import ROUTE from './src/routes/index.js'
 import { Response } from './src/helpers/response-data.js'
 import { ENV, PORT, VERSION } from './src/db/configs/index.js'
 

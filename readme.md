@@ -15,7 +15,7 @@ src
 ├───helpers
 ├───middlewares
 ├───models
-└───apis
+└───routes
 ```
 
 ### Project CLI Built-in
