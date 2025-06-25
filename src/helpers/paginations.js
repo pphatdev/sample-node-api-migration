@@ -121,7 +121,7 @@ export class Pagination {
                 ? `LIMIT ${limit}`
                 : noValue
             }
-            ${page
+            ${typeof limit === 'number' && page
                 ? `OFFSET ${(page - 1) * limit}`
                 : noValue
             }`
