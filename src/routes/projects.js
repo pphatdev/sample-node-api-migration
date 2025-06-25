@@ -6,9 +6,8 @@ import {
     getDataDetail,
     insertData,
     updateData,
-    clearProjectsCache,
-    clearProjectCache,
-    getCacheStats
+    getCacheStats,
+    clearCache
 } from '../models/projects.js'
 import { uploadSingle } from '../controllers/images.js'
 import { Controller } from '../helpers/response/controller.js'
@@ -52,7 +51,7 @@ ROUTE.put("/",
 ROUTE.delete("/cache/clear-all",
     async (req, res) => {
         try {
-            await clearProjectsCache()
+            await clearCache()
             res.json({
                 success: true,
                 message: "All projects cache cleared successfully"
@@ -67,24 +66,6 @@ ROUTE.delete("/cache/clear-all",
     }
 )
 
-ROUTE.delete("/cache/clear/:id",
-    async (req, res) => {
-        try {
-            const { id } = req.params
-            await clearProjectCache(id)
-            res.json({
-                success: true,
-                message: `Cache cleared for project ID: ${id}`
-            })
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Failed to clear project cache",
-                error: error.message
-            })
-        }
-    }
-)
 
 ROUTE.get("/cache/stats",
     async (req, res) => {

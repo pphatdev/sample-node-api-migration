@@ -16,6 +16,7 @@ const cache = new FileCache({
 });
 
 export const getData = async (request) => {
+
     const { page, limit, search, sort, published } = request
 
     // Create cache key based on request parameters
@@ -165,48 +166,14 @@ export const updateData = async (request) => {
     })
 };
 
-
-export const create = async (req, res) => {
+export const clearCache = async () => {
     try {
-        if (!req.file) {
-            return res.status(400).json(Response.insetFailed({ message: 'No file uploaded' }))
-        }
-
-        const fileData = {
-            id: (req.file.filename).split('.')[0],
-            filename: req.file.filename,
-            original_name: req.file.originalname,
-            mime_type: req.file.mimetype,
-            size: req.file.size,
-            path: `http://${ip.address()}:${PORT}/api/${VERSION}/files/image/${req.file.filename}`
-        }
-
-        return res.json(await insertData(fileData))
-
+        await cache.clear();
+        console.log('Projects cache cleared successfully');
+        return Response.success(null, 0, "Cache cleared successfully.");
     } catch (error) {
-        console.error('Upload error:', error)
-        return res.status(500).json(
-            Response.insetFailed({ message: 'Error uploading file' })
-        )
-    }
-}
-
-// Cache management functions
-export const clearProjectsCache = async () => {
-    try {
-        await cache.clear()
-        console.log('All projects cache cleared')
-    } catch (error) {
-        console.error('Error clearing projects cache:', error)
-    }
-}
-
-export const clearProjectCache = async (id) => {
-    try {
-        await cache.del(`project_detail_${id}`)
-        console.log(`Cache cleared for project ID: ${id}`)
-    } catch (error) {
-        console.error(`Error clearing cache for project ID ${id}:`, error)
+        console.error('Error clearing projects cache:', error);
+        return Response.serverError({ message: "Failed to clear cache." });
     }
 }
 

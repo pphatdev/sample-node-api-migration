@@ -4,22 +4,24 @@ const { escape } = SqlString
 
 export class Pagination {
 
-    query = (options = {
-        table: "",
-        selectColumns: [],
-        conditions: {
-            operator: 'WHERE',
-            value: ''
-        },
-        sort: {
-            column: ["id"],
-            value: 'ASC'
-        },
-        page: PAGE,
-        limit: LIMIT,
-        search: SEARCH,
-        sort: SORT,
-    }) => {
+    query = (params) => {
+
+        const options = {
+            ...{
+                table: "",
+                selectColumns: [],
+                conditions: {
+                    operator: 'WHERE', value: ''
+                },
+                sort: { column: ["id"], value: 'ASC' },
+                page: PAGE,
+                limit: LIMIT,
+                search: SEARCH,
+                sort: SORT,
+            },
+            ...params,
+        }
+
 
         const {
             table,
