@@ -1,5 +1,6 @@
 import moment from "moment";
 import { createSQL } from "../sql/create.js";
+import { seeds } from "../sql/seeds.js";
 import { migrate, procedures, views } from "../sql/migrate.js";
 import { createController } from "../controllers/index.js";
 import { createModel } from "../models/index.js";
@@ -57,6 +58,17 @@ if (commandLength >= 3) {
         })
     }
 
+    /**
+     * Insert Seeds
+    */
+    if ((options[0]) === '--seeds') {
+        seeds()
+
+        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+            console.log(`✅🌈  Seeds completed!\n`)
+            process.exit(0)
+        })
+    }
 
     /**
      * Create Controller

@@ -13,7 +13,8 @@
         "create:model": "node ./commands/cli/index.js --model",
         "create:rcm": "node ./commands/cli/index.js --rcm",
         "db:create": "node ./commands/cli/index.js --create",
-        "db:migrate": "node ./commands/cli/index.js --migrate"
+        "db:migrate": "node ./commands/cli/index.js --migrate",
+        "db:seeds": "node ./commands/cli/index.js --seeds"
     },
     "dependencies": {
         "@types/bcryptjs": "^2.4.6",
