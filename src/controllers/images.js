@@ -63,9 +63,9 @@ const imageCache = new ImageCache({ ttl: 3600 }); // 1 hour cache
 
 export const getImage = async (req, res) => {
     try {
-        const { filename } = req.params;
+        const { filename, publicPath } = req.params;
         const { fm, q, w, h, fit } = req.query;
-        const rootDir = path.join(process.cwd(), 'public/uploads/images');
+        const rootDir = path.join(process.cwd(), publicPath ?? 'public/uploads/images');
         const filePath = path.resolve(rootDir, filename);
 
         if (!filePath.startsWith(rootDir)) {

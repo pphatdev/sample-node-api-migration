@@ -27,10 +27,10 @@ export const getData = async (request) => {
 
     // Try to get data from cache first
     const cachedData = await cache.get(cacheKey)
-    // if (cachedData) {
-    //     console.log('Returning cached projects data')
-    //     return cachedData
-    // }
+    if (cachedData) {
+        console.log('Returning cached projects data')
+        return cachedData
+    }
 
     const count = await client.query(`SELECT count(id) from public.projects`)
     const total = count.rows[0].count || 0
