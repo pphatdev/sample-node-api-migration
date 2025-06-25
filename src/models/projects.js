@@ -18,7 +18,7 @@ export const getData = async (request) => {
     const { page, limit, search, sort, published } = request
 
     // Create cache key based on request parameters
-    const cacheKey = `projects_list_${JSON.stringify({ page, limit, search, sort, published })}`
+    const cacheKey = `projects_list_${Object.entries(request).sort().map(([key, value]) => `${key}-${value}`).join('_')}`;
 
     // Try to get data from cache first
     const cachedData = await cache.get(cacheKey)
