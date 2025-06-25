@@ -94,9 +94,13 @@ class ImageModel {
                 `SELECT * from public.files where id=$1`,
                 [id]
             );
-            const responseData = Response.success(result.rows, 1);
-            await ImageModel.cache.set(cacheKey, responseData);
+
+            const responseData = result.rowCount > 0
+                ? Response.detailSuccess(result.rows)
+                : Response.notFound({ message: "Data not found." });
+                await ImageModel.cache.set(cacheKey, responseData);
             return responseData;
+
         } catch (error) {
             console.error(error);
             throw error;

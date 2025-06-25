@@ -17,34 +17,36 @@ const cache = new FileCache({
 
 export const getData = async (request) => {
 
-    const { page, limit, search, sort, published } = request
+    const { page, limit, search, sort, published, image } = request
+
+    // option for image
+    const imageOption = new URLSearchParams(image).toString();
 
     // Create cache key based on request parameters
     const cacheKey = `projects_list_${paramsToNameFile(request)}`;
 
     // Try to get data from cache first
     const cachedData = await cache.get(cacheKey)
-    if (cachedData) {
-        console.log('Returning cached projects data')
-        return cachedData
-    }
+    // if (cachedData) {
+    //     console.log('Returning cached projects data')
+    //     return cachedData
+    // }
 
     const count = await client.query(`SELECT count(id) from public.projects`)
     const total = count.rows[0].count || 0
 
     const query = PAGE.query({
-        table: 'public.projects',
+        table: 'public.get_projects',
         selectColumns: [
             "id",
             "name",
             "description",
-            "image",
+            `concat(image, '?${imageOption}') as image`,
             "published",
             "tags",
-            "source::json as source",
-            "authors::json as authors",
+            "source",
+            "authors",
             "languages",
-            "created_date", "updated_date"
         ],
         conditions: { operator: 'WHERE', value: `published = ${published ?? 'true'}` },
         page: page,
@@ -60,6 +62,7 @@ export const getData = async (request) => {
             value: sort
         },
     })
+
 
     return await client.query(query, []).then(
         async result => {
@@ -109,7 +112,7 @@ export const insertData = async (request) => {
         path: `/images/projects/${request.file.filename}`
     }
 
-    request.body.image = fileData.path;
+    request.body.image = request.file.filename;
 
     const { status } = await ImageModel.insertData(fileData)
 
