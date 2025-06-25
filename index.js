@@ -1,9 +1,12 @@
 import express from 'express'
 import ROUTE from './src/routes/index.js'
 import { Response } from './src/helpers/response-data.js'
-import { ENV, PORT, VERSION } from './src/db/configs/index.js'
+import { ENV, PORT } from './src/db/configs/index.js'
 
-const app       = express()
+const app = express()
+
+// Configure trust proxy for accurate client IP detection with rate limiting
+app.set('trust proxy', 1)
 
 app.use(ROUTE)
 
