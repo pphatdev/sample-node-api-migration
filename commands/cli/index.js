@@ -5,6 +5,7 @@ import { migrate, procedures, views } from "../sql/migrate.js";
 import { createController } from "../controllers/index.js";
 import { createModel } from "../models/index.js";
 import { createRoutes } from "../routes/index.js";
+import { createViews } from "../sql/create-views.js";
 
 const commands      = process.argv
 const commandLength = process.argv.length;
@@ -41,6 +42,30 @@ if (commandLength >= 3) {
             console.log(`\n✅🌈 You have created SQL: ${sqlNames}!\n`)
             process.exit(0)
         })
+    }
+
+
+    /**
+     * Create Views
+     */
+    if ((options[0]) === '--create-views') {
+        const viewNames = options.slice(1, options.length)
+        if (viewNames.length > 0) {
+            viewNames.forEach( name => {
+                const filename = `${name}_${dateFormat}${extension}`
+                createViews(filename, name, 'view')
+            })
+
+            new Promise(resolve => setTimeout(resolve, 100)).then(() => {
+                console.log(`\n✅🌈 You have created Views: ${viewNames}!\n`)
+                process.exit(0)
+            })
+        }
+        else {
+            console.log(`\x1b[41mview name can't be blank!!\x1b[0m\n`)
+            console.log(`\x1b[33m[TRY]: \x1b[30mnpm run create:views viewname\x1b[0m\n\n`)
+            process.exit(0)
+        }
     }
 
 
