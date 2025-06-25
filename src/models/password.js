@@ -9,16 +9,9 @@ import { executeQuery } from "../db/query.js";
 class PasswordModel {
     static async getData(request) {
         try {
-            let limit = request.limit || 20;
-            const { page, search, sort } = request
-            const allowedSortColumns = ["id", "name", "created_at"]; // Whitelist of allowed columns
-            const validatedSort = allowedSortColumns.includes(sort) ? sort : "id"; // Default to "id" if invalid
-
-            if (!Number(limit))
-                limit = null
+            const { page, search, sort, limit } = request
 
             const countResult = await executeQuery(`SELECT count(id) from public.users`);
-
             const total = countResult.data.rows[0].count || 0
             const query = pagination({
                 table: 'public.users',
@@ -33,17 +26,13 @@ class PasswordModel {
                     withWere: true
                 },
                 sort: {
-                    // column: ["id"],
-                    value: validatedSort
-                },
+                    column: ["id"],
+                    value: sort
+                }
             })
 
             const result = await executeQuery(query, []);
-
-            return Response.success(
-                result.data.rows,
-                total
-            );
+            return Response.success(result.data.rows, total)
 
         } catch (error) {
             console.error('Error in getData:', error);
