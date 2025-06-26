@@ -18,7 +18,9 @@ app.use((req, res, next) => {
         'http://127.0.0.1:3000',
         /^https?:\/\/.*\.sophat\.top$/,
         /^https?:\/\/.*\.nintrea\.top$/,
-        /^https?:\/\/.*\.pphat\.top$/
+        /^https?:\/\/.*\.pphat\.top$/,
+        /^https?:\/\/v4-pphat\.vercel\.app$/,
+        /^https?:\/\/v4-[a-z0-9]+-pphat\.vercel\.app$/
     ];
 
     const origin = req.headers.origin;
