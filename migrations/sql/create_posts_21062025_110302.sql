@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS public.posts (
 
 
 CREATE INDEX IF NOT EXISTS idx_posts_authors_gin ON public.posts USING GIN(authors);
-
 CREATE INDEX IF NOT EXISTS idx_posts_slug ON public.posts(slug);
 CREATE INDEX IF NOT EXISTS idx_posts_published ON public.posts(published);
 CREATE INDEX IF NOT EXISTS idx_posts_status ON public.posts(status, is_deleted);
