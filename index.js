@@ -20,7 +20,8 @@ app.use((req, res, next) => {
         /^https?:\/\/.*\.nintrea\.top$/,
         /^https?:\/\/.*\.pphat\.top$/,
         /^https?:\/\/v4-pphat\.vercel\.app$/,
-        /^https?:\/\/v4-[a-z0-9]+-pphat\.vercel\.app$/
+        /^https?:\/\/v4-[a-z0-9]+-pphat\.vercel\.app$/,
+        /^https?:\/\/v4-[a-z0-9]+-[a-z0-9]+-pphat\.vercel\.app$/
     ];
 
     const origin = req.headers.origin;
